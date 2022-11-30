@@ -9,8 +9,6 @@ const handler: NextApiHandler = async (req, res) => {
         return res.status(404).json({ error: 'Missing slug' });
     }
 
-    console.log(slug);
-
     const data = await prisma.snail.findFirst({
         where: { alias: { equals: slug } },
     });
