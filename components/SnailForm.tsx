@@ -1,5 +1,5 @@
+import { Snail } from '@prisma/client'
 import React, { FunctionComponent } from 'react'
-import { Snail } from '../types'
 
 type Props = {
     snail?: Snail
