@@ -1,4 +1,4 @@
-import SnailForm from '../components/SnailForm'
+import SnailForm from '../components/SnailForm';
 
 export default function Home() {
     return (
@@ -22,5 +22,5 @@ export default function Home() {
                 </section>
             </article>
         </div>
-    )
+    );
 }

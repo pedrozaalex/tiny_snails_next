@@ -1,9 +1,9 @@
-import { Snail } from '@prisma/client'
-import React, { FunctionComponent } from 'react'
+import { Snail } from '@prisma/client';
+import React, { FunctionComponent } from 'react';
 
 type Props = {
-    snail?: Snail
-}
+    snail?: Snail;
+};
 
 const SnailForm: FunctionComponent<Props> = ({ snail }) => {
     return (
@@ -39,9 +39,9 @@ const SnailForm: FunctionComponent<Props> = ({ snail }) => {
                 <button className="btn btn-primary mt-3">create it!</button>
             </form>
         </div>
-    )
-}
+    );
+};
 
-SnailForm.propTypes = {}
+SnailForm.propTypes = {};
 
-export default SnailForm
+export default SnailForm;

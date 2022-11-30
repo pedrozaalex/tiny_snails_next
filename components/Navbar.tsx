@@ -1,8 +1,8 @@
-import Image from 'next/image'
-import Link from 'next/link'
+import Image from 'next/image';
+import Link from 'next/link';
 
-import SnailIcon from '../public/snail.png'
-import { ProjectRepoLink } from './ProjectRepoLink'
+import SnailIcon from '../public/snail.png';
+import { ProjectRepoLink } from './ProjectRepoLink';
 
 export function Navbar() {
     return (
@@ -24,5 +24,5 @@ export function Navbar() {
 
             <ProjectRepoLink />
         </header>
-    )
+    );
 }

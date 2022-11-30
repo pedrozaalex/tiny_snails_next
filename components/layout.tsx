@@ -1,10 +1,10 @@
-import { FunctionComponent, ReactNode } from 'react'
-import { Footer } from './Footer'
-import { Navbar } from './Navbar'
+import { FunctionComponent, ReactNode } from 'react';
+import { Footer } from './Footer';
+import { Navbar } from './Navbar';
 
 type Props = {
-    children: ReactNode
-}
+    children: ReactNode;
+};
 
 const Layout: FunctionComponent<Props> = ({ children }) => {
     return (
@@ -13,7 +13,7 @@ const Layout: FunctionComponent<Props> = ({ children }) => {
             <main>{children}</main>
             <Footer />
         </>
-    )
-}
+    );
+};
 
-export default Layout
+export default Layout;
