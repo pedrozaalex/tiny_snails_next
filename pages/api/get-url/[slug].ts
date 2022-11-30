@@ -17,6 +17,10 @@ const handler: NextApiHandler = async (req, res) => {
         return res.status(404).json({ error: 'Not found' });
     }
 
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=300'); // Cache for 5 minutes, swr for another 5
+
     return res.json(data);
 };
 
