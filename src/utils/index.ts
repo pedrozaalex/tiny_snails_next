@@ -46,14 +46,20 @@ export const getUrlForAlias = async (slug: string): Promise<Snail | null> => {
 export const reportClick = async (snailId: number, ip?: string) => {
     console.log('reporting click', snailId, ip);
 
-    const result = await fetch(`${BASE_URL}/api/report-click`, {
-        method: 'POST',
-        body: JSON.stringify({
-            snailId,
-            ip,
-            secret: process.env.SECRET_KEY,
-        }),
-    }).then((res) => res.json());
+    try {
+        const result = await (
+            await fetch(`${BASE_URL}/api/report-click`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    snailId,
+                    ip,
+                    secret: process.env.SECRET_KEY,
+                }),
+            })
+        ).json();
 
-    console.log('click create result', result);
+        console.log('click create result', result);
+    } catch (error) {
+        console.log('error occurred when reporting click:', error);
+    }
 };
