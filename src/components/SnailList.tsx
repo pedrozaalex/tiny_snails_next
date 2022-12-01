@@ -5,14 +5,22 @@ import { FunctionComponent, useState } from 'react';
 import TrophyIcon from '../../public/trophy.png';
 import { AppRouter } from '../server/routers/_app';
 
+import RefreshIcon from '../../public/refresh.png';
+
 export type PopularSnails =
     inferRouterOutputs<AppRouter>['snail']['getPopular'];
 
 type Props = {
     snails: PopularSnails;
+    onRefresh: () => void;
 };
 
-export const SnailList: FunctionComponent<Props> = ({ snails }) => {
+export const SnailList: FunctionComponent<Props> = ({
+    snails,
+    onRefresh = () => {
+        // noop
+    },
+}) => {
     const router = useRouter();
 
     const [, setSelectedSnailId] = useState<number | null>(null);
@@ -52,7 +60,7 @@ export const SnailList: FunctionComponent<Props> = ({ snails }) => {
                     <p>see snails other people have created</p>
                 </section>
 
-                <div className="overflow-auto w-full max-h-full">
+                <div className="overflow-auto w-full max-h-full relative">
                     <table className="table w-full text-center">
                         <thead>
                             <tr>
@@ -81,6 +89,20 @@ export const SnailList: FunctionComponent<Props> = ({ snails }) => {
                             })}
                         </tbody>
                     </table>
+
+                    <span className=" absolute top-0 right-0 z-50">
+                        <button
+                            type="button"
+                            className="btn btn-ghost"
+                            onClick={onRefresh}
+                        >
+                            <Image
+                                src={RefreshIcon}
+                                alt="refresh"
+                                height={16}
+                            />
+                        </button>
+                    </span>
                 </div>
             </div>
         </>

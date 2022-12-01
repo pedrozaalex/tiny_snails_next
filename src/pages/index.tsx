@@ -1,30 +1,23 @@
-import { createProxySSGHelpers } from '@trpc/react-query/ssg';
-import { InferGetStaticPropsType } from 'next';
+import { InferGetServerSidePropsType } from 'next';
 import { Hero } from '../components/Hero';
 import SnailForm from '../components/SnailForm';
 import { SnailList } from '../components/SnailList';
-import { createContext } from '../server/context';
-import { appRouter } from '../server/routers/_app';
 import { trpc } from '../utils/trpc';
 
-export const getStaticProps = async () => {
-    const ssg = createProxySSGHelpers({
-        router: appRouter,
-        ctx: createContext(),
-    });
-
-    await ssg.snail.getPopular.prefetch();
-
+export const getServerSideProps = () => {
     return {
-        props: { baseUrl: process.env.BASE_URL, trpcState: ssg.dehydrate() },
-        revalidate: 60,
+        props: { baseUrl: process.env.BASE_URL },
     };
 };
 
-const Home = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
+const Home = (
+    props: InferGetServerSidePropsType<typeof getServerSideProps>
+) => {
     const { baseUrl } = props;
 
-    const popularSnailsQuery = trpc.snail.getPopular.useQuery();
+    const popularSnailsQuery = trpc.snail.getPopular.useQuery(undefined, {
+        refetchInterval: 60 * 1000,
+    });
 
     const { mutate: createSnail, isLoading: isCreating } =
         trpc.snail.create.useMutation();
@@ -33,7 +26,7 @@ const Home = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
         return null;
     }
 
-    const { data: snails } = popularSnailsQuery;
+    const { data: snails, refetch: refreshSnailList } = popularSnailsQuery;
 
     return (
         <div className="container max-w-3xl mx-auto py-12 px-8 flex flex-col gap-12">
@@ -45,7 +38,7 @@ const Home = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
                 loading={isCreating}
             />
 
-            <SnailList snails={snails} />
+            <SnailList snails={snails} onRefresh={refreshSnailList} />
         </div>
     );
 };
