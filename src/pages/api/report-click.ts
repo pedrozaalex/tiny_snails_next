@@ -1,9 +1,18 @@
 import { NextApiHandler } from 'next';
+import { z } from 'zod';
 
 import { db } from '../../utils/db';
 
+const bodySchema = z.object({
+    snailId: z.number(),
+    ip: z.string().optional(),
+    secret: z.string(),
+});
+
 const handler: NextApiHandler = async (req, res) => {
-    const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+    const body = bodySchema.parse(
+        typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+    );
 
     console.log('report click body', body);
 
@@ -21,7 +30,7 @@ const handler: NextApiHandler = async (req, res) => {
 
     const data = await db.click.create({
         data: {
-            snailId: parseInt(snailId),
+            snailId,
             ip,
         },
     });

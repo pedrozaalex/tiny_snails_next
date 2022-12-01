@@ -1,14 +1,10 @@
 import { z } from 'zod';
+import { createSnailSchema } from '../../schemas';
 import { procedure, router } from '../trpc';
 
 export const snailRouter = router({
     create: procedure
-        .input(
-            z.object({
-                url: z.string().url(),
-                alias: z.string().optional(),
-            })
-        )
+        .input(createSnailSchema)
         .mutation(async ({ input, ctx }) => {
             if (
                 !input.alias ||

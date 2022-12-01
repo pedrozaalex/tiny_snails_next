@@ -4,7 +4,7 @@ import { FC } from 'react';
 
 import GitHubIcon from '../../public/github.png';
 
-export const ProjectRepoLink: FC = (_props) => {
+export const ProjectRepoLink: FC = () => {
     return (
         <Link
             className="btn btn-ghost"

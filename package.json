@@ -9,6 +9,7 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@hookform/resolvers": "^2.9.10",
         "@prisma/client": "^4.7.0",
         "@tailwindcss/typography": "^0.5.8",
         "@tanstack/react-query": "^4.18.0",
@@ -19,18 +20,23 @@
         "@types/react-dom": "18.0.9",
         "@vercel/analytics": "^0.1.5",
         "daisyui": "^2.42.1",
-        "eslint": "8.28.0",
         "eslint-config-next": "13.0.5",
         "next": "13.0.5",
         "react": "18.2.0",
         "react-dom": "18.2.0",
+        "react-hook-form": "^7.40.0",
         "superjson": "^1.11.0",
         "zod": "^3.19.1"
     },
     "devDependencies": {
         "@types/node": "18.11.9",
         "@types/react": "18.0.25",
+        "@typescript-eslint/eslint-plugin": "^5.45.0",
+        "@typescript-eslint/parser": "^5.45.0",
         "autoprefixer": "^10.4.13",
+        "eslint": "8.28.0",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-plugin-prettier": "^4.2.1",
         "postcss": "^8.4.19",
         "prettier": "2.8.0",
         "prisma": "^4.7.0",

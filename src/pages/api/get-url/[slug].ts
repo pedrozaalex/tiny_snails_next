@@ -3,7 +3,7 @@ import { NextApiHandler } from 'next';
 import { db } from '../../../utils/db';
 
 const handler: NextApiHandler = async (req, res) => {
-    const slug = req.query['slug'];
+    const slug = req.query.slug;
 
     if (!slug || typeof slug !== 'string') {
         return res.status(404).json({ error: 'Missing slug' });

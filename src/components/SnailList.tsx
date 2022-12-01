@@ -1,21 +1,23 @@
+import { inferRouterOutputs } from '@trpc/server';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { FunctionComponent, useState } from 'react';
 import TrophyIcon from '../../public/trophy.png';
-import { trpc } from '../utils/trpc';
-import { Spinner } from './Spinner';
+import { AppRouter } from '../server/routers/_app';
 
-export function SnailList() {
-    const {
-        data: snails,
-        error,
-        isLoading,
-    } = trpc.snail.getPopular.useQuery(undefined, {
-        refetchInterval: 60 * 1000,
-    });
+export type PopularSnails =
+    inferRouterOutputs<AppRouter>['snail']['getPopular'];
 
-    const [selectedSnailId, setSelectedSnailId] = useState<number | null>(null);
+type Props = {
+    snails: PopularSnails;
+};
 
-    const snailSelectHandler = (snailId: number) =>
+export const SnailList: FunctionComponent<Props> = ({ snails }) => {
+    const router = useRouter();
+
+    const [, setSelectedSnailId] = useState<number | null>(null);
+
+    const snailSelectHandler = (snailId: number) => {
         setSelectedSnailId((curr) => {
             console.log('curr', curr);
             console.log('snailId', snailId);
@@ -27,9 +29,12 @@ export function SnailList() {
             return snailId;
         });
 
-    if (isLoading) {
-        return <Spinner />;
-    }
+        const snail = snails.find((s) => s.id === snailId);
+
+        if (snail) {
+            void router.push(`/s/${snail.alias}`);
+        }
+    };
 
     return (
         <>
@@ -47,7 +52,7 @@ export function SnailList() {
                     <p>see snails other people have created</p>
                 </section>
 
-                <div className="overflow-auto max-w-full max-h-full">
+                <div className="overflow-auto w-full max-h-full">
                     <table className="table w-full text-center">
                         <thead>
                             <tr>
@@ -58,24 +63,26 @@ export function SnailList() {
                         </thead>
 
                         <tbody>
-                            {snails?.map((snail, index) => (
-                                <tr
-                                    key={snail.id}
-                                    className="cursor-pointer hover"
-                                    onClick={snailSelectHandler.bind(
-                                        null,
-                                        snail.id
-                                    )}
-                                >
-                                    <th>{index + 1}</th>
-                                    <td>{snail.alias}</td>
-                                    <td>{snail.clicks}</td>
-                                </tr>
-                            ))}
+                            {snails.map((snail, index) => {
+                                return (
+                                    <tr
+                                        key={snail.id}
+                                        className="hover cursor-pointer"
+                                        onClick={snailSelectHandler.bind(
+                                            null,
+                                            snail.id
+                                        )}
+                                    >
+                                        <th>{index + 1}</th>
+                                        <td>{snail.alias}</td>
+                                        <td>{snail.clicks}</td>
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </table>
                 </div>
             </div>
         </>
     );
-}
+};

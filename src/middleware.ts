@@ -7,6 +7,10 @@ import {
     reportClick,
 } from './utils';
 
+export const config = {
+    matcher: '/s/:slug*',
+};
+
 export const middleware: NextMiddleware = async (req) => {
     console.log('redirect middleware', req.nextUrl.pathname);
 
@@ -37,8 +41,4 @@ export const middleware: NextMiddleware = async (req) => {
     }
 
     return NextResponse.redirect(BASE_URL + '/404');
-};
-
-export const config = {
-    matcher: '/s/:slug*',
 };

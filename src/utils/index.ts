@@ -7,7 +7,7 @@ export function isSlugPath(pathname: string) {
 }
 
 export function extractSlug(url: string): string | null {
-    return url.split('/s/').pop() || null;
+    return url.split('/s/').pop() ?? null;
 }
 
 export function getBaseUrl() {
@@ -28,9 +28,9 @@ export const getUrlForAlias = async (slug: string): Promise<Snail | null> => {
     console.log('getting url for alias', slug);
 
     try {
-        const result = await (
+        const result = (await (
             await fetch(`${BASE_URL}/api/get-url/${slug}`)
-        ).json();
+        ).json()) as Snail | { error: string };
 
         if ('error' in result) {
             throw new Error(result.error);
@@ -46,7 +46,7 @@ export const getUrlForAlias = async (slug: string): Promise<Snail | null> => {
 export const reportClick = (snailId: number, ip?: string) => {
     console.log('reporting click', snailId, ip);
 
-    fetch(`${BASE_URL}/api/report-click`, {
+    void fetch(`${BASE_URL}/api/report-click`, {
         method: 'POST',
         body: JSON.stringify({
             snailId,
