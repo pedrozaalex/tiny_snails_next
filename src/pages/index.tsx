@@ -8,7 +8,7 @@ type Props = { baseUrl: string | null };
 
 export const getServerSideProps: GetServerSideProps<Props> = async (
     context
-) => ({ props: { baseUrl: context.req.headers.host || null } });
+) => ({ props: { baseUrl: 'tny.xyz' } });
 
 const Home: NextPage<Props> = ({ baseUrl }) => {
     const utils = trpc.useContext();
