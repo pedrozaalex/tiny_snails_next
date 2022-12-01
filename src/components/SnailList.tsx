@@ -5,7 +5,13 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 export function SnailList() {
-    const { data: snails, error, isLoading } = trpc.snail.getPopular.useQuery();
+    const {
+        data: snails,
+        error,
+        isLoading,
+    } = trpc.snail.getPopular.useQuery(undefined, {
+        refetchInterval: 60 * 1000,
+    });
 
     const [selectedSnailId, setSelectedSnailId] = useState<number | null>(null);
 
@@ -27,7 +33,7 @@ export function SnailList() {
 
     return (
         <>
-            <div className="items-center flex flex-col gap-4">
+            <div className="items-center flex flex-col gap-8">
                 <section>
                     <h2 className="text-xl font-bold flex gap-2">
                         top snails
@@ -42,7 +48,7 @@ export function SnailList() {
                 </section>
 
                 <div className="overflow-auto max-w-full max-h-full">
-                    <table className="table w-full ">
+                    <table className="table w-full text-center">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -63,7 +69,7 @@ export function SnailList() {
                                 >
                                     <th>{index + 1}</th>
                                     <td>{snail.alias}</td>
-                                    <td>{snail._count.clicks}</td>
+                                    <td>{snail.clicks}</td>
                                 </tr>
                             ))}
                         </tbody>

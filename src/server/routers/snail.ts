@@ -40,8 +40,8 @@ export const snailRouter = router({
         return data;
     }),
 
-    getPopular: procedure.query(({ ctx }) => {
-        return ctx.db.snail.findMany({
+    getPopular: procedure.query(async ({ ctx }) => {
+        const data = await ctx.db.snail.findMany({
             take: 10,
             orderBy: {
                 clicks: {
@@ -58,5 +58,11 @@ export const snailRouter = router({
                 },
             },
         });
+
+        return data.map((snail) => ({
+            id: snail.id,
+            alias: snail.alias,
+            clicks: snail._count.clicks,
+        }));
     }),
 });

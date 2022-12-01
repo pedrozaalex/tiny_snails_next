@@ -1,6 +1,15 @@
 import { Snail } from '@prisma/client';
 import { FunctionComponent, useRef } from 'react';
 
+function getBaseURL() {
+    if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+
+    // assume localhost
+    return `http://localhost:${process.env.PORT ?? 3000}`;
+}
+
+const BASE_URL = getBaseURL();
+
 type SnailCreateDTO = Pick<Snail, 'url' | 'alias'>;
 
 type Props = {
@@ -49,12 +58,12 @@ const SnailForm: FunctionComponent<Props> = ({ snail, onSubmit }) => {
                     </label>
                     <label className="input-group">
                         <span className="border border-gray-300 border-opacity-50">
-                            tny.xyz/
+                            {BASE_URL}/s/
                         </span>
                         <input
                             type="text"
                             placeholder="alias"
-                            className="input input-bordered grow"
+                            className="input input-bordered min-w-0"
                             ref={aliasRef}
                             defaultValue={snail?.alias}
                         />

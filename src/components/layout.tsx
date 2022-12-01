@@ -10,7 +10,7 @@ const Layout: FunctionComponent<Props> = ({ children }) => {
     return (
         <>
             <Navbar />
-            <main>{children}</main>
+            <main className="bg-neutral">{children}</main>
             <Footer />
         </>
     );
