@@ -1,28 +1,42 @@
-import { Snail } from '@prisma/client';
 import { NextMiddleware, NextResponse } from 'next/server';
-import { extractSlug, isSlugPath } from './utils';
+import {
+    BASE_URL,
+    extractSlug,
+    getUrlForAlias,
+    isSlugPath,
+    reportClick,
+} from './utils';
 
 export const middleware: NextMiddleware = async (req) => {
-    console.log(req.nextUrl.pathname);
+    console.log('redirect middleware', req.nextUrl.pathname);
 
     const path = req.nextUrl.pathname;
 
     if (!isSlugPath(path)) {
-        console.log('middleware returning early');
+        console.log('not a slug path', path);
+
         return;
     }
 
     const slug = extractSlug(path);
 
-    const data = (await (
-        await fetch(`${req.nextUrl.origin}/api/get-url/${slug}`)
-    ).json()) as Snail | { error: string };
+    if (!slug) {
+        console.log('no slug');
 
-    console.log('data', data);
+        return;
+    }
 
-    if ('url' in data) {
+    const data = await getUrlForAlias(slug);
+
+    if (data) {
+        console.log('Redirecting to', data.url);
+
+        reportClick(data.id, req.ip);
+
         return NextResponse.redirect(data.url);
     }
+
+    return NextResponse.redirect(BASE_URL + '/404');
 };
 
 export const config = {

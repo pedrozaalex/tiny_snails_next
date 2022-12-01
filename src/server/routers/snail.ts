@@ -18,9 +18,7 @@ export const snailRouter = router({
                 input.alias = Math.random().toString(36).substring(2, 8);
             }
 
-            console.log('Creating snail with input', input);
-
-            const snail = await ctx.prisma.snail.create({
+            const snail = await ctx.db.snail.create({
                 data: {
                     alias: input.alias,
                     url: input.url,
@@ -29,8 +27,9 @@ export const snailRouter = router({
 
             return snail;
         }),
+
     getByAlias: procedure.input(z.string()).query(async ({ input, ctx }) => {
-        const data = await ctx.snail.findFirst({
+        const data = await ctx.db.snail.findFirst({
             where: { alias: { equals: input } },
         });
 
@@ -39,5 +38,25 @@ export const snailRouter = router({
         }
 
         return data;
+    }),
+
+    getPopular: procedure.query(({ ctx }) => {
+        return ctx.db.snail.findMany({
+            take: 10,
+            orderBy: {
+                clicks: {
+                    _count: 'desc',
+                },
+            },
+            select: {
+                id: true,
+                alias: true,
+                _count: {
+                    select: {
+                        clicks: true,
+                    },
+                },
+            },
+        });
     }),
 });

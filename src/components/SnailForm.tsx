@@ -20,6 +20,10 @@ const SnailForm: FunctionComponent<Props> = ({ snail, onSubmit }) => {
 
         if (url && alias && onSubmit) {
             onSubmit({ url, alias });
+
+            // clear input fields
+            urlRef.current.value = '';
+            aliasRef.current.value = '';
         }
     };
 

@@ -10,7 +10,7 @@ export const clickRouter = router({
             })
         )
         .mutation(async ({ input, ctx }) => {
-            const click = await ctx.click.create({
+            const click = await ctx.db.click.create({
                 data: {
                     ip: input.ip,
                     snailId: input.snailId,

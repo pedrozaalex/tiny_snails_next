@@ -9,9 +9,7 @@ export const createContext = async (
 ) => {
     return {
         req: opts?.req,
-        prisma: db,
-        snail: db.snail,
-        click: db.click,
+        db
     };
 };
 

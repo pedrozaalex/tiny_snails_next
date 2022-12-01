@@ -3,8 +3,6 @@ import { NextApiHandler } from 'next';
 import { db } from '../../../utils/db';
 
 const handler: NextApiHandler = async (req, res) => {
-    console.log('slug handler');
-
     const slug = req.query['slug'];
 
     if (!slug || typeof slug !== 'string') {
