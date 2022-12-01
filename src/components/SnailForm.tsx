@@ -1,14 +1,31 @@
 import { Snail } from '@prisma/client';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent, useRef } from 'react';
+
+type SnailCreateDTO = Pick<Snail, 'url' | 'alias'>;
 
 type Props = {
-    snail?: Snail;
+    snail?: SnailCreateDTO;
+    onSubmit?: (snail: SnailCreateDTO) => void;
 };
 
-const SnailForm: FunctionComponent<Props> = ({ snail }) => {
+const SnailForm: FunctionComponent<Props> = ({ snail, onSubmit }) => {
+    const urlRef = useRef<HTMLInputElement>(null);
+    const aliasRef = useRef<HTMLInputElement>(null);
+
+    const onSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        const url = urlRef.current?.value;
+        const alias = aliasRef.current?.value;
+
+        if (url && alias && onSubmit) {
+            onSubmit({ url, alias });
+        }
+    };
+
     return (
         <div className="card card-compact bg-base-200 shadow-xl">
-            <form className="card-body">
+            <form className="card-body" onSubmit={onSubmitHandler}>
                 <div className="form-control">
                     <label className="label">
                         <span className="label-text">your url</span>
@@ -17,6 +34,8 @@ const SnailForm: FunctionComponent<Props> = ({ snail }) => {
                         type="text"
                         placeholder="paste your long url here"
                         className="input input-bordered"
+                        ref={urlRef}
+                        defaultValue={snail?.url}
                     />
                 </div>
 
@@ -32,16 +51,18 @@ const SnailForm: FunctionComponent<Props> = ({ snail }) => {
                             type="text"
                             placeholder="alias"
                             className="input input-bordered grow"
+                            ref={aliasRef}
+                            defaultValue={snail?.alias}
                         />
                     </label>
                 </div>
 
-                <button className="btn btn-primary mt-3">create it!</button>
+                <button type="submit" className="btn btn-primary mt-3">
+                    create it!
+                </button>
             </form>
         </div>
     );
 };
-
-SnailForm.propTypes = {};
 
 export default SnailForm;

@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC } from 'react';
-import GitHubIcon from '../public/github.png';
+
+import GitHubIcon from '../../public/github.png';
 
 export const ProjectRepoLink: FC = (_props) => {
     return (

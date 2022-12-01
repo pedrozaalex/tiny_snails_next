@@ -1,15 +1,17 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
+import { NextApiHandler } from 'next';
 
-import { prisma } from '../../../db/client';
+import { db } from '../../../utils/db';
 
 const handler: NextApiHandler = async (req, res) => {
+    console.log('slug handler');
+
     const slug = req.query['slug'];
 
     if (!slug || typeof slug !== 'string') {
         return res.status(404).json({ error: 'Missing slug' });
     }
 
-    const data = await prisma.snail.findFirst({
+    const data = await db.snail.findFirst({
         where: { alias: { equals: slug } },
     });
 

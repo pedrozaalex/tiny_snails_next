@@ -1,23 +1,30 @@
 import { Snail } from '@prisma/client';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextMiddleware, NextResponse } from 'next/server';
+import { extractSlug, isSlugPath } from './utils';
 
-export async function middleware(req: NextRequest) {
+export const middleware: NextMiddleware = async (req) => {
     console.log(req.nextUrl.pathname);
 
-    if (req.nextUrl.pathname.startsWith('/api/get-url')) {
+    const path = req.nextUrl.pathname;
+
+    if (!isSlugPath(path)) {
         console.log('middleware returning early');
         return;
     }
 
-    const slug = req.nextUrl.pathname.split('/').pop();
+    const slug = extractSlug(path);
 
     const data = (await (
         await fetch(`${req.nextUrl.origin}/api/get-url/${slug}`)
     ).json()) as Snail | { error: string };
 
-    console.log(data);
+    console.log('data', data);
 
     if ('url' in data) {
         return NextResponse.redirect(data.url);
     }
-}
+};
+
+export const config = {
+    matcher: '/s/:slug*',
+};

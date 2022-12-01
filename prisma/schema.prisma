@@ -16,9 +16,22 @@ model Snail {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
 
-  url   String @db.VarChar(2000)
+  url String @db.VarChar(2000)
 
-  alias String @unique
+  alias  String  @unique
+  clicks Click[]
 
   @@index(alias)
+}
+
+model Click {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  snailId Int
+  snail   Snail @relation(fields: [snailId], references: [id])
+
+  ip String? @db.VarChar(45)
+
+  @@index(snailId, name: "clicks_snailId")
 }

@@ -1,6 +1,11 @@
 import SnailForm from '../components/SnailForm';
+import { trpc } from '../utils/trpc';
 
 export default function Home() {
+    const createSnail = trpc.snail.create.useMutation({
+        onMutate: console.log,
+    });
+
     return (
         <div className="container max-w-3xl mx-auto px-8">
             <article className="prose">
@@ -18,7 +23,13 @@ export default function Home() {
                 </section>
 
                 <section>
-                    <SnailForm />
+                    <SnailForm
+                        onSubmit={(snail) => {
+                            console.log('snail', snail);
+
+                            createSnail.mutate(snail);
+                        }}
+                    />
                 </section>
             </article>
         </div>
