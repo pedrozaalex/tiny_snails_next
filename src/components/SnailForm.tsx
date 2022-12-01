@@ -72,7 +72,7 @@ const SnailForm: FunctionComponent<Props> = ({
                         <span className="label-text">customize your link</span>
                     </label>
                     <label className="input-group">
-                        <span className="border border-gray-300 border-opacity-50">
+                        <span className="border border-gray-300 border-opacity-50 min-w-fit">
                             {baseUrl}
                         </span>
 

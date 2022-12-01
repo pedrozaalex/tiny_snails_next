@@ -8,7 +8,7 @@ import { trpc } from '../utils/trpc';
 
 export const getServerSideProps = () => {
     return {
-        props: { baseUrl: process.env.BASE_URL },
+        props: { baseUrl: 'tny-snls.xyz/' },
     };
 };
 
