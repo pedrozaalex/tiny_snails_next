@@ -3,7 +3,11 @@ import { NextApiHandler } from 'next';
 import { db } from '../../utils/db';
 
 const handler: NextApiHandler = async (req, res) => {
-    const { snailId, ip, secret } = JSON.parse(req.body);
+    const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+
+    console.log('report click body', body);
+
+    const { snailId, ip, secret } = body;
 
     if (secret !== process.env.SECRET_KEY) {
         return res.status(401).json({ error: 'Unauthorized' });
