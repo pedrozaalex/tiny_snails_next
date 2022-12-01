@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@formkit/auto-animate': 1.0.0-beta.5
   '@hookform/resolvers': ^2.9.10
   '@prisma/client': ^4.7.0
   '@tailwindcss/typography': ^0.5.8
@@ -35,6 +36,7 @@ specifiers:
   zod: ^3.19.1
 
 dependencies:
+  '@formkit/auto-animate': 1.0.0-beta.5
   '@hookform/resolvers': 2.9.10_react-hook-form@7.40.0
   '@prisma/client': 4.7.0_prisma@4.7.0
   '@tailwindcss/typography': 0.5.8_tailwindcss@3.2.4
@@ -108,6 +110,10 @@ packages:
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
       - supports-color
+
+  /@formkit/auto-animate/1.0.0-beta.5:
+    resolution: {integrity: sha512-WoSwyhAZPOe6RB/IgicOtCHtrWwEpfKIZ/H/nxpKfnZL9CB6hhhBGU5bCdMRw7YpAUF2CDlQa+WWh+gCqz5lDg==}
+    dev: false
 
   /@hookform/resolvers/2.9.10_react-hook-form@7.40.0:
     resolution: {integrity: sha512-JIL1DgJIlH9yuxcNGtyhsWX/PgNltz+5Gr6+8SX9fhXc/hPbEIk6wPI82nhgvp3uUb6ZfAM5mqg/x7KR7NAb+A==}

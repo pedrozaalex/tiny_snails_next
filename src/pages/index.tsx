@@ -38,7 +38,10 @@ const Home = (
                 loading={isCreating}
             />
 
-            <SnailList snails={snails} onRefresh={refreshSnailList} />
+            <SnailList
+                snails={snails}
+                onRefresh={() => void refreshSnailList()}
+            />
         </div>
     );
 };

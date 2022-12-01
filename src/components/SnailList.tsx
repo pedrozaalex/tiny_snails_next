@@ -1,3 +1,4 @@
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { inferRouterOutputs } from '@trpc/server';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -22,6 +23,8 @@ export const SnailList: FunctionComponent<Props> = ({
     },
 }) => {
     const router = useRouter();
+
+    const [parentRef] = useAutoAnimate<HTMLTableSectionElement>();
 
     const [, setSelectedSnailId] = useState<number | null>(null);
 
@@ -70,7 +73,7 @@ export const SnailList: FunctionComponent<Props> = ({
                             </tr>
                         </thead>
 
-                        <tbody>
+                        <tbody ref={parentRef}>
                             {snails.map((snail, index) => {
                                 return (
                                     <tr
