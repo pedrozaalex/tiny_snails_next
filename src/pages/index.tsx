@@ -1,4 +1,6 @@
 import { InferGetServerSidePropsType } from 'next';
+import Image from 'next/image';
+import TrophyIcon from '../../public/trophy.png';
 import { Hero } from '../components/Hero';
 import SnailForm from '../components/SnailForm';
 import { SnailList } from '../components/SnailList';
@@ -26,7 +28,11 @@ const Home = (
         return null;
     }
 
-    const { data: snails, refetch: refreshSnailList } = popularSnailsQuery;
+    const {
+        data: snails,
+        refetch: refreshSnailList,
+        isRefetching,
+    } = popularSnailsQuery;
 
     return (
         <div className="container max-w-3xl mx-auto py-12 px-8 flex flex-col gap-12">
@@ -38,8 +44,22 @@ const Home = (
                 loading={isCreating}
             />
 
+            <section className="flex flex-col items-center text-center">
+                <h2 className="text-xl font-bold flex gap-2">
+                    top snails
+                    <Image
+                        src={TrophyIcon}
+                        alt="trophy icon"
+                        width={24}
+                        height={24}
+                    />
+                </h2>
+                <p>see snails other people have created</p>
+            </section>
+
             <SnailList
                 snails={snails}
+                loading={isRefetching}
                 onRefresh={() => void refreshSnailList()}
             />
         </div>
