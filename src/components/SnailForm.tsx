@@ -51,7 +51,7 @@ const SnailForm: FunctionComponent<Props> = ({
                     <input
                         type="text"
                         placeholder="paste your long url here"
-                        className={`input input-bordered ${
+                        className={`input-bordered input ${
                             errors.url ? 'input-error' : ''
                         }`}
                         defaultValue={snail?.url}
@@ -79,7 +79,7 @@ const SnailForm: FunctionComponent<Props> = ({
                         <input
                             type="text"
                             placeholder="alias"
-                            className={`input input-bordered min-w-0 w-full ${
+                            className={`input-bordered input w-full min-w-0 ${
                                 errors.alias ? 'input-error' : ''
                             }`}
                             defaultValue={snail?.alias}
@@ -98,7 +98,7 @@ const SnailForm: FunctionComponent<Props> = ({
 
                 <button
                     type="button"
-                    className={`btn btn-primary mt-3 ${
+                    className={`btn-primary btn mt-3 ${
                         loading ? ' loading' : ''
                     }`}
                     // This is a workaround for a bug in react-hook-form
@@ -113,7 +113,7 @@ const SnailForm: FunctionComponent<Props> = ({
             <div className={error ? 'm-4' : ''} ref={errorContainerRef}>
                 {error ? (
                     <div
-                        className="alert alert-error shadow-lg cursor-pointer"
+                        className="alert alert-error cursor-pointer shadow-lg"
                         onClick={clearError}
                     >
                         <div>

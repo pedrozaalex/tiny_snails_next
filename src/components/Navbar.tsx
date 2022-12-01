@@ -3,8 +3,11 @@ import Link from 'next/link';
 import { ProjectRepoLink } from './ProjectRepoLink';
 
 import SnailIcon from '../../public/snail.png';
+import { useSession } from 'next-auth/react';
 
 export function Navbar() {
+    const { data: session, status } = useSession();
+
     return (
         <header className="navbar bg-primary text-primary-content justify-between">
             <h1>
@@ -22,7 +25,21 @@ export function Navbar() {
                 </Link>
             </h1>
 
-            <ProjectRepoLink />
+            <div className="flex gap-2">
+                {status === 'authenticated' && (
+                    <Link href="/dashboard" className="btn btn-ghost">
+                        dashboard
+                    </Link>
+                )}
+
+                {status === 'unauthenticated' && (
+                    <Link href="/api/auth/signin" className="btn btn-ghost">
+                        sign in
+                    </Link>
+                )}
+
+                <ProjectRepoLink />
+            </div>
         </header>
     );
 }
