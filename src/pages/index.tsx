@@ -17,7 +17,7 @@ export const getStaticProps = async () => {
 
     return {
         props: { baseUrl: process.env.BASE_URL, trpcState: ssg.dehydrate() },
-        revalidate: 1,
+        revalidate: 60,
     };
 };
 
