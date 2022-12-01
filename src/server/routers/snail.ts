@@ -1,3 +1,5 @@
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { createSnailSchema } from '../../schemas';
 import { procedure, router } from '../trpc';
@@ -14,14 +16,34 @@ export const snailRouter = router({
                 input.alias = Math.random().toString(36).substring(2, 8);
             }
 
-            const snail = await ctx.db.snail.create({
-                data: {
-                    alias: input.alias,
-                    url: input.url,
-                },
-            });
+            try {
+                const snail = await ctx.db.snail.create({
+                    data: {
+                        alias: input.alias,
+                        url: input.url,
+                    },
+                });
 
-            return snail;
+                return snail;
+            } catch (error) {
+                if (
+                    error instanceof PrismaClientKnownRequestError &&
+                    error.code === 'P2002'
+                ) {
+                    throw new TRPCError({
+                        code: 'BAD_REQUEST',
+                        message: 'alias already in use!',
+                        cause: error,
+                    });
+                }
+
+                throw new TRPCError({
+                    code: 'INTERNAL_SERVER_ERROR',
+                    message:
+                        'An unexpected error occurred, please try again later.',
+                    cause: error,
+                });
+            }
         }),
 
     getByAlias: procedure.input(z.string()).query(async ({ input, ctx }) => {

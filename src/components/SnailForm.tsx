@@ -1,26 +1,37 @@
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { TRPCClientError } from '@trpc/client';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { createSnailSchema } from '../schemas';
+import { ErrorIcon } from './ErrorIcon';
 
 type SnailCreateDTO = z.infer<typeof createSnailSchema>;
 
 type Props = {
     snail?: SnailCreateDTO;
-    onSubmit?: (snail: SnailCreateDTO) => void;
     baseUrl?: string | null;
     loading?: boolean;
+    error?: unknown;
+    onSubmit?: (snail: SnailCreateDTO) => void;
+    clearError?: () => void;
 };
 
 const SnailForm: FunctionComponent<Props> = ({
     snail,
     baseUrl = 'tny.xyz/',
     loading = false,
+    error = null,
     onSubmit = () => {
         // noop
     },
+    clearError = () => {
+        // noop
+    },
 }) => {
+    const [errorContainerRef] = useAutoAnimate<HTMLDivElement>();
+
     const {
         handleSubmit,
         register,
@@ -98,6 +109,25 @@ const SnailForm: FunctionComponent<Props> = ({
                     {snail === undefined ? 'create it!' : 'update'}
                 </button>
             </form>
+
+            <div className={error ? 'm-4' : ''} ref={errorContainerRef}>
+                {error ? (
+                    <div
+                        className="alert alert-error shadow-lg cursor-pointer"
+                        onClick={clearError}
+                    >
+                        <div>
+                            <ErrorIcon />
+                            <span>
+                                Error:{' '}
+                                {error instanceof TRPCClientError
+                                    ? error.message
+                                    : 'unknown error occurred'}
+                            </span>
+                        </div>
+                    </div>
+                ) : null}
+            </div>
         </div>
     );
 };

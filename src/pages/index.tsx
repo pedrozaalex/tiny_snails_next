@@ -21,8 +21,12 @@ const Home = (
         refetchInterval: 60 * 1000,
     });
 
-    const { mutate: createSnail, isLoading: isCreating } =
-        trpc.snail.create.useMutation();
+    const {
+        mutate: createSnail,
+        isLoading: isCreating,
+        error,
+        reset: clearCreateError,
+    } = trpc.snail.create.useMutation();
 
     if (popularSnailsQuery.status !== 'success') {
         return null;
@@ -42,6 +46,8 @@ const Home = (
                 baseUrl={baseUrl}
                 onSubmit={createSnail}
                 loading={isCreating}
+                error={error}
+                clearError={clearCreateError}
             />
 
             <section className="flex flex-col items-center text-center">
