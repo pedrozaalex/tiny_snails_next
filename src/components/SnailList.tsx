@@ -1,8 +1,8 @@
-import { trpc } from '../utils/trpc';
-import { Spinner } from './Spinner';
-import TrophyIcon from '../../public/trophy.png';
 import Image from 'next/image';
 import { useState } from 'react';
+import TrophyIcon from '../../public/trophy.png';
+import { trpc } from '../utils/trpc';
+import { Spinner } from './Spinner';
 
 export function SnailList() {
     const {

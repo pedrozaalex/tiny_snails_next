@@ -1,6 +1,4 @@
 import { Snail } from '@prisma/client';
-import { GetServerSideProps, NextPage } from 'next';
-import { useRouter } from 'next/router';
 import { FunctionComponent, useRef } from 'react';
 
 type SnailCreateDTO = Pick<Snail, 'url' | 'alias'>;
@@ -57,7 +55,7 @@ const SnailForm: FunctionComponent<Props> = ({ snail, onSubmit, baseUrl }) => {
                         <input
                             type="text"
                             placeholder="alias"
-                            className="input input-bordered min-w-0"
+                            className="input input-bordered min-w-0 w-full"
                             ref={aliasRef}
                             defaultValue={snail?.alias}
                         />
@@ -65,7 +63,7 @@ const SnailForm: FunctionComponent<Props> = ({ snail, onSubmit, baseUrl }) => {
                 </div>
 
                 <button type="submit" className="btn btn-primary mt-3">
-                    create it!
+                    {snail === undefined ? 'create it!' : 'update'}
                 </button>
             </form>
         </div>
