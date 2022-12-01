@@ -1,23 +1,17 @@
 import { Snail } from '@prisma/client';
+import { GetServerSideProps, NextPage } from 'next';
+import { useRouter } from 'next/router';
 import { FunctionComponent, useRef } from 'react';
-
-function getBaseURL() {
-    if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
-
-    // assume localhost
-    return `http://localhost:${process.env.PORT ?? 3000}`;
-}
-
-const BASE_URL = getBaseURL();
 
 type SnailCreateDTO = Pick<Snail, 'url' | 'alias'>;
 
 type Props = {
     snail?: SnailCreateDTO;
     onSubmit?: (snail: SnailCreateDTO) => void;
+    baseUrl?: string | null;
 };
 
-const SnailForm: FunctionComponent<Props> = ({ snail, onSubmit }) => {
+const SnailForm: FunctionComponent<Props> = ({ snail, onSubmit, baseUrl }) => {
     const urlRef = useRef<HTMLInputElement>(null);
     const aliasRef = useRef<HTMLInputElement>(null);
 
@@ -58,7 +52,7 @@ const SnailForm: FunctionComponent<Props> = ({ snail, onSubmit }) => {
                     </label>
                     <label className="input-group">
                         <span className="border border-gray-300 border-opacity-50">
-                            {BASE_URL}/s/
+                            {baseUrl}/s/
                         </span>
                         <input
                             type="text"
