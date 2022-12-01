@@ -50,6 +50,7 @@ export const reportClick = async (snailId: number, ip?: string) => {
         body: JSON.stringify({
             snailId,
             ip,
+            secret: process.env.SECRET_KEY,
         }),
     }).then((res) => res.json());
 
