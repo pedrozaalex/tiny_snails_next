@@ -1,18 +1,29 @@
-export function Hero() {
+import Image from 'next/image';
+import SnailIcon from '../../public/snail.png';
+
+export function AppHero() {
     return (
-        <article className="prose">
-            <section>
-                <h2 className="text-xl">short links for everybody!</h2>
-                <p>
-                    ever wanted to share a link with friends, colleagues or even
-                    customers, but your link was way too big and ugly?
-                </p>
-                <p>consider your problems solved!</p>
-                <p>
-                    you can now use tiny snails™ and create as many cute short
-                    links as you want. try it now below!
-                </p>
-            </section>
-        </article>
+        <div className="hero">
+            <div className="hero-content">
+                <div className="max-w-md text-center">
+                    <h2 className="text-4xl font-bold inline-flex gap-2">
+                        tiny snails
+                        <Image
+                            src={SnailIcon}
+                            alt="snail icon"
+                            className="inline-block w-10 aspect-auto"
+                        />
+                    </h2>
+
+                    <p className="pt-4 text-lg">
+                        now you can share your big ugly links
+                    </p>
+
+                    <small>
+                        (yes, the name is a word play with the slugs in urls)
+                    </small>
+                </div>
+            </div>
+        </div>
     );
 }

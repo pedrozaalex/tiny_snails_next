@@ -66,3 +66,21 @@ h6 {
         font-family: 'Poppins', sans-serif;
     }
 }
+
+@layer components {
+    table.custom-table {
+        @apply bg-transparent;
+    }
+
+    table.custom-table td {
+        @apply bg-transparent;
+    }
+
+    table.custom-table th {
+        @apply bg-transparent;
+    }
+
+    table.custom-table tr {
+        @apply bg-transparent;
+    }
+}

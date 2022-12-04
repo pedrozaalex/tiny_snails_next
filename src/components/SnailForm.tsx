@@ -41,11 +41,11 @@ const SnailForm: FunctionComponent<Props> = ({
     });
 
     return (
-        <div className="card card-compact bg-base-200 shadow-2xl">
+        <div className="card card-compact bg-base-200 border-2 border-neutral-content">
             <form className="card-body">
                 <div className="form-control">
                     <label className="label">
-                        <span className="label-text">your url</span>
+                        <span className="label-text">your big url</span>
                     </label>
 
                     <input
@@ -72,9 +72,7 @@ const SnailForm: FunctionComponent<Props> = ({
                         <span className="label-text">customize your link</span>
                     </label>
                     <label className="input-group">
-                        <span className="border border-gray-300 border-opacity-50 min-w-fit">
-                            {baseUrl}
-                        </span>
+                        <span className="bg-accent min-w-fit">{baseUrl}</span>
 
                         <input
                             type="text"
@@ -98,7 +96,7 @@ const SnailForm: FunctionComponent<Props> = ({
 
                 <button
                     type="button"
-                    className={`btn-primary btn mt-3 ${
+                    className={`btn btn-secondary mt-3 ${
                         loading ? ' loading' : ''
                     }`}
                     // This is a workaround for a bug in react-hook-form

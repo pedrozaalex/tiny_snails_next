@@ -1,36 +1,29 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { inferRouterOutputs } from '@trpc/server';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { AppRouter } from '../server/routers/_app';
-
-import RefreshIcon from '../../public/refresh.png';
+import { Dialog } from './Dialog';
+import { SnailInfo } from './SnailInfo';
 
 export type PopularSnails =
     inferRouterOutputs<AppRouter>['snail']['getPopular'];
 
 type Props = {
     snails: PopularSnails;
-    loading?: boolean;
-    onRefresh: () => void;
 };
 
-export const SnailList: FunctionComponent<Props> = ({
-    snails,
-    loading,
-    onRefresh = () => {
-        // noop
-    },
-}) => {
-    const router = useRouter();
-
+export const SnailList: FunctionComponent<Props> = ({ snails }) => {
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>();
+    const [selectedSnail, setSelectedSnail] = useState<
+        PopularSnails[number] | null
+    >(null);
+
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     return (
         <>
-            <div className="items-center flex flex-col gap-8 overflow-auto w-full max-h-full relative">
-                <table className="table w-full text-center">
+            <div className="items-center flex flex-col gap-8 overflow-auto w-full max-h-full relative rounded-lg bg-base-100 border-neutral-content border-2">
+                <table className="custom-table table w-full text-center">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -45,9 +38,10 @@ export const SnailList: FunctionComponent<Props> = ({
                                 <tr
                                     key={snail.id}
                                     className="hover cursor-pointer"
-                                    onClick={() =>
-                                        void router.push(`/s/${snail.alias}`)
-                                    }
+                                    onClick={() => {
+                                        setSelectedSnail(snail);
+                                        setIsDialogOpen(true);
+                                    }}
                                 >
                                     <th>{index + 1}</th>
                                     <td>{snail.alias}</td>
@@ -57,22 +51,11 @@ export const SnailList: FunctionComponent<Props> = ({
                         })}
                     </tbody>
                 </table>
-
-                <span className=" absolute top-0 right-0 z-50">
-                    <button
-                        type="button"
-                        className="btn btn-ghost"
-                        onClick={onRefresh}
-                    >
-                        <Image
-                            className={loading ? 'animate-spin' : ''}
-                            src={RefreshIcon}
-                            alt="refresh"
-                            height={16}
-                        />
-                    </button>
-                </span>
             </div>
+
+            <Dialog isOpen={isDialogOpen}>
+                {selectedSnail && <SnailInfo snailId={selectedSnail.id} />}
+            </Dialog>
         </>
     );
 };

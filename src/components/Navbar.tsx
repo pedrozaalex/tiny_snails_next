@@ -6,10 +6,10 @@ import SnailIcon from '../../public/snail.png';
 import { useSession } from 'next-auth/react';
 
 export function Navbar() {
-    const { data: session, status } = useSession();
+    const { status } = useSession();
 
     return (
-        <header className="navbar bg-primary text-primary-content justify-between">
+        <header className="navbar mt-8 px-4 py-4 bg-base-100 text-primary-content justify-between border-y-2 border-primary-content">
             <h1>
                 <Link
                     href="/"
@@ -19,27 +19,31 @@ export function Navbar() {
                     <Image
                         src={SnailIcon}
                         alt="snail icon"
-                        width={32}
-                        height={32}
+                        width={36}
+                        height={36}
                     />
                 </Link>
             </h1>
 
-            <div className="flex gap-2">
+            <section className="flex gap-4">
                 {status === 'authenticated' && (
                     <Link href="/dashboard" className="btn btn-ghost">
-                        dashboard
+                        my snails
                     </Link>
                 )}
 
                 {status === 'unauthenticated' && (
-                    <Link href="/api/auth/signin" className="btn btn-ghost">
-                        sign in
+                    <Link
+                        href="/auth"
+                        className="btn btn-secondary flex-col px-6"
+                    >
+                        <p>sign in</p>
+                        <small>(to save your snails)</small>
                     </Link>
                 )}
 
                 <ProjectRepoLink />
-            </div>
+            </section>
         </header>
     );
 }
