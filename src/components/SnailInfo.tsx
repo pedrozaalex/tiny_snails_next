@@ -1,8 +1,38 @@
-import { FunctionComponent, useEffect, useState } from 'react';
+import Link from 'next/link';
+import { FunctionComponent, ReactNode } from 'react';
 import { trpc } from '../utils/trpc';
 
 type Props = {
     snailId: number;
+};
+
+const formatSnailInfo = ([key, value]: [string, unknown]): [
+    string,
+    ReactNode
+] => {
+    switch (key) {
+        case 'createdAt':
+            return ['created at', new Date(value as string).toLocaleString()];
+
+        case 'url':
+            return [
+                key,
+                <Link
+                    key={key}
+                    href={value as string}
+                    className="link"
+                    target="_blank"
+                >
+                    {String(value)}
+                </Link>,
+            ];
+
+        case 'id':
+            return [key, value as number];
+
+        default:
+            return [key, value as string];
+    }
 };
 
 export const SnailInfo: FunctionComponent<Props> = ({ snailId }) => {
@@ -12,17 +42,7 @@ export const SnailInfo: FunctionComponent<Props> = ({ snailId }) => {
         error,
     } = trpc.snail.getById.useQuery(snailId);
 
-    // Only show data after at least 500ms
-    const [display, setDisplay] = useState(false);
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            setDisplay(true);
-        }, 500);
-
-        return () => clearTimeout(timeout);
-    }, []);
-
-    if (isLoading || !display) {
+    if (isLoading) {
         return <p>loading...</p>;
     }
 
@@ -36,35 +56,26 @@ export const SnailInfo: FunctionComponent<Props> = ({ snailId }) => {
 
     return (
         <div className="m-auto flex flex-col gap-4">
-            {Object.entries(snail).map(([key, value]) => (
-                <div key={key} className="flex flex-row justify-between gap-8">
-                    <p className="font-bold">{key}:</p>
+            {Object.entries(snail).map((info, index) => {
+                const [key, value] = formatSnailInfo(info);
 
-                    <p>{value}</p>
-                </div>
-            ))}
+                return (
+                    <>
+                        <div
+                            key={key}
+                            className="flex flex-row justify-between gap-8"
+                        >
+                            <p className="font-bold">{key}:</p>
 
-            <div className="stat m-auto w-fit">
-                <div className="stat-figure text-accent-focus">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        className="inline-block h-8 w-8 stroke-current"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M13 10V3L4 14h7v7l9-11h-7z"
-                        ></path>
-                    </svg>
-                </div>
-                <div className="stat-title">clicks</div>
-                <div className="stat-value text-accent-focus">
-                    {snail.clicks}
-                </div>
-            </div>
+                            <p>{value}</p>
+                        </div>
+
+                        {index !== Object.entries(snail).length - 1 && (
+                            <hr className="border-accent-2" />
+                        )}
+                    </>
+                );
+            })}
         </div>
     );
 };

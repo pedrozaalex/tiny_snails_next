@@ -58,15 +58,14 @@ export const PopularSnails = () => {
                         }}
                     />
 
-                    <Dialog
-                        isOpen={isDialogOpen}
-                        onClose={() => setIsDialogOpen(false)}
-                        title="snail detail"
-                    >
-                        {selectedSnailId && (
-                            <SnailInfo snailId={selectedSnailId} />
-                        )}
-                    </Dialog>
+                    {selectedSnailId && (
+                        <Dialog
+                            isOpen={isDialogOpen}
+                            onClose={() => setIsDialogOpen(false)}
+                            title="snail detail"
+                            body={<SnailInfo snailId={selectedSnailId} />}
+                        />
+                    )}
                 </>
             )}
         </div>

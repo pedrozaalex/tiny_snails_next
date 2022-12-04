@@ -116,4 +116,18 @@ export const snailRouter = router({
             clicks: snail._count.clicks,
         }));
     }),
+
+    delete: procedure
+        .input(z.number().int())
+        .mutation(async ({ input, ctx }) => {
+            await ctx.db.click.deleteMany({
+                where: { snailId: input },
+            });
+
+            const data = await ctx.db.snail.delete({
+                where: { id: input },
+            });
+
+            return data;
+        }),
 });

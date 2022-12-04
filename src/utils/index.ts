@@ -55,3 +55,21 @@ export const reportClick = (snailId: number, ip?: string) => {
         }),
     });
 };
+
+export const isURL = (url: unknown): url is URL => {
+    try {
+        new URL(url as string);
+        return true;
+    } catch (error) {
+        return false;
+    }
+};
+
+export const isDate = (date: unknown): date is Date => {
+    if (typeof date === 'string') {
+        const parsed = Date.parse(date);
+        return !isNaN(parsed);
+    }
+
+    return date instanceof Date;
+};

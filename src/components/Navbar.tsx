@@ -26,7 +26,8 @@ export function Navbar() {
             </h1>
 
             <section className="flex gap-4">
-                {status === 'authenticated' && (
+                {/* Disable the dashboard link for now */}
+                {/* {status === 'authenticated' && (
                     <Link href="/dashboard" className="btn-ghost btn">
                         my snails
                     </Link>
@@ -40,7 +41,7 @@ export function Navbar() {
                         <p>sign in</p>
                         <small>(to save your snails)</small>
                     </Link>
-                )}
+                )} */}
 
                 <ProjectRepoLink />
             </section>
