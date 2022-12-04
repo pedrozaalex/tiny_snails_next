@@ -41,42 +41,42 @@ export const authOptions: NextAuthOptions = {
             maxAge: 5 * 60 * 60, // How long email links are valid for (5 hours)
         }),
 
-        CredentialsProvider({
-            name: 'email and password',
-            credentials: {
-                email: {
-                    label: 'email',
-                    type: 'text',
-                    placeholder: 'jsmith@example.com',
-                },
-                password: { label: 'password', type: 'password' },
-            },
-            async authorize(credentials) {
-                const creds = await loginSchema.parseAsync(credentials);
+        // CredentialsProvider({
+        //     name: 'email and password',
+        //     credentials: {
+        //         email: {
+        //             label: 'email',
+        //             type: 'text',
+        //             placeholder: 'jsmith@example.com',
+        //         },
+        //         password: { label: 'password', type: 'password' },
+        //     },
+        //     async authorize(credentials) {
+        //         const creds = await loginSchema.parseAsync(credentials);
 
-                const user = await prisma.user.findFirst({
-                    where: { email: creds.email },
-                });
+        //         const user = await prisma.user.findFirst({
+        //             where: { email: creds.email },
+        //         });
 
-                if (!user) {
-                    return null;
-                }
+        //         if (!user) {
+        //             return null;
+        //         }
 
-                const isValidPassword = await verify(
-                    user.password ?? '',
-                    creds.password
-                );
+        //         const isValidPassword = await verify(
+        //             user.password ?? '',
+        //             creds.password
+        //         );
 
-                if (!isValidPassword) {
-                    return null;
-                }
+        //         if (!isValidPassword) {
+        //             return null;
+        //         }
 
-                return {
-                    id: user.id,
-                    email: user.email,
-                };
-            },
-        }),
+        //         return {
+        //             id: user.id,
+        //             email: user.email,
+        //         };
+        //     },
+        // }),
     ],
     theme: {
         colorScheme: 'light',
