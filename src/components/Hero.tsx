@@ -6,12 +6,12 @@ export function AppHero() {
         <div className="hero">
             <div className="hero-content">
                 <div className="max-w-md text-center">
-                    <h2 className="text-4xl font-bold inline-flex gap-2">
+                    <h2 className="inline-flex gap-2 text-4xl font-bold">
                         tiny snails
                         <Image
                             src={SnailIcon}
                             alt="snail icon"
-                            className="inline-block w-10 aspect-auto"
+                            className="inline-block aspect-auto w-10"
                         />
                     </h2>
 

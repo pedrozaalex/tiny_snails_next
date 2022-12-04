@@ -29,6 +29,7 @@ specifiers:
     nodemailer: ^6.8.0
     postcss: ^8.4.19
     prettier: 2.8.0
+    prettier-plugin-tailwindcss: ^0.2.0
     prisma: ^4.7.0
     react: 18.2.0
     react-dom: 18.2.0
@@ -75,6 +76,7 @@ devDependencies:
     eslint-plugin-prettier: 4.2.1_cwlo2dingkvfydnaculr42urve
     postcss: 8.4.19
     prettier: 2.8.0
+    prettier-plugin-tailwindcss: 0.2.0_prettier@2.8.0
     prisma: 4.7.0
     tailwindcss: 3.2.4_v776zzvn44o7tpgzieipaairwm
     ts-node: 10.9.1_wup25etrarvlqkprac7h35hj7u
@@ -3427,6 +3429,18 @@ packages:
         engines: { node: '>=6.0.0' }
         dependencies:
             fast-diff: 1.2.0
+        dev: true
+
+    /prettier-plugin-tailwindcss/0.2.0_prettier@2.8.0:
+        resolution:
+            {
+                integrity: sha512-Ruqig/mdWCSpqdq9WK44nrmqM4BFWTzBPhPGwC5NK3coV9eZntEQPB84MGZbjAg0XQU02jVRHXNRPREBzxvM+A==,
+            }
+        engines: { node: '>=12.17.0' }
+        peerDependencies:
+            prettier: '>=2.2.0'
+        dependencies:
+            prettier: 2.8.0
         dev: true
 
     /prettier/2.8.0:

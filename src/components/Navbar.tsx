@@ -9,11 +9,11 @@ export function Navbar() {
     const { status } = useSession();
 
     return (
-        <header className="navbar mt-8 px-4 py-4 bg-base-100 text-primary-content justify-between border-y-2 border-primary-content">
+        <header className="navbar mt-8 justify-between border-y-2 border-primary-content bg-base-100 px-4 py-4 text-primary-content">
             <h1>
                 <Link
                     href="/"
-                    className="btn btn-ghost normal-case text-3xl font-extrabold gap-2"
+                    className="btn-ghost btn gap-2 text-3xl font-extrabold normal-case"
                 >
                     tiny snails
                     <Image
@@ -27,7 +27,7 @@ export function Navbar() {
 
             <section className="flex gap-4">
                 {status === 'authenticated' && (
-                    <Link href="/dashboard" className="btn btn-ghost">
+                    <Link href="/dashboard" className="btn-ghost btn">
                         my snails
                     </Link>
                 )}
@@ -35,7 +35,7 @@ export function Navbar() {
                 {status === 'unauthenticated' && (
                     <Link
                         href="/auth"
-                        className="btn btn-secondary flex-col px-6"
+                        className="btn-secondary btn flex-col px-6"
                     >
                         <p>sign in</p>
                         <small>(to save your snails)</small>

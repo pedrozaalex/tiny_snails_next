@@ -1,7 +1,11 @@
+import { Snail } from '@prisma/client';
 import Image from 'next/image';
+import { useState } from 'react';
 import TrophyIcon from '../../public/trophy.png';
 import { trpc } from '../utils/trpc';
-import { SnailList } from './SnailList';
+import { Dialog } from './Dialog';
+import { SnailInfo } from './SnailInfo';
+import { Table } from './Table';
 
 export const PopularSnails = () => {
     const {
@@ -12,9 +16,15 @@ export const PopularSnails = () => {
         refetchInterval: 60 * 1000, // 1 minute
     });
 
+    const [selectedSnailId, setSelectedSnailId] = useState<Snail['id'] | null>(
+        null
+    );
+
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+
     return error ? null : (
         <div className="flex flex-col items-center text-center">
-            <h2 className="text-xl font-bold flex gap-2">
+            <h2 className="flex gap-2 text-xl font-bold">
                 top 10 snails
                 <Image
                     src={TrophyIcon}
@@ -29,7 +39,35 @@ export const PopularSnails = () => {
             {isLoading ? (
                 <p>loading...</p>
             ) : (
-                <SnailList snails={popularSnailsList} />
+                <>
+                    <Table
+                        objects={popularSnailsList}
+                        properties={[
+                            {
+                                key: 'alias',
+                                label: 'alias',
+                            },
+                            {
+                                key: 'clicks',
+                                label: 'clicks',
+                            },
+                        ]}
+                        onRowClick={(snail) => {
+                            setSelectedSnailId(snail.id);
+                            setIsDialogOpen(true);
+                        }}
+                    />
+
+                    <Dialog
+                        isOpen={isDialogOpen}
+                        onClose={() => setIsDialogOpen(false)}
+                        title="snail detail"
+                    >
+                        {selectedSnailId && (
+                            <SnailInfo snailId={selectedSnailId} />
+                        )}
+                    </Dialog>
+                </>
             )}
         </div>
     );

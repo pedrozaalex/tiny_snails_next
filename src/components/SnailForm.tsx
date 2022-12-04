@@ -6,15 +6,16 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { createSnailSchema } from '../schemas';
 import { ErrorIcon } from './ErrorIcon';
+import { Input } from './Input';
 
-type SnailCreateDTO = z.infer<typeof createSnailSchema>;
+type CreateSnailDTO = z.infer<typeof createSnailSchema>;
 
 type Props = {
-    snail?: SnailCreateDTO;
+    snail?: CreateSnailDTO;
     baseUrl?: string | null;
     loading?: boolean;
     error?: unknown;
-    onSubmit?: (snail: SnailCreateDTO) => void;
+    onSubmit?: (snail: CreateSnailDTO) => void;
     clearError?: () => void;
 };
 
@@ -36,72 +37,38 @@ const SnailForm: FunctionComponent<Props> = ({
         handleSubmit,
         register,
         formState: { errors },
-    } = useForm<SnailCreateDTO>({
+    } = useForm<CreateSnailDTO>({
         resolver: zodResolver(createSnailSchema),
+        defaultValues: snail,
     });
 
     return (
-        <div className="card card-compact bg-base-200 border-2 border-neutral-content">
+        <div className="card card-compact border-2 border-neutral-content bg-base-200">
             <form className="card-body">
-                <div className="form-control">
-                    <label className="label">
-                        <span className="label-text">your big url</span>
-                    </label>
+                <Input
+                    label="your big url"
+                    placeholder="paste your long url here"
+                    error={errors.url?.message}
+                    {...register('url')}
+                />
 
-                    <input
-                        type="text"
-                        placeholder="paste your long url here"
-                        className={`input-bordered input ${
-                            errors.url ? 'input-error' : ''
-                        }`}
-                        defaultValue={snail?.url}
-                        {...register('url')}
-                    />
-
-                    {errors.url?.message ? (
-                        <label className="label">
-                            <span className="label-text-alt text-error">
-                                <p>{errors.url.message}</p>
-                            </span>
-                        </label>
-                    ) : null}
-                </div>
-
-                <div className="form-control">
-                    <label className="label">
-                        <span className="label-text">customize your link</span>
-                    </label>
-                    <label className="input-group">
-                        <span className="bg-accent min-w-fit">{baseUrl}</span>
-
-                        <input
-                            type="text"
-                            placeholder="alias"
-                            className={`input-bordered input w-full min-w-0 ${
-                                errors.alias ? 'input-error' : ''
-                            }`}
-                            defaultValue={snail?.alias}
-                            {...register('alias')}
-                        />
-
-                        {errors.alias?.message ? (
-                            <label className="label">
-                                <span className="label-text-alt text-error">
-                                    <p>{errors.alias.message}</p>
-                                </span>
-                            </label>
-                        ) : null}
-                    </label>
-                </div>
+                <Input
+                    label="customize your link"
+                    placeholder="alias"
+                    error={errors.alias?.message}
+                    leftLabel={baseUrl}
+                    color="accent"
+                    {...register('alias')}
+                />
 
                 <button
                     type="button"
-                    className={`btn btn-secondary mt-3 ${
+                    className={`btn-accent btn mt-3 ${
                         loading ? ' loading' : ''
                     }`}
                     // This is a workaround for a bug in react-hook-form
                     // https://github.com/react-hook-form/react-hook-form/discussions/8020
-                    // TODO: remove this when the bug is fixed
+                    // TODO: when this bug is fixed, replace with "onClick={handleSubmit(onSubmit)}"
                     onClick={(...args) => void handleSubmit(onSubmit)(...args)}
                 >
                     {snail === undefined ? 'create it!' : 'update'}

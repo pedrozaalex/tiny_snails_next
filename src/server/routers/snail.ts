@@ -46,6 +46,35 @@ export const snailRouter = router({
             }
         }),
 
+    getById: procedure.input(z.number().int()).query(async ({ input, ctx }) => {
+        const data = await ctx.db.snail.findFirst({
+            where: { id: { equals: input } },
+            select: {
+                id: true,
+                alias: true,
+                createdAt: true,
+                url: true,
+                _count: {
+                    select: {
+                        clicks: true,
+                    },
+                },
+            },
+        });
+
+        if (!data) {
+            return null;
+        }
+
+        return {
+            id: data.id,
+            alias: data.alias,
+            createdAt: data.createdAt,
+            url: data.url,
+            clicks: data._count.clicks,
+        };
+    }),
+
     getByAlias: procedure.input(z.string()).query(async ({ input, ctx }) => {
         const data = await ctx.db.snail.findFirst({
             where: { alias: { equals: input } },
@@ -69,6 +98,8 @@ export const snailRouter = router({
             select: {
                 id: true,
                 alias: true,
+                createdAt: true,
+                url: true,
                 _count: {
                     select: {
                         clicks: true,
@@ -80,6 +111,8 @@ export const snailRouter = router({
         return data.map((snail) => ({
             id: snail.id,
             alias: snail.alias,
+            createdAt: snail.createdAt,
+            url: snail.url,
             clicks: snail._count.clicks,
         }));
     }),

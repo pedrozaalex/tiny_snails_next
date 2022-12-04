@@ -11,7 +11,7 @@ const Layout: FunctionComponent<Props> = ({ children }) => {
         <div className="bg-primary">
             <Navbar />
 
-            <main className="container max-w-3xl mx-auto py-12 px-8 flex flex-col gap-12">
+            <main className="container mx-auto flex max-w-3xl flex-col gap-12 py-12 px-8">
                 {children}
             </main>
 
