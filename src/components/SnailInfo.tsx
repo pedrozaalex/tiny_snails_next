@@ -6,6 +6,8 @@ type Props = {
     snailId: number;
 };
 
+const hiddenProperties = ['id'];
+
 const formatSnailInfo = ([key, value]: [string, unknown]): [
     string,
     ReactNode
@@ -57,14 +59,15 @@ export const SnailInfo: FunctionComponent<Props> = ({ snailId }) => {
     return (
         <div className="m-auto flex flex-col gap-4">
             {Object.entries(snail).map((info, index) => {
+                if (hiddenProperties.includes(info[0])) {
+                    return null;
+                }
+
                 const [key, value] = formatSnailInfo(info);
 
                 return (
                     <>
-                        <div
-                            key={key}
-                            className="flex flex-row justify-between gap-8"
-                        >
+                        <div className="flex flex-row justify-between gap-8">
                             <p className="font-bold">{key}:</p>
 
                             <p>{value}</p>

@@ -58,14 +58,16 @@ export const PopularSnails = () => {
                         }}
                     />
 
-                    {selectedSnailId && (
-                        <Dialog
-                            isOpen={isDialogOpen}
-                            onClose={() => setIsDialogOpen(false)}
-                            title="snail detail"
-                            body={<SnailInfo snailId={selectedSnailId} />}
-                        />
-                    )}
+                    <p className="mt-2 text-sm">
+                        the list is refreshed every minute
+                    </p>
+
+                    <Dialog
+                        isOpen={isDialogOpen}
+                        onClose={() => setIsDialogOpen(false)}
+                        title="snail detail"
+                        body={<SnailInfo snailId={selectedSnailId ?? 0} />}
+                    />
                 </>
             )}
         </div>
