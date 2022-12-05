@@ -47,6 +47,13 @@ export const Dialog: FunctionComponent<Props> = ({
         }
     }, [isOpen, keyDownHandler]);
 
+    useEffect(() => {
+        return () => {
+            document.body.style.overflow = 'unset';
+            document.removeEventListener('keydown', keyDownHandler);
+        };
+    }, [keyDownHandler]);
+
     return (
         <div ref={parentRef}>
             {isOpen && (
@@ -73,8 +80,19 @@ export const Dialog: FunctionComponent<Props> = ({
                         </button>
 
                         {actions && (
-                            <div className="mt-4 flex justify-end">
-                                {actions}
+                            <div className="mt-4 flex justify-around">
+                                {actions.map((action) => (
+                                    <button
+                                        key={action.label}
+                                        className={`btn-${
+                                            action.color ?? 'primary'
+                                        } btn`}
+                                        onClick={action.onClick}
+                                        type="button"
+                                    >
+                                        {action.label}
+                                    </button>
+                                ))}
                             </div>
                         )}
                     </div>
