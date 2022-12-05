@@ -11,17 +11,17 @@ const SnailPage: NextPage = () => {
     const snailId = parseInt(id as string);
 
     return (
-        <>
-            <h1 className="text-center text-4xl font-bold">snail {snailId}</h1>
+        <div className="flex flex-col items-center gap-12 text-center">
+            <h1 className="text-4xl font-bold">snail {snailId}</h1>
 
-            <div className="card m-auto w-fit border-2 border-neutral-content bg-base-200 p-8">
+            <div className="w-full max-w-xs">
                 <SnailInfo snailId={snailId} />
             </div>
 
             <Link className="btn m-auto w-fit" href="/">
                 create new snail
             </Link>
-        </>
+        </div>
     );
 };
 
