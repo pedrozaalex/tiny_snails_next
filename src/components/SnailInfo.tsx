@@ -2,6 +2,7 @@ import { Snail } from '@prisma/client';
 import Link from 'next/link';
 import { FunctionComponent, ReactNode } from 'react';
 import { XOR } from 'ts-xor';
+import { formatDate } from '../utils/date';
 import { trpc } from '../utils/trpc';
 
 type ShowProps = {
@@ -22,7 +23,8 @@ const formatSnailInfo = ([key, value]: [string, unknown]): [
 ] => {
     switch (key as keyof Snail) {
         case 'createdAt':
-            return ['created at', new Date(value as string).toLocaleString()];
+            const date = new Date(value as string);
+            return ['created', formatDate(date)];
 
         case 'url':
             return [
