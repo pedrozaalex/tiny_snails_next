@@ -1,3 +1,4 @@
+import { Snail } from '@prisma/client';
 import Link from 'next/link';
 import { FunctionComponent, ReactNode } from 'react';
 import { trpc } from '../utils/trpc';
@@ -12,7 +13,7 @@ const formatSnailInfo = ([key, value]: [string, unknown]): [
     string,
     ReactNode
 ] => {
-    switch (key) {
+    switch (key as keyof Snail) {
         case 'createdAt':
             return ['created at', new Date(value as string).toLocaleString()];
 
@@ -73,9 +74,9 @@ export const SnailInfo: FunctionComponent<Props> = ({ snailId }) => {
                             <p>{value}</p>
                         </div>
 
-                        {index !== Object.entries(snail).length - 1 && (
+                        {index !== Object.entries(snail).length - 1 ? (
                             <hr className="border-accent-2" />
-                        )}
+                        ) : null}
                     </>
                 );
             })}

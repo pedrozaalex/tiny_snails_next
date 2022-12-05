@@ -1,5 +1,3 @@
-import { Snail } from '@prisma/client';
-
 const slugRegex = /\/s\/\w+/;
 
 export function isSlugPath(pathname: string) {
@@ -23,31 +21,3 @@ export function getBaseUrl() {
 }
 
 export const BASE_URL = getBaseUrl();
-
-export const getUrlForAlias = async (slug: string): Promise<Snail | null> => {
-    try {
-        const result = (await (
-            await fetch(`${BASE_URL}/api/get-url/${slug}`)
-        ).json()) as Snail | { error: string };
-
-        if ('error' in result) {
-            throw new Error(result.error);
-        }
-
-        return result;
-    } catch (error) {
-        console.error('error occurred when fetching url:', error);
-        return null;
-    }
-};
-
-export const reportClick = (snailId: number, ip?: string) => {
-    void fetch(`${BASE_URL}/api/report-click`, {
-        method: 'POST',
-        body: JSON.stringify({
-            snailId,
-            ip,
-            secret: process.env.SECRET_KEY,
-        }),
-    });
-};

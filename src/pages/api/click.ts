@@ -10,6 +10,10 @@ const bodySchema = z.object({
 });
 
 const handler: NextApiHandler = async (req, res) => {
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Method not allowed' });
+    }
+
     const body = bodySchema.parse(
         typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     );
@@ -23,6 +27,8 @@ const handler: NextApiHandler = async (req, res) => {
     if (!snailId) {
         return res.status(400).json({ error: 'Missing snail id' });
     }
+
+    await new Promise((r) => setTimeout(r, 10000));
 
     const data = await db.click.create({
         data: {

@@ -1,11 +1,6 @@
+import { Snail } from '@prisma/client';
 import { NextMiddleware, NextResponse } from 'next/server';
-import {
-    BASE_URL,
-    extractSlug,
-    getUrlForAlias,
-    isSlugPath,
-    reportClick,
-} from './utils';
+import { BASE_URL, extractSlug, isSlugPath } from './utils';
 
 export const config = {
     matcher: '/s/:slug*',
@@ -24,7 +19,7 @@ export const middleware: NextMiddleware = async (req) => {
         return;
     }
 
-    const data = await getUrlForAlias(slug);
+    const data = await fetchSnailByAlias(slug);
 
     if (!data) {
         return NextResponse.redirect(BASE_URL + '/404');
@@ -34,3 +29,36 @@ export const middleware: NextMiddleware = async (req) => {
 
     return NextResponse.redirect(data.url);
 };
+
+function reportClick(snailId: number, ip?: string) {
+    fetch(`${BASE_URL}/api/click`, {
+        method: 'POST',
+        body: JSON.stringify({
+            snailId,
+            ip,
+            secret: process.env.SECRET_KEY,
+        }),
+    })
+        .then((res) => res.json())
+        .then((data) => console.log('click reported:', data))
+        .catch((error) =>
+            console.error('error occurred when reporting click:', error)
+        );
+}
+
+async function fetchSnailByAlias(alias: string): Promise<Snail | null> {
+    try {
+        const result = (await (
+            await fetch(`${BASE_URL}/api/snail?alias=${alias}`)
+        ).json()) as Snail | { error: string };
+
+        if ('error' in result) {
+            throw new Error(result.error);
+        }
+
+        return result;
+    } catch (error) {
+        console.error('error occurred when fetching url:', error);
+        return null;
+    }
+}
