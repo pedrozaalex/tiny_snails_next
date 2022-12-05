@@ -1,13 +1,20 @@
 import { Snail } from '@prisma/client';
 import Link from 'next/link';
 import { FunctionComponent, ReactNode } from 'react';
+import { XOR } from 'ts-xor';
 import { trpc } from '../utils/trpc';
+
+type ShowProps = {
+    show: (keyof Snail)[];
+};
+
+type HideProps = {
+    hide: (keyof Snail)[];
+};
 
 type Props = {
     snailId: number;
-};
-
-const hiddenProperties = ['id'];
+} & XOR<ShowProps, HideProps>;
 
 const formatSnailInfo = ([key, value]: [string, unknown]): [
     string,
@@ -38,7 +45,11 @@ const formatSnailInfo = ([key, value]: [string, unknown]): [
     }
 };
 
-export const SnailInfo: FunctionComponent<Props> = ({ snailId }) => {
+export const SnailInfo: FunctionComponent<Props> = ({
+    snailId,
+    hide,
+    show,
+}) => {
     const {
         data: snail,
         isLoading,
@@ -57,10 +68,20 @@ export const SnailInfo: FunctionComponent<Props> = ({ snailId }) => {
         return <p>snail not found</p>;
     }
 
+    const hiddenProperties = hide ?? [];
+
+    if (show) {
+        hiddenProperties.push(
+            ...(Object.keys(snail).filter(
+                (key) => !show.includes(key as keyof Snail)
+            ) as (keyof Snail)[])
+        );
+    }
+
     return (
         <div className="m-auto flex flex-col gap-4">
-            {Object.entries(snail).map((info, index) => {
-                if (hiddenProperties.includes(info[0])) {
+            {Object.entries(snail).map((info) => {
+                if (hiddenProperties.includes(info[0] as keyof Snail)) {
                     return null;
                 }
 
@@ -73,10 +94,6 @@ export const SnailInfo: FunctionComponent<Props> = ({ snailId }) => {
 
                             <p>{value}</p>
                         </div>
-
-                        {index !== Object.entries(snail).length - 1 ? (
-                            <hr className="border-accent-2" />
-                        ) : null}
                     </>
                 );
             })}

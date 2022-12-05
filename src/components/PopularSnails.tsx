@@ -20,8 +20,6 @@ export const PopularSnails = () => {
         null
     );
 
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
-
     return error ? null : (
         <div className="flex flex-col items-center text-center">
             <h2 className="flex gap-2 text-xl font-bold">
@@ -52,21 +50,19 @@ export const PopularSnails = () => {
                                 label: 'clicks',
                             },
                         ]}
-                        onRowClick={(snail) => {
-                            setSelectedSnailId(snail.id);
-                            setIsDialogOpen(true);
-                        }}
+                        onRowClick={({ id }) => setSelectedSnailId(id)}
                     />
 
-                    <p className="mt-2 text-sm">
-                        the list is refreshed every minute
-                    </p>
-
                     <Dialog
-                        isOpen={isDialogOpen}
-                        onClose={() => setIsDialogOpen(false)}
+                        isOpen={selectedSnailId !== null}
+                        onClose={() => setSelectedSnailId(null)}
                         title="snail detail"
-                        body={<SnailInfo snailId={selectedSnailId ?? 0} />}
+                        body={
+                            <SnailInfo
+                                snailId={selectedSnailId ?? 0}
+                                hide={['id', 'createdAt']}
+                            />
+                        }
                     />
                 </>
             )}
