@@ -25,8 +25,6 @@ export function getBaseUrl() {
 export const BASE_URL = getBaseUrl();
 
 export const getUrlForAlias = async (slug: string): Promise<Snail | null> => {
-    console.log('getting url for alias', slug);
-
     try {
         const result = (await (
             await fetch(`${BASE_URL}/api/get-url/${slug}`)
@@ -38,14 +36,12 @@ export const getUrlForAlias = async (slug: string): Promise<Snail | null> => {
 
         return result;
     } catch (error) {
-        console.log('error occurred when fetching url:', error);
+        console.error('error occurred when fetching url:', error);
         return null;
     }
 };
 
 export const reportClick = (snailId: number, ip?: string) => {
-    console.log('reporting click', snailId, ip);
-
     void fetch(`${BASE_URL}/api/report-click`, {
         method: 'POST',
         body: JSON.stringify({

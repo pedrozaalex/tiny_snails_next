@@ -14,15 +14,11 @@ const handler: NextApiHandler = async (req, res) => {
         typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     );
 
-    console.log('report click body', body);
-
     const { snailId, ip, secret } = body;
 
     if (secret !== process.env.SECRET_KEY) {
         return res.status(401).json({ error: 'Unauthorized' });
     }
-
-    console.log('report click handler', snailId, ip);
 
     if (!snailId) {
         return res.status(400).json({ error: 'Missing snail id' });

@@ -108,8 +108,6 @@ export const snailRouter = router({
             },
         });
 
-        console.log('snailRouter.getPopular', data);
-
         return data.map((snail) => ({
             id: snail.id,
             alias: snail.alias,
