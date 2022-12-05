@@ -2,12 +2,15 @@ import { Snail } from '@prisma/client';
 import Image from 'next/image';
 import { useState } from 'react';
 import TrophyIcon from '../../public/trophy.png';
+import { useAppNavigation } from '../hooks/useNavigation';
 import { trpc } from '../utils/trpc';
 import { Dialog } from './Dialog';
 import { SnailInfo } from './SnailInfo';
 import { Table } from './Table';
 
 export const PopularSnails = () => {
+    const { navigateTo } = useAppNavigation();
+
     const {
         data: popularSnailsList,
         isLoading,
@@ -60,9 +63,18 @@ export const PopularSnails = () => {
                         body={
                             <SnailInfo
                                 snailId={selectedSnailId ?? 0}
-                                hide={['id', 'createdAt']}
+                                hide={['id', 'createdAt'] as const}
                             />
                         }
+                        actions={[
+                            {
+                                label: 'more info',
+                                onClick: () =>
+                                    void navigateTo.showSnail(
+                                        selectedSnailId ?? 0
+                                    ),
+                            },
+                        ]}
                     />
                 </>
             )}

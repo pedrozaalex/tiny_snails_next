@@ -1,10 +1,10 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TRPCClientError } from '@trpc/client';
-import { useRouter } from 'next/router';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { useAppNavigation } from '../hooks/useNavigation';
 import { createSnailSchema } from '../schemas';
 import { trpc } from '../utils/trpc';
 import { ErrorIcon } from './ErrorIcon';
@@ -21,7 +21,7 @@ const SnailForm: FunctionComponent<Props> = ({
     snail,
     baseUrl = 'tny.xyz/',
 }) => {
-    const router = useRouter();
+    const { navigateTo } = useAppNavigation();
     const [errorContainerRef] = useAutoAnimate<HTMLDivElement>();
 
     const {
@@ -39,7 +39,7 @@ const SnailForm: FunctionComponent<Props> = ({
         error,
         reset,
     } = trpc.snail.create.useMutation({
-        onSuccess: ({ id }) => router.push(`/snail/${id}`),
+        onSuccess: ({ id }) => navigateTo.showSnail(id),
     });
 
     return (
