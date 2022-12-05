@@ -1,8 +1,4 @@
-import React, {
-    FunctionComponent,
-    InputHTMLAttributes,
-    ReactNode,
-} from 'react';
+import { forwardRef, InputHTMLAttributes, ReactNode } from 'react';
 
 type Props = {
     label?: string;
@@ -20,14 +16,10 @@ type Props = {
     error?: string | null;
 } & InputHTMLAttributes<HTMLInputElement>;
 
-export const Input: FunctionComponent<Props> = ({
-    label,
-    placeholder,
-    leftLabel,
-    color = 'primary',
-    error,
-    ...props
-}) => {
+export const Input = forwardRef<HTMLInputElement, Props>(function Input(
+    { label, placeholder, leftLabel, color = 'primary', error, ...props },
+    ref
+) {
     return (
         <div className="form-control">
             <label className="label">
@@ -44,6 +36,7 @@ export const Input: FunctionComponent<Props> = ({
                     className={`input-bordered border border-${color} input w-full min-w-0 ${
                         error ? 'input-error' : ''
                     }`}
+                    ref={ref}
                     {...props}
                 />
 
@@ -57,4 +50,4 @@ export const Input: FunctionComponent<Props> = ({
             </label>
         </div>
     );
-};
+});
