@@ -1,21 +1,28 @@
 import { Snail } from '@prisma/client';
 import Link from 'next/link';
 import { FunctionComponent, ReactNode } from 'react';
-import { XOR } from 'ts-xor';
 import { formatDate } from '../utils/date';
 import { trpc } from '../utils/trpc';
 
+type BaseProps = {
+    snailId: number;
+    show?: never;
+    hide?: never;
+};
+
 type ShowProps = {
-    show: (keyof Snail)[];
+    snailId: number;
+    show: Readonly<(keyof Snail)[]>;
+    hide?: never;
 };
 
 type HideProps = {
-    hide: (keyof Snail)[];
+    snailId: number;
+    show?: never;
+    hide: Readonly<(keyof Snail)[]>;
 };
 
-type Props = {
-    snailId: number;
-} & XOR<ShowProps, HideProps>;
+type Props = BaseProps | ShowProps | HideProps;
 
 const formatSnailInfo = ([key, value]: [string, unknown]): [
     string,
@@ -70,35 +77,27 @@ export const SnailInfo: FunctionComponent<Props> = ({
         return <p>snail not found</p>;
     }
 
-    const hiddenProperties = hide ?? [];
-
-    if (show) {
-        hiddenProperties.push(
-            ...(Object.keys(snail).filter(
-                (key) => !show.includes(key as keyof Snail)
-            ) as (keyof Snail)[])
-        );
-    }
+    const shownProperties = (
+        show ?? (Object.keys(snail) as (keyof Snail)[])
+    ).filter((key) => !hide?.includes(key));
 
     return (
-        <div className="m-auto flex flex-col gap-4">
-            {Object.entries(snail).map((info) => {
-                if (hiddenProperties.includes(info[0] as keyof Snail)) {
-                    return null;
-                }
+        <div className="flex w-full flex-col gap-4">
+            {Object.entries(snail)
+                .filter(([key]) => shownProperties.includes(key as keyof Snail))
+                .map((info) => {
+                    const [key, value] = formatSnailInfo(info);
 
-                const [key, value] = formatSnailInfo(info);
+                    return (
+                        <>
+                            <div className="flex flex-row justify-between gap-8">
+                                <p className="font-bold">{key}:</p>
 
-                return (
-                    <>
-                        <div className="flex flex-row justify-between gap-8">
-                            <p className="font-bold">{key}:</p>
-
-                            <p>{value}</p>
-                        </div>
-                    </>
-                );
-            })}
+                                <p>{value}</p>
+                            </div>
+                        </>
+                    );
+                })}
         </div>
     );
 };
