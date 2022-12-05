@@ -1,13 +1,20 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { FunctionComponent, ReactNode, useCallback, useEffect } from 'react';
+import { ThemeColors } from '../types/colors';
 import { CloseIcon } from './CloseIcon';
+
+type Action = {
+    label: string;
+    onClick: () => void;
+    color?: ThemeColors;
+};
 
 type Props = {
     isOpen: boolean;
     onClose: () => void;
     title?: string;
     body: ReactNode;
-    actions?: ReactNode;
+    actions?: Action[];
 };
 
 export const Dialog: FunctionComponent<Props> = ({

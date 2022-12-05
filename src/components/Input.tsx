@@ -1,18 +1,11 @@
 import { forwardRef, InputHTMLAttributes, ReactNode } from 'react';
+import { ThemeColors } from '../types/colors';
 
 type Props = {
     label?: string;
     leftLabel?: ReactNode;
     placeholder?: string;
-    color?:
-        | 'primary'
-        | 'secondary'
-        | 'accent'
-        | 'neutral'
-        | 'success'
-        | 'warning'
-        | 'error'
-        | 'info';
+    color?: ThemeColors;
     error?: string | null;
 } & InputHTMLAttributes<HTMLInputElement>;
 
