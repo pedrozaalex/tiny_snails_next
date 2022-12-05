@@ -1,6 +1,6 @@
 import { Snail } from '@prisma/client';
 import { NextMiddleware, NextResponse } from 'next/server';
-import { BASE_URL, extractSlug, isSlugPath } from './utils';
+import { BASE_URL, extractSlug, isSlugPath } from './utils/urls';
 
 export const config = {
     matcher: '/s/:slug*',
