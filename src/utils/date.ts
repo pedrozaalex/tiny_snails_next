@@ -48,7 +48,7 @@ export function formatDate(date: Date): string {
     }
 
     if (diffInHours < 1) {
-        return `${diffInMinutes} minute${diffInMinutes === 1 ? '' : 's'} ago`;
+        return `${diffInMinutes} min${diffInMinutes === 1 ? '' : 's'} ago`;
     }
 
     if (diffInDays < 1) {

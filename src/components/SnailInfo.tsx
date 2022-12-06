@@ -1,8 +1,8 @@
 import { Snail } from '@prisma/client';
 import Link from 'next/link';
 import { FunctionComponent, ReactNode } from 'react';
-import { formatDate } from '../utils/date';
 import { trpc } from '../utils/trpc';
+import { DateDisplay } from './DateDisplay';
 
 type BaseProps = {
     snailId: number;
@@ -31,7 +31,10 @@ const formatSnailInfo = ([key, value]: [string, unknown]): [
     switch (key as keyof Snail) {
         case 'createdAt':
             const date = new Date(value as string);
-            return ['created', formatDate(date)];
+            return [
+                'created',
+                <DateDisplay date={date} key={date.toISOString()} />,
+            ];
 
         case 'url':
             return [
@@ -47,11 +50,29 @@ const formatSnailInfo = ([key, value]: [string, unknown]): [
             ];
 
         case 'id':
-            return [key, value as number];
+            return [key, <code key={key}>{Number(value)}</code>];
 
         default:
-            return [key, value as string];
+            return [key, String(value)];
     }
+};
+
+const getShownProps = (
+    show: Props['show'],
+    hide: Props['hide'],
+    snail: Snail
+) => {
+    if (show) {
+        return show;
+    }
+
+    if (hide) {
+        return Object.keys(snail).filter(
+            (key) => !hide.includes(key as keyof Snail)
+        ) as (keyof Snail)[];
+    }
+
+    return Object.keys(snail) as (keyof Snail)[];
 };
 
 export const SnailInfo: FunctionComponent<Props> = ({
@@ -77,9 +98,7 @@ export const SnailInfo: FunctionComponent<Props> = ({
         return <p>snail not found</p>;
     }
 
-    const shownProperties = (
-        show ?? (Object.keys(snail) as (keyof Snail)[])
-    ).filter((key) => !hide?.includes(key));
+    const shownProperties = getShownProps(show, hide, snail);
 
     return (
         <div className="flex w-full flex-col gap-4">
