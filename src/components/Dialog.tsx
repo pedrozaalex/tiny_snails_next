@@ -62,7 +62,7 @@ export const Dialog: FunctionComponent<Props> = ({
                     onClick={onClose}
                 >
                     <div
-                        className="relative w-full max-w-2xl rounded-lg border-2 border-black bg-base-100 p-10 pt-6"
+                        className="relative m-8 w-full max-w-2xl rounded-lg border-2 border-black bg-base-100 p-10 pt-6"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className="mb-4 h-8 text-2xl font-bold">
@@ -80,7 +80,7 @@ export const Dialog: FunctionComponent<Props> = ({
                         </button>
 
                         {actions && (
-                            <div className="mt-4 flex justify-around">
+                            <div className="mt-8 flex justify-around">
                                 {actions.map((action) => (
                                     <button
                                         key={action.label}
