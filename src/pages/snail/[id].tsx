@@ -14,7 +14,7 @@ const SnailPage: NextPage = () => {
         <div className="flex flex-col items-center gap-12 text-center">
             <h1 className="text-4xl font-bold">snail {snailId}</h1>
 
-            <div className="w-full max-w-xs">
+            <div className="w-full max-w-xs rounded-lg border-2 border-black bg-base-100 p-4">
                 <SnailInfo snailId={snailId} />
             </div>
 
