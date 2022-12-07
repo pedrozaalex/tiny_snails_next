@@ -23,7 +23,7 @@ export function Navbar() {
 
             <section className="flex gap-4">
                 <Link href="/snails" className="btn-ghost btn">
-                    my snails
+                    your snails
                 </Link>
 
                 {status === 'authenticated' && (

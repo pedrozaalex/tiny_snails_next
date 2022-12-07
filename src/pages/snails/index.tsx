@@ -42,7 +42,7 @@ const MySnailsPage: NextPage = () => {
 
     return (
         <>
-            <h1 className="text-4xl font-bold">my snails</h1>
+            <h1 className="text-4xl font-bold">your snails</h1>
 
             <Table
                 objects={mySnails}
