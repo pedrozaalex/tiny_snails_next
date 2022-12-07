@@ -3,6 +3,7 @@ import { FunctionComponent } from 'react';
 import { copyToClipboard } from '../utils/copy';
 import { trpc } from '../utils/trpc';
 import { REDIRECT_BASE_URL } from '../utils/urls';
+import { Spinner } from './Spinner';
 import { toast } from './ToastCenter';
 
 type Props = {
@@ -17,7 +18,7 @@ export const DisplayShortlink: FunctionComponent<Props> = ({ snailAlias }) => {
     } = trpc.snail.getByAlias.useQuery(snailAlias);
 
     if (isLoading) {
-        return <p>loading...</p>;
+        return <Spinner />;
     }
 
     if (error) {

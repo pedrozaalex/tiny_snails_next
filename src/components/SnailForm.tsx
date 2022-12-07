@@ -84,7 +84,7 @@ const SnailForm: FunctionComponent<Props> = ({
                         isLoading ? ' loading' : ''
                     }`}
                 >
-                    {snail === undefined ? 'create it!' : 'update'}
+                    {snail ? 'update' : 'create it!'}
                 </button>
             </form>
 

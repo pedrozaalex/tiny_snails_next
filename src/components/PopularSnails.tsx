@@ -6,6 +6,7 @@ import { useAppNavigation } from '../hooks/useNavigation';
 import { trpc } from '../utils/trpc';
 import { Dialog } from './Dialog';
 import { SnailInfo } from './SnailInfo';
+import { Spinner } from './Spinner';
 import { Table } from './Table';
 
 export const PopularSnails = () => {
@@ -38,7 +39,7 @@ export const PopularSnails = () => {
             <p className="pb-4">click on a snail for more info</p>
 
             {isLoading ? (
-                <p>loading...</p>
+                <Spinner />
             ) : (
                 <>
                     <Table

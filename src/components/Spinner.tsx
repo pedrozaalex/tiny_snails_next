@@ -1,8 +1,33 @@
-export function Spinner() {
+type Props = {
+    color?:
+        | 'primary'
+        | 'secondary'
+        | 'accent'
+        | 'neutral'
+        | 'success'
+        | 'warning'
+        | 'error'
+        | 'white';
+};
+
+const textColors = {
+    primary: 'text-primary-content',
+    secondary: 'text-secondary-content',
+    accent: 'text-accent-content',
+    neutral: 'text-neutral-content',
+    success: 'text-success-content',
+    warning: 'text-warning-content',
+    error: 'text-error-content',
+    white: 'text-white',
+};
+
+export function Spinner({ color = 'primary' }: Props) {
     return (
         <div className="flex items-center justify-center">
             <svg
-                className="-ml-1 mr-3 h-5 w-5 animate-spin text-white"
+                className={
+                    '-ml-1 mr-3 h-5 w-5 animate-spin ' + textColors[color]
+                }
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"

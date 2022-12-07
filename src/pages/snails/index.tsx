@@ -1,5 +1,6 @@
 import { NextPage } from 'next';
 import { useSession } from 'next-auth/react';
+import { Spinner } from '../../components/Spinner';
 import { Table } from '../../components/Table';
 import { useAppNavigation } from '../../hooks/useNavigation';
 import { getVisitorId } from '../../utils/cookies';
@@ -20,7 +21,7 @@ const MySnailsPage: NextPage = () => {
     }
 
     if (isLoading) {
-        return <>loading...</>;
+        return <Spinner />;
     }
 
     if (mySnails.length === 0) {

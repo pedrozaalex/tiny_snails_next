@@ -3,6 +3,7 @@ import { FunctionComponent, ReactNode } from 'react';
 import { trpc } from '../utils/trpc';
 import { DisplayDate } from './DisplayDate';
 import { DisplayUrl } from './DisplayUrl';
+import { Spinner } from './Spinner';
 
 type BaseProps = {
     snailAlias: string;
@@ -82,7 +83,7 @@ export const SnailInfo: FunctionComponent<Props> = ({
     } = trpc.snail.getByAlias.useQuery(snailAlias);
 
     if (isLoading) {
-        return <p>loading...</p>;
+        return <Spinner color="primary" />;
     }
 
     if (error) {
