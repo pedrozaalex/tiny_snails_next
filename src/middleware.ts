@@ -1,6 +1,5 @@
 import { Click, Snail } from '@prisma/client';
 import { NextMiddleware, NextResponse } from 'next/server';
-import { inspect } from 'util';
 import { BASE_URL, extractSlug, isSlugPath } from './utils/urls';
 
 export const config = {
@@ -63,7 +62,7 @@ async function reportClick(snailAlias: string, ip?: string) {
         return (await res.json()) as Click | { error: string };
     } catch (error) {
         return {
-            error: `An error occurred when reporting click: ${inspect(error)}`,
+            error: `An error occurred when reporting click: ${String(error)}`,
         };
     }
 }
