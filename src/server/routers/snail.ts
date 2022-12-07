@@ -59,6 +59,11 @@ export const snailRouter = router({
                 alias: true,
                 createdAt: true,
                 url: true,
+                owner: {
+                    select: {
+                        name: true,
+                    },
+                },
                 _count: {
                     select: {
                         clicks: true,
@@ -71,7 +76,13 @@ export const snailRouter = router({
             return null;
         }
 
-        return data;
+        return {
+            alias: data.alias,
+            createdAt: data.createdAt,
+            url: data.url,
+            clicks: data._count.clicks,
+            owner: data.owner.name,
+        };
     }),
 
     getPopular: procedure.query(async ({ ctx }) => {
@@ -136,11 +147,6 @@ export const snailRouter = router({
                 alias: true,
                 createdAt: true,
                 url: true,
-                _count: {
-                    select: {
-                        clicks: true,
-                    },
-                },
             },
         });
 
