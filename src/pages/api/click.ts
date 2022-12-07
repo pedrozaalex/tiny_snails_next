@@ -1,5 +1,4 @@
 import { NextApiHandler } from 'next';
-import SuperJSON from 'superjson';
 import { z } from 'zod';
 
 import { db } from '../../utils/db';
@@ -16,7 +15,7 @@ const handler: NextApiHandler = async (req, res) => {
     }
 
     const body = bodySchema.parse(
-        typeof req.body === 'string' ? SuperJSON.parse(req.body) : req.body
+        typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     );
 
     const { snailId, ip, secret } = body;

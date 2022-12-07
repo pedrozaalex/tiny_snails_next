@@ -21,13 +21,15 @@ export const middleware: NextMiddleware = async (req) => {
 
     const data = await fetchSnailByAlias(slug);
 
-    if (!data) {
-        return NextResponse.redirect(BASE_URL + '/404');
+    if (!data.length) {
+        return;
     }
 
-    reportClick(data.id, req.ip);
+    const snail = data[0];
 
-    return NextResponse.redirect(data.url);
+    reportClick(snail.id, req.ip);
+
+    return NextResponse.redirect(snail.url);
 };
 
 function reportClick(snailId: number, ip?: string) {
@@ -46,11 +48,11 @@ function reportClick(snailId: number, ip?: string) {
         );
 }
 
-async function fetchSnailByAlias(alias: string): Promise<Snail | null> {
+async function fetchSnailByAlias(alias: string): Promise<Snail[]> {
     try {
         const result = (await (
             await fetch(`${BASE_URL}/api/snail?alias=${alias}`)
-        ).json()) as Snail | { error: string };
+        ).json()) as Snail[] | { error: string };
 
         if ('error' in result) {
             throw new Error(result.error);
@@ -59,6 +61,6 @@ async function fetchSnailByAlias(alias: string): Promise<Snail | null> {
         return result;
     } catch (error) {
         console.error('error occurred when fetching url:', error);
-        return null;
+        return [];
     }
 }
