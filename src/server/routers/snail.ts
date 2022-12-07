@@ -81,7 +81,7 @@ export const snailRouter = router({
             createdAt: data.createdAt,
             url: data.url,
             clicks: data._count.clicks,
-            owner: data.owner.name,
+            owner: data.owner?.name ?? 'anonymous',
         };
     }),
 

@@ -17,7 +17,7 @@ model Snail {
   createdAt DateTime @default(now())
   url       String   @db.VarChar(2000)
   clicks    Click[]
-  owner     User     @relation(fields: [userId], references: [id])
+  owner     User?    @relation(fields: [userId], references: [id])
   userId    String
 
   @@index([userId])
