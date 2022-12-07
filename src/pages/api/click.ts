@@ -1,4 +1,5 @@
 import { NextApiHandler } from 'next';
+import SuperJSON from 'superjson';
 import { z } from 'zod';
 
 import { db } from '../../utils/db';
@@ -15,7 +16,7 @@ const handler: NextApiHandler = async (req, res) => {
     }
 
     const body = bodySchema.parse(
-        typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+        typeof req.body === 'string' ? SuperJSON.parse(req.body) : req.body
     );
 
     const { snailId, ip, secret } = body;
@@ -23,12 +24,6 @@ const handler: NextApiHandler = async (req, res) => {
     if (secret !== process.env.SECRET_KEY) {
         return res.status(401).json({ error: 'Unauthorized' });
     }
-
-    if (!snailId) {
-        return res.status(400).json({ error: 'Missing snail id' });
-    }
-
-    await new Promise((r) => setTimeout(r, 10000));
 
     const data = await db.click.create({
         data: {
