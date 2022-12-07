@@ -22,8 +22,6 @@ export function Navbar() {
             </h1>
 
             <section className="flex gap-4">
-                <span>you are {status}</span>
-
                 <Link href="/snails" className="btn-ghost btn">
                     my snails
                 </Link>
