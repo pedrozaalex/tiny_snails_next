@@ -24,6 +24,7 @@ specifiers:
   eslint-config-next: 13.0.5
   eslint-config-prettier: ^8.5.0
   eslint-plugin-prettier: ^4.2.1
+  nanoid: ^4.0.0
   next: 13.0.5
   next-auth: ^4.17.0
   nodemailer: ^6.8.0
@@ -57,6 +58,7 @@ dependencies:
   argon2: 0.30.2
   daisyui: 2.42.1_l5bzpxvjbqhurjfyo5fybuhvfy
   eslint-config-next: 13.0.5_hsf322ms6xhhd4b5ne6lb74y4a
+  nanoid: 4.0.0
   next: 13.0.5_biqbaboplfbrettd7655fr4n2y
   next-auth: 4.17.0_2xoejpawkzgot77rbv5mbik6ve
   nodemailer: 6.8.0
@@ -2065,6 +2067,12 @@ packages:
     resolution: {integrity: sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
+
+  /nanoid/4.0.0:
+    resolution: {integrity: sha512-IgBP8piMxe/gf73RTQx7hmnhwz0aaEXYakvqZyE302IXW3HyVNhdNGC+O2MwMAVhLEnvXlvKtGbtJf6wvHihCg==}
+    engines: {node: ^14 || ^16 || >=18}
+    hasBin: true
+    dev: false
 
   /natural-compare-lite/1.4.0:
     resolution: {integrity: sha512-Tj+HTDSJJKaZnfiuw+iaF9skdPpTo2GtEly5JHnWV/hfv2Qj/9RKsGISQtLh2ox3l5EAGw487hnBee0sIJ6v2g==}

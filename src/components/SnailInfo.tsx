@@ -5,19 +5,19 @@ import { DisplayDate } from './DisplayDate';
 import { DisplayUrl } from './DisplayUrl';
 
 type BaseProps = {
-    snailId: number;
+    snailAlias: string;
     show?: never;
     hide?: never;
 };
 
 type ShowProps = {
-    snailId: number;
+    snailAlias: string;
     show: Readonly<(keyof Snail)[]>;
     hide?: never;
 };
 
 type HideProps = {
-    snailId: number;
+    snailAlias: string;
     show?: never;
     hide: Readonly<(keyof Snail)[]>;
 };
@@ -45,18 +45,15 @@ const formatSnailInfo = ([key, value]: [string, unknown]): [
                 />,
             ];
 
-        case 'id':
-            return [key, <code key={key}>{Number(value)}</code>];
-
         default:
             return [key, String(value)];
     }
 };
 
 const getShownProps = (props: {
+    snail: Partial<Snail>;
     show: Props['show'];
     hide: Props['hide'];
-    snail: Snail;
 }) => {
     const { show, hide, snail } = props;
 
@@ -74,7 +71,7 @@ const getShownProps = (props: {
 };
 
 export const SnailInfo: FunctionComponent<Props> = ({
-    snailId,
+    snailAlias,
     hide,
     show,
 }) => {
@@ -82,7 +79,7 @@ export const SnailInfo: FunctionComponent<Props> = ({
         data: snail,
         isLoading,
         error,
-    } = trpc.snail.getById.useQuery(snailId);
+    } = trpc.snail.getByAlias.useQuery(snailAlias);
 
     if (isLoading) {
         return <p>loading...</p>;

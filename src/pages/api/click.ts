@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { db } from '../../utils/db';
 
 const bodySchema = z.object({
-    snailId: z.number(),
+    snailAlias: z.string(),
     ip: z.string().optional(),
     secret: z.string(),
 });
@@ -18,7 +18,7 @@ const handler: NextApiHandler = async (req, res) => {
         typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     );
 
-    const { snailId, ip, secret } = body;
+    const { snailAlias, ip, secret } = body;
 
     if (secret !== process.env.SECRET_KEY) {
         return res.status(401).json({ error: 'Unauthorized' });
@@ -26,7 +26,7 @@ const handler: NextApiHandler = async (req, res) => {
 
     const data = await db.click.create({
         data: {
-            snailId,
+            alias: snailAlias,
             ip,
         },
     });

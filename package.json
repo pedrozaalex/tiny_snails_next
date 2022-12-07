@@ -24,6 +24,7 @@
         "argon2": "^0.30.2",
         "daisyui": "^2.42.1",
         "eslint-config-next": "13.0.5",
+        "nanoid": "^4.0.0",
         "next": "13.0.5",
         "next-auth": "^4.17.0",
         "nodemailer": "^6.8.0",

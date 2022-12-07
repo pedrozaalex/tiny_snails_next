@@ -5,7 +5,9 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import { SnailIcon } from './SnailIcon';
 
 export function Navbar() {
-    const { status } = useSession();
+    const { status, data } = useSession();
+
+    console.log('session data', data);
 
     return (
         <header className="navbar mt-8 justify-between border-y-2 border-primary-content bg-base-100 px-4 py-2 text-primary-content">
@@ -22,12 +24,12 @@ export function Navbar() {
             <section className="flex gap-4">
                 <span>you are {status}</span>
 
+                <Link href="/snails" className="btn-ghost btn">
+                    my snails
+                </Link>
+
                 {status === 'authenticated' && (
                     <>
-                        <Link href="/dashboard" className="btn-ghost btn">
-                            my snails
-                        </Link>
-
                         <button
                             type="button"
                             className="btn-secondary btn flex-col px-6"

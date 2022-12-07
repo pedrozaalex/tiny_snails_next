@@ -6,7 +6,8 @@ export function useAppNavigation() {
     return {
         navigateTo: {
             home: () => router.push('/'),
-            showSnail: (id: number) => router.push(`/snail/${id}`),
+            showSnail: (alias: string) => router.push(`/snails/${alias}`),
+            mySnails: () => router.push('/snails'),
         },
     };
 }

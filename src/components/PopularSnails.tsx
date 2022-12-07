@@ -19,9 +19,9 @@ export const PopularSnails = () => {
         refetchInterval: 60 * 1000, // 1 minute
     });
 
-    const [selectedSnailId, setSelectedSnailId] = useState<Snail['id'] | null>(
-        null
-    );
+    const [selectedSnailAlias, setSelectedSnailAlias] = useState<
+        Snail['alias'] | null
+    >(null);
 
     return error ? null : (
         <div className="flex flex-col items-center text-center">
@@ -53,17 +53,17 @@ export const PopularSnails = () => {
                                 label: 'clicks',
                             },
                         ]}
-                        onRowClick={({ id }) => setSelectedSnailId(id)}
+                        onRowClick={({ alias }) => setSelectedSnailAlias(alias)}
                     />
 
                     <Dialog
-                        isOpen={selectedSnailId !== null}
-                        onClose={() => setSelectedSnailId(null)}
+                        isOpen={selectedSnailAlias !== null}
+                        onClose={() => setSelectedSnailAlias(null)}
                         title="snail detail"
                         body={
                             <SnailInfo
-                                snailId={selectedSnailId ?? 0}
-                                hide={['id', 'createdAt'] as const}
+                                snailAlias={selectedSnailAlias ?? ''}
+                                hide={['createdAt'] as const}
                             />
                         }
                         actions={[
@@ -71,7 +71,7 @@ export const PopularSnails = () => {
                                 label: 'more info',
                                 onClick: () =>
                                     void navigateTo.showSnail(
-                                        selectedSnailId ?? 0
+                                        selectedSnailAlias ?? ''
                                     ),
                             },
                         ]}

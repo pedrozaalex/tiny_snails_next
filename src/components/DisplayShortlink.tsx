@@ -6,15 +6,15 @@ import { REDIRECT_BASE_URL } from '../utils/urls';
 import { toast } from './ToastCenter';
 
 type Props = {
-    snailId: number;
+    snailAlias: string;
 };
 
-export const DisplayShortlink: FunctionComponent<Props> = ({ snailId }) => {
+export const DisplayShortlink: FunctionComponent<Props> = ({ snailAlias }) => {
     const {
         data: snail,
         error,
         isLoading,
-    } = trpc.snail.getById.useQuery(snailId);
+    } = trpc.snail.getByAlias.useQuery(snailAlias);
 
     if (isLoading) {
         return <p>loading...</p>;

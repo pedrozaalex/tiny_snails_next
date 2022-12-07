@@ -28,7 +28,7 @@ export const middleware: NextMiddleware = async (req) => {
 
     const snail = data[0];
 
-    void reportClick(snail.id, req.ip);
+    void reportClick(snail.alias, req.ip);
 
     return NextResponse.redirect(snail.url);
 };
@@ -49,12 +49,12 @@ async function fetchSnailByAlias(alias: string): Promise<Snail[]> {
     }
 }
 
-async function reportClick(snailId: number, ip?: string) {
+async function reportClick(snailAlias: string, ip?: string) {
     try {
         const res = await fetch(`${BASE_URL}/api/click`, {
             method: 'POST',
             body: JSON.stringify({
-                snailId,
+                snailAlias,
                 ip,
                 secret: process.env.SECRET_KEY,
             }),

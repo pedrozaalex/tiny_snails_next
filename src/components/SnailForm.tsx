@@ -1,11 +1,13 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TRPCClientError } from '@trpc/client';
+import { useSession } from 'next-auth/react';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useAppNavigation } from '../hooks/useNavigation';
 import { createSnailSchema } from '../schemas';
+import { getVisitorId } from '../utils/cookies';
 import { trpc } from '../utils/trpc';
 import { ErrorIcon } from './ErrorIcon';
 import { Input } from './Input';
@@ -24,6 +26,8 @@ const SnailForm: FunctionComponent<Props> = ({
     const { navigateTo } = useAppNavigation();
     const [errorContainerRef] = useAutoAnimate<HTMLDivElement>();
 
+    const { data: sessionData } = useSession();
+
     const {
         handleSubmit,
         register,
@@ -39,7 +43,7 @@ const SnailForm: FunctionComponent<Props> = ({
         error,
         reset,
     } = trpc.snail.create.useMutation({
-        onSuccess: ({ id }) => navigateTo.showSnail(id),
+        onSuccess: ({ alias }) => navigateTo.showSnail(alias),
     });
 
     return (
@@ -68,14 +72,17 @@ const SnailForm: FunctionComponent<Props> = ({
                     {...register('alias')}
                 />
 
+                <Input
+                    type="hidden"
+                    value={sessionData?.user?.id ?? getVisitorId()}
+                    {...register('userId')}
+                />
+
                 <button
                     type="submit"
                     className={`btn-accent btn mt-3 ${
                         isLoading ? ' loading' : ''
                     }`}
-                    // This is a workaround for a bug in react-hook-form
-                    // https://github.com/react-hook-form/react-hook-form/discussions/8020
-                    // TODO: when this bug is fixed, replace with "onClick={handleSubmit(onSubmit)}"
                 >
                     {snail === undefined ? 'create it!' : 'update'}
                 </button>

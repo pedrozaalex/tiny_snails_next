@@ -5,20 +5,16 @@ import { SnailInfo } from '../../components/SnailInfo';
 
 const SnailPage: NextPage = () => {
     const router = useRouter();
-    const snailId = parseInt(router.query.id as string);
-
-    if (isNaN(snailId)) {
-        return null;
-    }
+    const snailAlias = router.query.alias as string;
 
     return (
         <div className="flex flex-col items-center gap-12 text-center">
-            <h1 className="text-4xl font-bold">snail #{snailId}</h1>
+            <h1 className="text-4xl font-bold">snail {snailAlias}</h1>
 
-            <DisplayShortlink snailId={snailId} />
+            <DisplayShortlink snailAlias={snailAlias} />
 
             <div className="w-full max-w-sm rounded-lg border-2 border-black bg-base-100 p-4">
-                <SnailInfo snailId={snailId} hide={['id', 'alias']} />
+                <SnailInfo snailAlias={snailAlias} hide={['alias']} />
             </div>
         </div>
     );

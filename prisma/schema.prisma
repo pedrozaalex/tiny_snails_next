@@ -13,27 +13,26 @@ datasource db {
 }
 
 model Snail {
-  id        Int      @id @default(autoincrement())
+  alias     String   @id
   createdAt DateTime @default(now())
+  url       String   @db.VarChar(2000)
+  clicks    Click[]
+  owner     User     @relation(fields: [userId], references: [id])
+  userId    String
 
-  url String @db.VarChar(2000)
-
-  alias  String  @unique
-  clicks Click[]
-
-  @@index(alias)
+  @@index([userId])
 }
 
 model Click {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
 
-  snailId Int
-  snail   Snail @relation(fields: [snailId], references: [id])
+  alias String
+  snail Snail  @relation(fields: [alias], references: [alias])
 
   ip String? @db.VarChar(45)
 
-  @@index(snailId, name: "clicks_snailId")
+  @@index(alias)
 }
 
 // Necessary for Next auth
@@ -75,6 +74,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  Snail         Snail[]
 }
 
 model VerificationToken {
