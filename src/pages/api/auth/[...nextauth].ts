@@ -14,6 +14,7 @@ export const authOptions: NextAuthOptions = {
             }
             return session;
         },
+        redirect: () => '/',
     },
 
     adapter: PrismaAdapter(db),
@@ -35,11 +36,18 @@ export const authOptions: NextAuthOptions = {
                 },
             },
             from: process.env.EMAIL_FROM,
-            maxAge: 5 * 60 * 60, // How long email links are valid for (5 hours)
+            maxAge: 5 * 60 * 60, // How long email links are valid for (5 hours),
         }),
     ],
+
     theme: {
         colorScheme: 'light',
+    },
+
+    pages: {
+        signIn: '/auth/signin',
+        // error: '/auth/error', // Error code passed in query string as ?error=
+        // verifyRequest: '/auth/verify-request', // (used for check email message)
     },
 };
 

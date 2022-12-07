@@ -1,18 +1,13 @@
-import Image from 'next/image';
-import SnailIcon from '../../public/snail.png';
+import { SnailIcon } from './SnailIcon';
 
 export function AppHero() {
     return (
         <div className="hero">
             <div className="hero-content">
                 <div className="max-w-md text-center">
-                    <h2 className="inline-flex gap-2 text-4xl font-bold">
+                    <h2 className="flex items-center justify-center gap-2 text-4xl font-bold">
                         tiny snails
-                        <Image
-                            src={SnailIcon}
-                            alt="snail icon"
-                            className="inline-block aspect-auto w-10"
-                        />
+                        <SnailIcon size={48} />
                     </h2>
 
                     <p className="pt-4 text-lg">
