@@ -9,6 +9,7 @@ import {
     getProviders,
     signIn,
 } from 'next-auth/react';
+import Head from 'next/head';
 import { ReactNode } from 'react';
 import { GitHubIcon } from '../../components/GithubIcon';
 
@@ -36,21 +37,27 @@ const SignInPage: NextPage<
     }
 
     return (
-        <div className="m-auto flex flex-col items-center text-center">
-            <h1 className="text-3xl font-extrabold normal-case">sign in</h1>
+        <>
+            <Head>
+                <title>sign in</title>
+            </Head>
 
-            <br />
+            <div className="m-auto flex flex-col items-center text-center">
+                <h1 className="text-3xl font-extrabold normal-case">sign in</h1>
 
-            <div className="flex w-fit flex-col gap-4">
-                {Object.values(providers)
-                    .sort(leaveEmailForLast)
-                    .map((p) => getSignInFormForProvider(p, csrfToken))}
+                <br />
+
+                <div className="flex w-fit flex-col gap-4">
+                    {Object.values(providers)
+                        .sort(leaveEmailForLast)
+                        .map((p) => getSignInFormForProvider(p, csrfToken))}
+                </div>
+
+                <br />
+
+                <code>{csrfToken}</code>
             </div>
-
-            <br />
-
-            <code>{csrfToken}</code>
-        </div>
+        </>
     );
 };
 

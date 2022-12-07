@@ -1,3 +1,12 @@
+import Head from 'next/head';
+
 export default function Redirect() {
-    return <div>Redirecting...</div>;
+    return (
+        <>
+            <Head>
+                <title>redirecting...</title>
+            </Head>
+            <div>Redirecting...</div>;
+        </>
+    );
 }

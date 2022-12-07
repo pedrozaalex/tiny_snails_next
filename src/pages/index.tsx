@@ -1,6 +1,7 @@
 import { createProxySSGHelpers } from '@trpc/react-query/ssg';
 
 import { GetStaticProps, InferGetStaticPropsType } from 'next';
+import Head from 'next/head';
 import SuperJSON from 'superjson';
 import { AppHero } from '../components/Hero';
 import { PopularSnails } from '../components/PopularSnails';
@@ -36,6 +37,10 @@ const Home = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
 
     return (
         <>
+            <Head>
+                <title>tiny snails</title>
+            </Head>
+
             <AppHero />
 
             <SnailForm baseUrl={baseUrl} />

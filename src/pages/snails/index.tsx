@@ -1,10 +1,17 @@
 import { NextPage } from 'next';
 import { useSession } from 'next-auth/react';
+import NextHead from 'next/head';
 import { Spinner } from '../../components/Spinner';
 import { Table } from '../../components/Table';
 import { useAppNavigation } from '../../hooks/useNavigation';
 import { getVisitorId } from '../../utils/cookies';
 import { trpc } from '../../utils/trpc';
+
+const Head = () => (
+    <NextHead>
+        <title>your snails</title>
+    </NextHead>
+);
 
 const MySnailsPage: NextPage = () => {
     const { navigateTo } = useAppNavigation();
@@ -26,23 +33,29 @@ const MySnailsPage: NextPage = () => {
 
     if (mySnails.length === 0) {
         return (
-            <div className="flex h-full flex-col items-center justify-center gap-8 text-center">
-                <h1 className="text-4xl font-bold">
-                    you have no snails yet :(
-                </h1>
-                <button
-                    type="button"
-                    className="btn-accent btn"
-                    onClick={() => void navigateTo.home()}
-                >
-                    create one
-                </button>
-            </div>
+            <>
+                <Head />
+
+                <div className="flex h-full flex-col items-center justify-center gap-8 text-center">
+                    <h1 className="text-4xl font-bold">
+                        you have no snails yet :(
+                    </h1>
+                    <button
+                        type="button"
+                        className="btn-accent btn"
+                        onClick={() => void navigateTo.home()}
+                    >
+                        create one
+                    </button>
+                </div>
+            </>
         );
     }
 
     return (
         <>
+            <Head />
+
             <h1 className="text-4xl font-bold">your snails</h1>
 
             <Table
