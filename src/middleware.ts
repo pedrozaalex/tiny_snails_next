@@ -1,5 +1,6 @@
-import { Snail } from '@prisma/client';
+import { Click, Snail } from '@prisma/client';
 import { NextMiddleware, NextResponse } from 'next/server';
+import { inspect } from 'util';
 import { BASE_URL, extractSlug, isSlugPath } from './utils/urls';
 
 export const config = {
@@ -27,40 +28,42 @@ export const middleware: NextMiddleware = async (req) => {
 
     const snail = data[0];
 
-    reportClick(snail.id, req.ip);
+    void reportClick(snail.id, req.ip);
 
     return NextResponse.redirect(snail.url);
 };
 
-function reportClick(snailId: number, ip?: string) {
-    fetch(`${BASE_URL}/api/click`, {
-        method: 'POST',
-        body: JSON.stringify({
-            snailId,
-            ip,
-            secret: process.env.SECRET_KEY,
-        }),
-    })
-        .then((res) => res.json())
-        .then((data) => console.log('click reported:', data))
-        .catch((error) =>
-            console.error('error occurred when reporting click:', error)
-        );
-}
-
 async function fetchSnailByAlias(alias: string): Promise<Snail[]> {
     try {
-        const result = (await (
-            await fetch(`${BASE_URL}/api/snail?alias=${alias}`)
-        ).json()) as Snail[] | { error: string };
+        const res = await fetch(`${BASE_URL}/api/snail?alias=${alias}`);
 
-        if ('error' in result) {
-            throw new Error(result.error);
-        }
+        const snails = (await res.json()) as Snail[];
+        const cache = res.headers.get('X-Vercel-Cache');
 
-        return result;
+        console.log('fetch snail cache', cache);
+
+        return snails;
     } catch (error) {
-        console.error('error occurred when fetching url:', error);
+        console.error('An error occurred when fetching url:', error);
         return [];
+    }
+}
+
+async function reportClick(snailId: number, ip?: string) {
+    try {
+        const res = await fetch(`${BASE_URL}/api/click`, {
+            method: 'POST',
+            body: JSON.stringify({
+                snailId,
+                ip,
+                secret: process.env.SECRET_KEY,
+            }),
+        });
+
+        return (await res.json()) as Click | { error: string };
+    } catch (error) {
+        return {
+            error: `An error occurred when reporting click: ${inspect(error)}`,
+        };
     }
 }
