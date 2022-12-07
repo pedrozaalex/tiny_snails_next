@@ -4,6 +4,7 @@ import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
 import '../../styles/globals.css';
 import Layout from '../components/layout';
+import { ToastCenter } from '../components/ToastCenter';
 import { trpc } from '../utils/trpc';
 
 const App = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
@@ -12,6 +13,7 @@ const App = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
             <Layout>
                 <Component {...pageProps} />
             </Layout>
+            <ToastCenter />
             <Analytics />
         </SessionProvider>
     );
