@@ -21,3 +21,6 @@ export function getBaseUrl() {
 }
 
 export const BASE_URL = getBaseUrl();
+
+export const REDIRECT_BASE_URL =
+    process.env.REDIRECT_BASE_URL ?? 'https://tny-snls.xyz/';

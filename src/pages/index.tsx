@@ -7,6 +7,7 @@ import { PopularSnails } from '../components/PopularSnails';
 import SnailForm from '../components/SnailForm';
 import { appRouter } from '../server/routers/_app';
 import { db } from '../utils/db';
+import { REDIRECT_BASE_URL } from '../utils/urls';
 
 type Props = {
     baseUrl: string;
@@ -24,7 +25,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     return {
         props: {
             trpcState: ssg.dehydrate(),
-            baseUrl: 'tny-snls.xyz/',
+            baseUrl: REDIRECT_BASE_URL,
         },
         revalidate: 60,
     };

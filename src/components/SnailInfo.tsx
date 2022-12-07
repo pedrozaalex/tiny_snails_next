@@ -57,11 +57,13 @@ const formatSnailInfo = ([key, value]: [string, unknown]): [
     }
 };
 
-const getShownProps = (
-    show: Props['show'],
-    hide: Props['hide'],
-    snail: Snail
-) => {
+const getShownProps = (props: {
+    show: Props['show'];
+    hide: Props['hide'];
+    snail: Snail;
+}) => {
+    const { show, hide, snail } = props;
+
     if (show) {
         return show;
     }
@@ -98,7 +100,7 @@ export const SnailInfo: FunctionComponent<Props> = ({
         return <p>snail not found</p>;
     }
 
-    const shownProperties = getShownProps(show, hide, snail);
+    const shownProperties = getShownProps({ show, hide, snail });
 
     return (
         <div className="flex w-full flex-col gap-4">
@@ -108,13 +110,14 @@ export const SnailInfo: FunctionComponent<Props> = ({
                     const [key, value] = formatSnailInfo(info);
 
                     return (
-                        <>
-                            <div className="flex flex-row justify-between gap-8">
-                                <p className="font-bold">{key}:</p>
+                        <div
+                            className="flex flex-row justify-between gap-8"
+                            key={key}
+                        >
+                            <p className="font-bold">{key}:</p>
 
-                                <p>{value}</p>
-                            </div>
-                        </>
+                            <p>{value}</p>
+                        </div>
                     );
                 })}
         </div>

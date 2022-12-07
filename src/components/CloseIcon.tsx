@@ -13,7 +13,7 @@ export const CloseIcon = () => {
                 x2="11"
                 y2="1"
                 stroke="black"
-                stroke-width="2.5"
+                strokeWidth="2.5"
             />
             <line
                 x1="1"
@@ -21,7 +21,7 @@ export const CloseIcon = () => {
                 x2="11"
                 y2="11"
                 stroke="black"
-                stroke-width="2.5"
+                strokeWidth="2.5"
             />
         </svg>
     );
