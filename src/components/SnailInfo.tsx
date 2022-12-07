@@ -1,8 +1,8 @@
 import { Snail } from '@prisma/client';
-import Link from 'next/link';
 import { FunctionComponent, ReactNode } from 'react';
 import { trpc } from '../utils/trpc';
 import { DisplayDate } from './DisplayDate';
+import { DisplayUrl } from './DisplayUrl';
 
 type BaseProps = {
     snailId: number;
@@ -39,14 +39,10 @@ const formatSnailInfo = ([key, value]: [string, unknown]): [
         case 'url':
             return [
                 key,
-                <Link
-                    key={key}
-                    href={value as string}
-                    className="link"
-                    target="_blank"
-                >
-                    {String(value)}
-                </Link>,
+                <DisplayUrl
+                    url={value as string}
+                    key={`${key} ${value as string}`}
+                />,
             ];
 
         case 'id':
