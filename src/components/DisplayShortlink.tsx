@@ -9,7 +9,7 @@ type Props = {
     snailId: number;
 };
 
-export const ShortLinkDisplay: FunctionComponent<Props> = ({ snailId }) => {
+export const DisplayShortlink: FunctionComponent<Props> = ({ snailId }) => {
     const {
         data: snail,
         error,

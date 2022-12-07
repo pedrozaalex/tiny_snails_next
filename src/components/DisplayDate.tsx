@@ -5,7 +5,7 @@ type Props = {
     date: Date;
 };
 
-export const DateDisplay: FunctionComponent<Props> = ({ date }) => {
+export const DisplayDate: FunctionComponent<Props> = ({ date }) => {
     return (
         <time
             className="tooltip underline decoration-dotted"

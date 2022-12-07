@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { ShortLinkDisplay } from '../../components/ShortLinkDisplay';
+import { DisplayShortlink } from '../../components/DisplayShortlink';
 import { SnailInfo } from '../../components/SnailInfo';
 
 const SnailPage: NextPage = () => {
@@ -15,7 +15,7 @@ const SnailPage: NextPage = () => {
         <div className="flex flex-col items-center gap-12 text-center">
             <h1 className="text-4xl font-bold">snail #{snailId}</h1>
 
-            <ShortLinkDisplay snailId={snailId} />
+            <DisplayShortlink snailId={snailId} />
 
             <div className="w-full max-w-sm rounded-lg border-2 border-black bg-base-100 p-4">
                 <SnailInfo snailId={snailId} hide={['id', 'alias']} />

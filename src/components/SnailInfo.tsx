@@ -2,7 +2,7 @@ import { Snail } from '@prisma/client';
 import Link from 'next/link';
 import { FunctionComponent, ReactNode } from 'react';
 import { trpc } from '../utils/trpc';
-import { DateDisplay } from './DateDisplay';
+import { DisplayDate } from './DisplayDate';
 
 type BaseProps = {
     snailId: number;
@@ -33,7 +33,7 @@ const formatSnailInfo = ([key, value]: [string, unknown]): [
             const date = new Date(value as string);
             return [
                 'created',
-                <DateDisplay date={date} key={date.toISOString()} />,
+                <DisplayDate date={date} key={date.toISOString()} />,
             ];
 
         case 'url':
