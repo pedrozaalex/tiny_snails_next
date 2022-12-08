@@ -87,7 +87,7 @@ const SnailForm: FunctionComponent<Props> = ({
                         <div>
                             <ErrorIcon />
                             <span>
-                                Error:{' '}
+                                error:{' '}
                                 {error instanceof TRPCClientError
                                     ? error.message
                                     : 'unknown error occurred'}
