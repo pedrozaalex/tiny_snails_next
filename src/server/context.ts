@@ -27,3 +27,20 @@ export const createContext = async (
 };
 
 export type Context = trpc.inferAsyncReturnType<typeof createContext>;
+
+export function setVisitorIdIfUnauthenticated({ ctx }: { ctx?: Context }) {
+    if (!ctx) return {};
+
+    if (ctx.session) return {};
+
+    // If the user is not authenticated, the visitorId should always be set.
+    if (!ctx.visitorId) {
+        throw new Error('Failed to generate visitorId');
+    }
+
+    return {
+        headers: {
+            'Set-Cookie': `visitorId=${ctx.visitorId}; Path=/; HttpOnly; SameSite=Strict; Max-Age=31536000`,
+        },
+    };
+}
