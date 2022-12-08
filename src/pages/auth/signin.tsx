@@ -52,10 +52,6 @@ const SignInPage: NextPage<
                         .sort(leaveEmailForLast)
                         .map((p) => getSignInFormForProvider(p, csrfToken))}
                 </div>
-
-                <br />
-
-                <code>{csrfToken}</code>
             </div>
         </>
     );
