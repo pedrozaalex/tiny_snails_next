@@ -18,7 +18,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     const ssg = createProxySSGHelpers({
         router: appRouter,
         transformer: SuperJSON,
-        ctx: { db, req: undefined },
+        ctx: { db, req: undefined, session: null, visitorId: undefined },
     });
 
     await ssg.snail.getPopular.prefetch();

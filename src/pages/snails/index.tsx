@@ -1,10 +1,8 @@
 import { NextPage } from 'next';
-import { useSession } from 'next-auth/react';
 import NextHead from 'next/head';
 import { Spinner } from '../../components/Spinner';
 import { Table } from '../../components/Table';
 import { useAppNavigation } from '../../hooks/useNavigation';
-import { getVisitorId } from '../../utils/cookies';
 import { trpc } from '../../utils/trpc';
 
 const Head = () => (
@@ -15,13 +13,8 @@ const Head = () => (
 
 const MySnailsPage: NextPage = () => {
     const { navigateTo } = useAppNavigation();
-    const { data: sessionData } = useSession();
 
-    const {
-        data: mySnails,
-        error,
-        isLoading,
-    } = trpc.snail.getMine.useQuery(sessionData?.user?.id ?? getVisitorId());
+    const { data: mySnails, error, isLoading } = trpc.snail.getMine.useQuery();
 
     if (error) {
         return <>error: {error.message}</>;

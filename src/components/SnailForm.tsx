@@ -1,13 +1,11 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TRPCClientError } from '@trpc/client';
-import { useSession } from 'next-auth/react';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useAppNavigation } from '../hooks/useNavigation';
 import { createSnailSchema } from '../schemas';
-import { getVisitorId } from '../utils/cookies';
 import { trpc } from '../utils/trpc';
 import { ErrorIcon } from './ErrorIcon';
 import { Input } from './Input';
@@ -25,8 +23,6 @@ const SnailForm: FunctionComponent<Props> = ({
 }) => {
     const { navigateTo } = useAppNavigation();
     const [errorContainerRef] = useAutoAnimate<HTMLDivElement>();
-
-    const { data: sessionData } = useSession();
 
     const {
         handleSubmit,
@@ -70,12 +66,6 @@ const SnailForm: FunctionComponent<Props> = ({
                     leftLabel={baseUrl}
                     color="accent"
                     {...register('alias')}
-                />
-
-                <Input
-                    type="hidden"
-                    value={sessionData?.user?.id ?? getVisitorId()}
-                    {...register('userId')}
                 />
 
                 <button

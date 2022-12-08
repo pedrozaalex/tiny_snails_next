@@ -16,12 +16,24 @@ export const snailRouter = router({
                 input.alias = Math.random().toString(36).substring(2, 8);
             }
 
+            const userId = ctx.session?.user?.id ?? ctx.visitorId;
+
+            if (!userId) {
+                // We throw because either the user is not authenticated and we
+                // failed to generate a visitorId.
+                throw new TRPCError({
+                    code: 'INTERNAL_SERVER_ERROR',
+                    message:
+                        'An unexpected error occurred, please try again later.',
+                });
+            }
+
             try {
                 const snail = await ctx.db.snail.create({
                     data: {
                         alias: input.alias,
                         url: input.url,
-                        userId: input.userId,
+                        userId,
                     },
                     select: {
                         alias: true,
@@ -113,9 +125,13 @@ export const snailRouter = router({
         }));
     }),
 
-    getMine: procedure.input(z.string()).query(async ({ input, ctx }) => {
+    getMine: procedure.query(async ({ ctx }) => {
+        const userId = ctx.session?.user?.id ?? ctx.visitorId;
+
+        if (!userId) return [];
+
         const data = await ctx.db.snail.findMany({
-            where: { userId: input },
+            where: { userId },
             select: {
                 alias: true,
                 createdAt: true,
