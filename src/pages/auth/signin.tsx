@@ -108,7 +108,7 @@ const getSignInFormForProvider = (
                 onClick={() => void signIn('github')}
             >
                 github
-                <GitHubIcon className="" />
+                <GitHubIcon />
             </button>
         ),
     };
