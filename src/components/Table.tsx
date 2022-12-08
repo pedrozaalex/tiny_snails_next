@@ -9,11 +9,7 @@ type Props<ObjectType> = {
     onRowClick?: (obj: ObjectType) => void;
 };
 
-export function Table<T>({
-    objects,
-    properties,
-    onRowClick = () => void 0,
-}: Props<T>) {
+export function Table<T>({ objects, properties, onRowClick }: Props<T>) {
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>();
 
     return (
@@ -36,8 +32,10 @@ export function Table<T>({
                             return (
                                 <tr
                                     key={String(obj[properties[0].key])}
-                                    className="hover cursor-pointer"
-                                    onClick={onRowClick.bind(null, obj)}
+                                    className={`hover ${
+                                        onRowClick ? 'cursor-pointer' : ''
+                                    }`}
+                                    onClick={onRowClick?.bind(null, obj)}
                                 >
                                     <th>{index + 1}</th>
                                     {properties.map((property) => (
