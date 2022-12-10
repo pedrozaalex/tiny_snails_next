@@ -1,13 +1,20 @@
 import Link from 'next/link';
 import { ProjectRepoLink } from './ProjectRepoLink';
-
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { SnailIcon } from './SnailIcon';
+import { useDialog } from '../hooks/useDialog';
 
 export function Navbar() {
-    const { status, data } = useSession();
+    const { status } = useSession();
 
-    console.log('session data', data);
+    const [SignOutDialog, openSignOutDialog] = useDialog({
+        title: 'are you sure?',
+        content: (
+            <p className="text-center">are you sure you want to log out?</p>
+        ),
+        onConfirm: () => void signOut(),
+        onConfirmLabel: 'log out',
+    });
 
     return (
         <header className="navbar mt-8 justify-between border-y-2 border-primary-content bg-base-100 px-4 py-2 text-primary-content">
@@ -31,10 +38,12 @@ export function Navbar() {
                         <button
                             type="button"
                             className="btn-secondary btn flex-col px-6"
-                            onClick={() => void signOut()}
+                            onClick={openSignOutDialog}
                         >
                             <p>log out</p>
                         </button>
+
+                        <SignOutDialog />
                     </>
                 )}
 

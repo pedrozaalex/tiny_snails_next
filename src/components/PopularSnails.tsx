@@ -2,9 +2,9 @@ import { Snail } from '@prisma/client';
 import Image from 'next/image';
 import { useState } from 'react';
 import TrophyIcon from '../../public/trophy.png';
+import { useDialog } from '../hooks/useDialog';
 import { useAppNavigation } from '../hooks/useNavigation';
 import { trpc } from '../utils/trpc';
-import { Dialog } from './Dialog';
 import { SnailInfo } from './SnailInfo';
 import { Spinner } from './Spinner';
 import { Table } from './Table';
@@ -24,8 +24,20 @@ export const PopularSnails = () => {
         Snail['alias'] | null
     >(null);
 
+    const [SnailDetailDialog, openSnailDetailDialog] = useDialog({
+        title: 'snail detail',
+        content: (
+            <SnailInfo
+                snailAlias={selectedSnailAlias ?? ''}
+                hide={['createdAt'] as const}
+            />
+        ),
+        onConfirm: () => void navigateTo.showSnail(selectedSnailAlias ?? ''),
+        onConfirmLabel: 'more info',
+    });
+
     return error ? null : (
-        <div className="flex flex-col items-center text-center">
+        <div className="flex flex-col items-center">
             <h2 className="flex gap-2 text-xl font-bold">
                 top 10 snails
                 <Image
@@ -54,29 +66,13 @@ export const PopularSnails = () => {
                                 label: 'clicks',
                             },
                         ]}
-                        onRowClick={({ alias }) => setSelectedSnailAlias(alias)}
+                        onRowClick={({ alias }) => {
+                            setSelectedSnailAlias(alias);
+                            openSnailDetailDialog();
+                        }}
                     />
 
-                    <Dialog
-                        isOpen={selectedSnailAlias !== null}
-                        onClose={() => setSelectedSnailAlias(null)}
-                        title="snail detail"
-                        body={
-                            <SnailInfo
-                                snailAlias={selectedSnailAlias ?? ''}
-                                hide={['createdAt'] as const}
-                            />
-                        }
-                        actions={[
-                            {
-                                label: 'more info',
-                                onClick: () =>
-                                    void navigateTo.showSnail(
-                                        selectedSnailAlias ?? ''
-                                    ),
-                            },
-                        ]}
-                    />
+                    <SnailDetailDialog />
                 </>
             )}
         </div>
