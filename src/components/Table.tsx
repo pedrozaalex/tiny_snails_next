@@ -35,7 +35,13 @@ export function Table<T>({ objects, properties, onRowClick }: Props<T>) {
                                     className={`hover ${
                                         onRowClick ? 'cursor-pointer' : ''
                                     }`}
-                                    onClick={onRowClick?.bind(null, obj)}
+                                    tabIndex={onRowClick ? 0 : -1}
+                                    onClick={() => onRowClick?.(obj)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') {
+                                            onRowClick?.(obj);
+                                        }
+                                    }}
                                 >
                                     <th>{index + 1}</th>
                                     {properties.map((property) => (
