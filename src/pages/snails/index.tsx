@@ -1,6 +1,8 @@
 import { NextPage } from 'next';
 import NextHead from 'next/head';
-import { Spinner } from '../../components/Spinner';
+import { useState } from 'react';
+import { ArrowLeftIcon } from '../../components/ArrowLeftIcon';
+import { ArrowRightIcon } from '../../components/ArrowRightIcon';
 import { Table } from '../../components/Table';
 import { useAppNavigation } from '../../hooks/useNavigation';
 import { trpc } from '../../utils/trpc';
@@ -14,21 +16,15 @@ const Head = () => (
 const MySnailsPage: NextPage = () => {
     const { navigateTo } = useAppNavigation();
 
-    const { data: mySnails, error, isLoading } = trpc.snail.getMine.useQuery();
+    const [page, setPage] = useState(0);
 
-    console.log('mySnails', mySnails);
-    console.log('error', error);
-    console.log('isLoading', isLoading);
+    const { data, error, isLoading } = trpc.snail.getMine.useQuery({ page });
 
     if (error) {
         return <>error: {error.message}</>;
     }
 
-    if (isLoading) {
-        return <Spinner />;
-    }
-
-    if (mySnails.length === 0) {
+    if (data?.snails.length === 0) {
         return (
             <>
                 <Head />
@@ -56,7 +52,8 @@ const MySnailsPage: NextPage = () => {
             <h1 className="text-4xl font-bold">your snails</h1>
 
             <Table
-                objects={mySnails}
+                loading={isLoading}
+                objects={data?.snails ?? []}
                 properties={[
                     {
                         key: 'alias',
@@ -68,6 +65,26 @@ const MySnailsPage: NextPage = () => {
                     },
                 ]}
             />
+
+            <div className="flex justify-center gap-2">
+                <button
+                    type="button"
+                    className="btn-accent btn-square btn"
+                    disabled={page === 0}
+                    onClick={() => setPage((prev) => prev - 1)}
+                >
+                    <ArrowLeftIcon />
+                </button>
+
+                <button
+                    type="button"
+                    className="btn-accent btn-square btn"
+                    disabled={data?.hasNextPage === false}
+                    onClick={() => setPage((prev) => prev + 1)}
+                >
+                    <ArrowRightIcon />
+                </button>
+            </div>
         </>
     );
 };

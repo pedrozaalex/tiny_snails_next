@@ -4,6 +4,8 @@ import { z } from 'zod';
 import { createSnailSchema } from '../../schemas';
 import { procedure, router } from '../trpc';
 
+const FETCH_LIMIT = 10;
+
 export const snailRouter = router({
     create: procedure
         .input(createSnailSchema)
@@ -125,38 +127,46 @@ export const snailRouter = router({
         }));
     }),
 
-    getMine: procedure.query(async ({ ctx }) => {
-        console.log('getMine', ctx);
+    getMine: procedure
+        .input(
+            z.object({
+                page: z.number().optional().default(0),
+            })
+        )
+        .query(async ({ ctx, input }) => {
+            const userId = ctx.session?.user?.id ?? ctx.visitorId;
 
-        const userId = ctx.session?.user?.id ?? ctx.visitorId;
+            if (!userId) return null;
 
-        console.log('userId', userId);
-
-        if (!userId) return [];
-
-        const data = await ctx.db.snail.findMany({
-            where: { userId },
-            select: {
-                alias: true,
-                createdAt: true,
-                url: true,
-                _count: {
-                    select: {
-                        clicks: true,
+            const data = await ctx.db.snail.findMany({
+                where: { userId },
+                select: {
+                    alias: true,
+                    createdAt: true,
+                    url: true,
+                    _count: {
+                        select: {
+                            clicks: true,
+                        },
                     },
                 },
-            },
-        });
+                orderBy: {
+                    alias: 'asc',
+                },
+                take: FETCH_LIMIT + 1,
+                skip: input.page * FETCH_LIMIT,
+            });
 
-        console.log('data', data);
-
-        return data.map((snail) => ({
-            alias: snail.alias,
-            createdAt: snail.createdAt,
-            url: snail.url,
-            clicks: snail._count.clicks,
-        }));
-    }),
+            return {
+                snails: data.slice(0, FETCH_LIMIT).map((snail) => ({
+                    alias: snail.alias,
+                    createdAt: snail.createdAt,
+                    url: snail.url,
+                    clicks: snail._count.clicks,
+                })),
+                hasNextPage: data.length > FETCH_LIMIT,
+            };
+        }),
 
     delete: procedure.input(z.string()).mutation(async ({ input, ctx }) => {
         await ctx.db.click.deleteMany({

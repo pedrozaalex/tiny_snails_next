@@ -1,4 +1,5 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
+import { Spinner } from './Spinner';
 
 type Props<ObjectType> = {
     objects: ObjectType[];
@@ -7,9 +8,15 @@ type Props<ObjectType> = {
         label: string;
     }[];
     onRowClick?: (obj: ObjectType) => void;
+    loading?: boolean;
 };
 
-export function Table<T>({ objects, properties, onRowClick }: Props<T>) {
+export function Table<T>({
+    objects,
+    properties,
+    onRowClick,
+    loading,
+}: Props<T>) {
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>();
 
     return (
@@ -27,32 +34,42 @@ export function Table<T>({ objects, properties, onRowClick }: Props<T>) {
                         </tr>
                     </thead>
 
-                    <tbody ref={parentRef}>
-                        {objects.map((obj, index) => {
-                            return (
-                                <tr
-                                    key={String(obj[properties[0].key])}
-                                    className={`hover ${
-                                        onRowClick ? 'cursor-pointer' : ''
-                                    }`}
-                                    tabIndex={onRowClick ? 0 : -1}
-                                    onClick={() => onRowClick?.(obj)}
-                                    onKeyDown={(e) => {
-                                        if (e.key === 'Enter') {
-                                            onRowClick?.(obj);
-                                        }
-                                    }}
-                                >
-                                    <th>{index + 1}</th>
-                                    {properties.map((property) => (
-                                        <td key={String(property.key)}>
-                                            {String(obj[property.key])}
-                                        </td>
-                                    ))}
-                                </tr>
-                            );
-                        })}
-                    </tbody>
+                    {loading ? (
+                        <tbody>
+                            <tr>
+                                <td colSpan={properties.length + 1}>
+                                    <Spinner />
+                                </td>
+                            </tr>
+                        </tbody>
+                    ) : (
+                        <tbody ref={parentRef}>
+                            {objects.map((obj, index) => {
+                                return (
+                                    <tr
+                                        key={String(obj[properties[0].key])}
+                                        className={`hover ${
+                                            onRowClick ? 'cursor-pointer' : ''
+                                        }`}
+                                        tabIndex={onRowClick ? 0 : -1}
+                                        onClick={() => onRowClick?.(obj)}
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                                onRowClick?.(obj);
+                                            }
+                                        }}
+                                    >
+                                        <th>{index + 1}</th>
+                                        {properties.map((property) => (
+                                            <td key={String(property.key)}>
+                                                {String(obj[property.key])}
+                                            </td>
+                                        ))}
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    )}
                 </table>
             </div>
         </>
