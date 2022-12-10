@@ -14,15 +14,29 @@ export const createContext = async (
         ? await unstable_getServerSession(opts.req, opts.res, authOptions)
         : null;
 
-    const visitorId = session
-        ? undefined
-        : opts?.req.cookies.visitorId ?? nanoid();
+    const isAuthenticated = !!session?.user;
+    const hasVisitorId = opts?.req.cookies.visitorId;
+
+    const visitorId = (() => {
+        // If the user already has a visitorId, we don't need to generate a new one.
+        if (hasVisitorId) {
+            return opts.req.cookies.visitorId;
+        }
+
+        // If the user already is authenticated, we don't need to generate a new visitorId.
+        if (isAuthenticated) {
+            return undefined;
+        }
+
+        return nanoid();
+    })();
 
     return {
         req: opts?.req,
         db,
         session,
         visitorId,
+        isNewUser: !hasVisitorId && isAuthenticated,
     };
 };
 
@@ -36,6 +50,15 @@ export function setVisitorIdIfUnauthenticated({ ctx }: { ctx?: Context }) {
     // If the user is not authenticated, the visitorId should always be set.
     if (!ctx.visitorId) {
         throw new Error('Failed to generate visitorId');
+    }
+
+    if (ctx.isNewUser) {
+        return {
+            headers: {
+                'Set-Cookie':
+                    'visitorId=null; path=/; HttpOnly; SameSite=Strict; expires=Thu, 01 Jan 1970 00:00:00 GMT',
+            },
+        };
     }
 
     return {

@@ -14,7 +14,12 @@ export const authOptions: NextAuthOptions = {
             }
             return session;
         },
-        redirect: () => '/',
+        redirect: ({ url }) => {
+            // Send users to the setup page on sign in
+            if (url.includes('/auth/signin')) return '/setup';
+
+            return '/';
+        },
     },
 
     adapter: PrismaAdapter(db),
@@ -48,7 +53,6 @@ export const authOptions: NextAuthOptions = {
         signIn: '/auth/signin',
         verifyRequest: '/auth/verify-request', // (used for check email message)
         // error: '/auth/error', // Error code passed in query string as ?error=
-        // verifyRequest: '/auth/verify-request', // (used for check email message)
     },
 };
 

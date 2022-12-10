@@ -168,4 +168,25 @@ export const snailRouter = router({
 
         return data;
     }),
+
+    requestVisitorSnailOwnership: procedure.mutation(async ({ ctx }) => {
+        const visitorId = ctx.visitorId;
+
+        if (!visitorId) {
+            return null;
+        }
+
+        const userId = ctx.session?.user?.id;
+
+        if (!userId) {
+            return null;
+        }
+
+        const data = await ctx.db.snail.updateMany({
+            where: { userId: visitorId },
+            data: { userId },
+        });
+
+        return data;
+    }),
 });
