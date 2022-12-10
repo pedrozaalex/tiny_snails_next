@@ -126,7 +126,11 @@ export const snailRouter = router({
     }),
 
     getMine: procedure.query(async ({ ctx }) => {
+        console.log('getMine', ctx);
+
         const userId = ctx.session?.user?.id ?? ctx.visitorId;
+
+        console.log('userId', userId);
 
         if (!userId) return [];
 
@@ -143,6 +147,8 @@ export const snailRouter = router({
                 },
             },
         });
+
+        console.log('data', data);
 
         return data.map((snail) => ({
             alias: snail.alias,

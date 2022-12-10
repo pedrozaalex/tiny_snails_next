@@ -16,6 +16,10 @@ const MySnailsPage: NextPage = () => {
 
     const { data: mySnails, error, isLoading } = trpc.snail.getMine.useQuery();
 
+    console.log('mySnails', mySnails);
+    console.log('error', error);
+    console.log('isLoading', isLoading);
+
     if (error) {
         return <>error: {error.message}</>;
     }
@@ -57,10 +61,6 @@ const MySnailsPage: NextPage = () => {
                     {
                         key: 'alias',
                         label: 'alias',
-                    },
-                    {
-                        key: 'url',
-                        label: 'url',
                     },
                     {
                         key: 'clicks',
