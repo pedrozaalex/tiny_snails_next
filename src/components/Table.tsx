@@ -25,7 +25,6 @@ export function Table<T>({
                 <table className="custom-table table w-full text-center">
                     <thead>
                         <tr>
-                            <th>#</th>
                             {properties.map((property) => (
                                 <th key={String(property.key)}>
                                     {property.label}
@@ -59,7 +58,6 @@ export function Table<T>({
                                             }
                                         }}
                                     >
-                                        <th>{index + 1}</th>
                                         {properties.map((property) => (
                                             <td key={String(property.key)}>
                                                 {String(obj[property.key])}
