@@ -60,16 +60,7 @@ export const PopularSnails = () => {
                 <>
                     <Table
                         objects={popularSnailsList}
-                        properties={[
-                            {
-                                key: 'alias',
-                                label: 'alias',
-                            },
-                            {
-                                key: 'clicks',
-                                label: 'clicks',
-                            },
-                        ]}
+                        properties={['alias', 'clicks']}
                         onRowClick={({ alias }) => {
                             setSelectedSnailAlias(alias);
                             openSnailDetailDialog();
