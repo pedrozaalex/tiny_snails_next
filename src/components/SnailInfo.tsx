@@ -13,14 +13,14 @@ type BaseProps = {
 
 type ShowProps = {
     snailAlias: string;
-    show: Readonly<(keyof Snail)[]>;
+    show: (keyof Snail)[];
     hide?: never;
 };
 
 type HideProps = {
     snailAlias: string;
     show?: never;
-    hide: Readonly<(keyof Snail)[]>;
+    hide: (keyof Snail)[];
 };
 
 type Props = BaseProps | ShowProps | HideProps;

@@ -29,7 +29,7 @@ export const PopularSnails = () => {
         content: (
             <SnailInfo
                 snailAlias={selectedSnailAlias ?? ''}
-                hide={['createdAt'] as const}
+                hide={['createdAt']}
             />
         ),
         onConfirm: () => void navigateTo.showSnail(selectedSnailAlias ?? ''),
