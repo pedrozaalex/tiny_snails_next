@@ -17,7 +17,7 @@ export const PopularSnails = () => {
         isLoading,
         error,
     } = trpc.snail.getPopular.useQuery(undefined, {
-        refetchInterval: 60 * 1000, // 1 minute
+        staleTime: 1000 * 60 * 5, // 5 minutes
     });
 
     const [selectedSnailAlias, setSelectedSnailAlias] = useState<
