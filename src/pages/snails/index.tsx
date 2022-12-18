@@ -36,7 +36,7 @@ const MySnailsPage: NextPage = () => {
                     <button
                         type="button"
                         className="btn-accent btn"
-                        onClick={() => void navigateTo.home()}
+                        onClick={navigateTo.homepage}
                     >
                         create one
                     </button>

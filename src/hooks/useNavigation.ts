@@ -6,9 +6,9 @@ export function useAppNavigation() {
 
     const ref = useRef({
         navigateTo: {
-            home: () => router.push('/'),
-            showSnail: (alias: string) => router.push(`/snails/${alias}`),
-            mySnails: () => router.push('/snails'),
+            homepage: () => void router.push('/'),
+            showSnail: (alias: string) => void router.push(`/snails/${alias}`),
+            mySnails: () => void router.push('/snails'),
         },
     });
 

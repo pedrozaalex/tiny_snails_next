@@ -32,7 +32,7 @@ export const PopularSnails = () => {
                 hide={['createdAt']}
             />
         ),
-        onConfirm: () => void navigateTo.showSnail(selectedSnailAlias ?? ''),
+        onConfirm: () => navigateTo.showSnail(selectedSnailAlias ?? ''),
         onConfirmLabel: 'more info',
     });
 

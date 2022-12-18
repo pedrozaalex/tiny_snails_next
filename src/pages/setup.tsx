@@ -21,7 +21,7 @@ const SetupPage: NextPage = () => {
         const interval = setInterval(() => {
             if (isSetupReady) {
                 clearInterval(interval);
-                void navigateTo.home();
+                navigateTo.homepage();
             }
         }, 1000);
     }, [isSetupReady, navigateTo, sendRequest]);
