@@ -36,7 +36,11 @@ export const PopularSnails = () => {
         onConfirmLabel: 'more info',
     });
 
-    return error ? null : (
+    if (error) {
+        return null;
+    }
+
+    return (
         <div className="flex flex-col items-center">
             <h2 className="flex gap-2 text-xl font-bold">
                 top 10 snails
