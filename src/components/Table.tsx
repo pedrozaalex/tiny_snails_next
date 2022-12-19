@@ -5,35 +5,47 @@ import { Spinner } from './Spinner';
 /**
  * One of the properties of the object to display in the table.
  */
-type Property =
+type Property<ObjectType extends Record<string, unknown>> =
     | {
-          key: string;
+          key: keyof ObjectType;
           label: string;
       }
-    | string;
+    | keyof ObjectType;
 
-type Props<ObjectType> = {
+type Props<ObjectType extends Record<string, unknown>> = {
     objects: ObjectType[];
-    properties: Property[];
+    properties: Property<ObjectType>[];
     onRowClick?: (obj: ObjectType) => void;
     loading?: boolean;
 };
 
-const getPropertyKey = (property: Property) => {
-    if (typeof property === 'string') {
-        return property;
+function getPropertyKey<ObjectType extends Record<string, unknown>>(
+    property: Property<ObjectType>
+): string {
+    if (
+        typeof property === 'string' ||
+        typeof property === 'number' ||
+        typeof property === 'symbol'
+    ) {
+        return String(property);
     }
 
-    return property.key;
-};
+    return String(property.key);
+}
 
-const getPropertyLabel = (property: Property) => {
-    if (typeof property === 'string') {
-        return property;
+function getPropertyLabel<ObjectType extends Record<string, unknown>>(
+    property: Property<ObjectType>
+): string {
+    if (
+        typeof property === 'string' ||
+        typeof property === 'number' ||
+        typeof property === 'symbol'
+    ) {
+        return String(property);
     }
 
     return property.label;
-};
+}
 
 const hashObject = (obj: Record<string, unknown>) => {
     return Object.keys(obj)
@@ -42,33 +54,27 @@ const hashObject = (obj: Record<string, unknown>) => {
         .join(',');
 };
 
-const Row = ({
-    onClick,
-    children,
-}: {
-    onClick?: () => void;
-    children: ReactNode;
-}) => (
+const TableRow = (props: { onClick?: () => void; children: ReactNode }) => (
     <tr
-        className={`hover ${onClick ? 'cursor-pointer' : ''}`}
-        tabIndex={onClick ? 0 : -1}
-        onClick={onClick}
+        className={`hover ${props.onClick ? 'cursor-pointer' : ''}`}
+        tabIndex={props.onClick ? 0 : -1}
+        onClick={props.onClick}
         onKeyDown={(e) => {
             if (e.key === 'Enter') {
-                onClick?.();
+                props.onClick?.();
             }
         }}
     >
-        {children}
+        {props.children}
     </tr>
 );
 
-export function Table<T extends Record<string, unknown>>({
+export function Table<ObjectType extends Record<string, unknown>>({
     objects,
     properties,
     onRowClick,
     loading,
-}: Props<T>) {
+}: Props<ObjectType>) {
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>();
 
     const objectsWithIds = objects.map((obj) => ({
@@ -83,7 +89,10 @@ export function Table<T extends Record<string, unknown>>({
                     <thead>
                         <tr>
                             {properties.map((property) => (
-                                <th key={getPropertyKey(property)}>
+                                <th
+                                    key={getPropertyKey(property)}
+                                    className="!static"
+                                >
                                     {getPropertyLabel(property)}
                                 </th>
                             ))}
@@ -103,16 +112,19 @@ export function Table<T extends Record<string, unknown>>({
                         )}
 
                         {objectsWithIds.map((obj) => (
-                            <Row
+                            <TableRow
                                 key={obj._objectId}
-                                onClick={() => onRowClick?.(obj)}
+                                onClick={onRowClick?.bind(null, obj)}
                             >
                                 {properties.map((property) => (
-                                    <td key={getPropertyKey(property)}>
+                                    <td
+                                        key={getPropertyKey(property)}
+                                        className="max-w-[10rem] overflow-hidden text-ellipsis whitespace-nowrap"
+                                    >
                                         {String(obj[getPropertyKey(property)])}
                                     </td>
                                 ))}
-                            </Row>
+                            </TableRow>
                         ))}
                     </tbody>
                 </table>
