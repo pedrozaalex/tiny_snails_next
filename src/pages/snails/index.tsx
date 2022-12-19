@@ -54,7 +54,7 @@ const MySnailsPage: NextPage = () => {
             <Table
                 loading={isLoading}
                 objects={data?.snails ?? []}
-                properties={['alias', 'clicks']}
+                properties={['alias', 'clicks', 'url']}
             />
 
             <div className="flex justify-center gap-2">
