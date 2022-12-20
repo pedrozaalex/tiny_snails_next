@@ -3,6 +3,7 @@ import NextHead from 'next/head';
 import { useReducer } from 'react';
 import { ArrowLeftIcon } from '../../components/ArrowLeftIcon';
 import { ArrowRightIcon } from '../../components/ArrowRightIcon';
+import { MySnailsStats } from '../../components/MySnailsStats';
 import { Table } from '../../components/Table';
 import { useAppNavigation } from '../../hooks/useNavigation';
 import { trpc } from '../../utils/trpc';
@@ -67,6 +68,8 @@ const MySnailsPage: NextPage = () => {
             <Head />
 
             <h1 className="text-4xl font-bold">your snails</h1>
+
+            <MySnailsStats />
 
             <Table
                 loading={isLoading}

@@ -168,6 +168,43 @@ export const snailRouter = router({
             };
         }),
 
+    fetchAnalytics: procedure.query(async ({ ctx }) => {
+        const userId = ctx.session?.user?.id ?? ctx.visitorId;
+
+        if (!userId) return null;
+
+        const data = await ctx.db.snail.findMany({
+            where: { userId },
+            select: {
+                clicks: {
+                    select: {
+                        ip: true,
+                        createdAt: true,
+                    },
+                },
+                _count: {
+                    select: {
+                        clicks: true,
+                    },
+                },
+            },
+            orderBy: {
+                alias: 'asc',
+            },
+        });
+
+        return {
+            totalClicks: data.reduce(
+                (acc, snail) => acc + snail._count.clicks,
+                0
+            ),
+            totalSnails: data.length,
+            totalVisitors: new Set(
+                data.flatMap((snail) => snail.clicks.map((click) => click.ip))
+            ).size,
+        };
+    }),
+
     delete: procedure.input(z.string()).mutation(async ({ input, ctx }) => {
         await ctx.db.click.deleteMany({
             where: { alias: input },
