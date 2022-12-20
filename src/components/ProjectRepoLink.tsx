@@ -7,10 +7,10 @@ import GitHubIcon from '../../public/github.png';
 export const ProjectRepoLink: FC = () => {
     return (
         <Link
-            className="btn-ghost btn-square btn text-black"
+            className="inline-block"
             href="https://github.com/pedrozaalex/tiny_snails/"
         >
-            <Image src={GitHubIcon} alt="GitHub" width={36} />
+            <Image src={GitHubIcon} alt="GitHub" height={24} />
         </Link>
     );
 };
