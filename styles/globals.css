@@ -62,12 +62,13 @@ html {
 
 :root,
 [data-theme] {
-    @apply bg-primary
+    @apply bg-primary;
 }
 
 @layer components {
     table.custom-table {
         @apply bg-transparent;
+        height: 700px;
     }
 
     table.custom-table td {
