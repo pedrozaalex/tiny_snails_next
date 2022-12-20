@@ -1,8 +1,7 @@
-import Link from 'next/link';
-import { ProjectRepoLink } from './ProjectRepoLink';
 import { signIn, signOut, useSession } from 'next-auth/react';
-import { SnailIcon } from './SnailIcon';
+import Link from 'next/link';
 import { useDialog } from '../hooks/useDialog';
+import { SnailIcon } from './SnailIcon';
 
 export function Navbar() {
     const { status } = useSession();
@@ -59,8 +58,6 @@ export function Navbar() {
                         <small>(to save your snails)</small>
                     </div>
                 )}
-
-                <ProjectRepoLink />
             </section>
         </header>
     );
