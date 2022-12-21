@@ -1,4 +1,3 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react';
 import FocusTrap from 'focus-trap-react';
 import {
     FunctionComponent,
@@ -7,6 +6,7 @@ import {
     useEffect,
     useRef,
 } from 'react';
+import { createPortal } from 'react-dom';
 import { ThemeColors } from '../types/colors';
 import { CloseIcon } from './CloseIcon';
 
@@ -34,7 +34,6 @@ export const Dialog: FunctionComponent<Props> = ({
     },
 }) => {
     const titleRef = useRef<HTMLDivElement>(null);
-    const [parentRef] = useAutoAnimate<HTMLDivElement>({});
 
     const keyDownHandler = useCallback(
         (e: KeyboardEvent) => {
@@ -63,63 +62,60 @@ export const Dialog: FunctionComponent<Props> = ({
         };
     }, [keyDownHandler]);
 
-    return (
-        <div ref={parentRef}>
-            {isOpen ? (
+    if (!isOpen) return null;
+
+    return createPortal(
+        <div
+            className="fixed top-0 left-0 z-20 flex h-full w-full items-center justify-center bg-black bg-opacity-50"
+            onClick={onClose}
+        >
+            <FocusTrap onClick={onClose}>
                 <div
-                    className="fixed top-0 left-0 z-20 flex h-full w-full items-center justify-center bg-black bg-opacity-50"
-                    onClick={onClose}
+                    className="relative m-8 w-full max-w-2xl rounded-lg border-2 border-black bg-base-100 p-4 pt-6"
+                    onClick={(e) => e.stopPropagation()}
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="dialog-title"
                 >
-                    <FocusTrap onClick={onClose}>
-                        <div
-                            className="relative m-8 w-full max-w-2xl rounded-lg border-2 border-black bg-base-100 p-4 pt-6"
-                            onClick={(e) => e.stopPropagation()}
-                            role="dialog"
-                            aria-modal="true"
-                            aria-labelledby="dialog-title"
-                        >
-                            <div
-                                className="mb-4 h-8 text-2xl font-bold"
-                                id="dialog-title"
-                                tabIndex={-1}
-                                ref={titleRef}
-                            >
-                                {title}
-                            </div>
+                    <div
+                        className="mb-4 h-8 text-2xl font-bold"
+                        id="dialog-title"
+                        tabIndex={-1}
+                        ref={titleRef}
+                    >
+                        {title}
+                    </div>
 
-                            <div>{body}</div>
+                    <div>{body}</div>
 
-                            {actions && (
-                                <div className="mt-8 flex justify-around">
-                                    {actions.map((action) => (
-                                        <button
-                                            key={action.label}
-                                            className={
-                                                buttonStyles[
-                                                    action.color ?? 'primary'
-                                                ]
-                                            }
-                                            onClick={action.onClick}
-                                            type="button"
-                                        >
-                                            {action.label}
-                                        </button>
-                                    ))}
-                                </div>
-                            )}
-
-                            <button
-                                className="btn-ghost btn absolute top-0 right-0 m-2"
-                                onClick={onClose}
-                                type="button"
-                            >
-                                <CloseIcon />
-                            </button>
+                    {actions && (
+                        <div className="mt-8 flex justify-around">
+                            {actions.map((action) => (
+                                <button
+                                    key={action.label}
+                                    className={
+                                        buttonStyles[action.color ?? 'primary']
+                                    }
+                                    onClick={action.onClick}
+                                    type="button"
+                                >
+                                    {action.label}
+                                </button>
+                            ))}
                         </div>
-                    </FocusTrap>
+                    )}
+
+                    <button
+                        className="btn-ghost btn absolute top-0 right-0 m-2"
+                        onClick={onClose}
+                        type="button"
+                    >
+                        <CloseIcon />
+                    </button>
                 </div>
-            ) : null}
-        </div>
+            </FocusTrap>
+        </div>,
+        document.body
     );
 };
 

@@ -1,3 +1,4 @@
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { forwardRef, InputHTMLAttributes, ReactNode } from 'react';
 import { ThemeColors } from '../types/colors';
 
@@ -13,8 +14,10 @@ export const Input = forwardRef<HTMLInputElement, Props>(function Input(
     { label, placeholder, leftLabel, color = 'primary', error, ...props },
     ref
 ) {
+    const [parentRef] = useAutoAnimate<HTMLDivElement>();
+
     return (
-        <div className="form-control">
+        <div ref={parentRef} className="form-control">
             <label className="label">
                 <span className="label-text">{label}</span>
             </label>
@@ -32,15 +35,15 @@ export const Input = forwardRef<HTMLInputElement, Props>(function Input(
                     ref={ref}
                     {...props}
                 />
-
-                {error ? (
-                    <label className="label">
-                        <span className="label-text-alt text-error">
-                            <p>{error}</p>
-                        </span>
-                    </label>
-                ) : null}
             </label>
+
+            {error ? (
+                <label className="label">
+                    <span className="label-text-alt text-error">
+                        <p>{error}</p>
+                    </span>
+                </label>
+            ) : null}
         </div>
     );
 });
