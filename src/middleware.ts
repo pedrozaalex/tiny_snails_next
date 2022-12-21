@@ -61,17 +61,17 @@ async function reportClick(snailAlias: string, ip?: string) {
     }
 }
 
-const redis = new Redis({
-    url: process.env.UPSTASH_REDIS_REST_URL ?? '',
-    token: process.env.UPSTASH_REDIS_REST_TOKEN ?? '',
-});
-
-const ratelimit = new Ratelimit({
-    redis: redis,
-    limiter: Ratelimit.fixedWindow(5, '5 s'),
-});
-
 async function rateLimitMiddleware(req: NextRequest) {
+    const redis = new Redis({
+        url: process.env.UPSTASH_REDIS_REST_URL ?? '',
+        token: process.env.UPSTASH_REDIS_REST_TOKEN ?? '',
+    });
+
+    const ratelimit = new Ratelimit({
+        redis: redis,
+        limiter: Ratelimit.fixedWindow(5, '5 s'),
+    });
+
     const identifier = req.ip ?? req.cookies.get('visitorId')?.value ?? '';
     const result = await ratelimit.limit(identifier);
 
@@ -88,6 +88,8 @@ async function rateLimitMiddleware(req: NextRequest) {
         'X-RateLimit-Remaining',
         result.remaining.toString()
     );
+
+    return response;
 }
 
 const middlewares = [
@@ -97,6 +99,10 @@ const middlewares = [
 
 export const middleware: NextMiddleware = async (req) => {
     const path = req.nextUrl.pathname;
+
+    if (path.startsWith('/_next')) {
+        return;
+    }
 
     for (const [regex, middleware] of middlewares) {
         if (regex.test(path)) {
