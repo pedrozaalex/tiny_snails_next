@@ -20,6 +20,8 @@
         "@trpc/react-query": "^10.4.2",
         "@trpc/server": "^10.4.2",
         "@types/react-dom": "18.0.9",
+        "@upstash/ratelimit": "^0.1.5",
+        "@upstash/redis": "^1.18.4",
         "@vercel/analytics": "^0.1.5",
         "argon2": "^0.30.2",
         "daisyui": "^2.42.1",
