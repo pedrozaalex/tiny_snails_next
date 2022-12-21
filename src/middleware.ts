@@ -101,10 +101,9 @@ const middlewares = [
 
 export const middleware: NextMiddleware = async (req) => {
     const path = req.nextUrl.pathname;
+    const matchWithPath = (regex: RegExp) => regex.test(path);
 
-    if (ignoredPaths.some((regex) => regex.test(path))) {
-        return;
-    }
+    if (ignoredPaths.some(matchWithPath)) return;
 
     for (const [regex, middleware] of middlewares) {
         if (regex.test(path)) {
