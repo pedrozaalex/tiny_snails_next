@@ -1,7 +1,7 @@
 import { inferRouterInputs } from '@trpc/server';
 import { NextPage } from 'next';
 import NextHead from 'next/head';
-import create from 'zustand';
+import { useCallback, useState } from 'react';
 import { ArrowLeftIcon } from '../../components/ArrowLeftIcon';
 import { ArrowRightIcon } from '../../components/ArrowRightIcon';
 import { SnailsAnalytics } from '../../components/SnailsAnalytics';
@@ -10,47 +10,43 @@ import { useAppNavigation } from '../../hooks/useNavigation';
 import { AppRouter } from '../../server/routers/_app';
 import { trpc } from '../../utils/trpc';
 
-type GetMineInput = inferRouterInputs<AppRouter>['snail']['getMine'];
+type GetMySnailsInput = inferRouterInputs<AppRouter>['snail']['getMine'];
 
-type MySnailsStore = {
-    page: number;
-    sortBy: GetMineInput['sortBy'];
-    order: GetMineInput['order'];
-    onTableHeaderClick: (propName: GetMineInput['sortBy']) => void;
-    onPrevPageClick: () => void;
-    onNextPageClick: () => void;
+const useMySnailsState = () => {
+    const [page, setPage] = useState(0);
+    const [sortBy, setSortBy] = useState<GetMySnailsInput['sortBy']>('alias');
+    const [order, setOrder] = useState<GetMySnailsInput['order']>('asc');
+
+    const onPrevPageClick = useCallback(() => {
+        setPage((p) => Math.max(0, p - 1));
+    }, []);
+
+    const onNextPageClick = useCallback(() => {
+        setPage((p) => p + 1);
+    }, []);
+
+    const onTableHeaderClick = useCallback(
+        (propName: GetMySnailsInput['sortBy']) => {
+            if (sortBy === propName) {
+                setOrder(toggleAscDesc);
+            }
+
+            setSortBy(propName);
+        },
+        [sortBy]
+    );
+
+    return {
+        page,
+        sortBy,
+        order,
+        onPrevPageClick,
+        onNextPageClick,
+        onTableHeaderClick,
+    };
 };
 
-const useMySnailsStore = create<MySnailsStore>()((set) => ({
-    page: 0,
-    sortBy: 'alias',
-    order: 'asc',
-
-    onPrevPageClick: () => {
-        set((state) => ({
-            ...state,
-            page: Math.max(state.page - 1, 0),
-        }));
-    },
-
-    onNextPageClick: () => {
-        set((state) => ({
-            ...state,
-            page: state.page + 1,
-        }));
-    },
-
-    onTableHeaderClick: (propName) => {
-        set((state) => ({
-            ...state,
-            sortBy: propName,
-            order:
-                state.sortBy === propName ? toggleAscDesc(state.order) : 'asc',
-        }));
-    },
-}));
-
-const toggleAscDesc = (order: MySnailsStore['order']) =>
+const toggleAscDesc = (order: GetMySnailsInput['order']) =>
     order === 'asc' ? 'desc' : 'asc';
 
 const Head = () => (
@@ -69,7 +65,7 @@ const MySnailsPage: NextPage = () => {
         onPrevPageClick,
         onNextPageClick,
         onTableHeaderClick,
-    } = useMySnailsStore();
+    } = useMySnailsState();
 
     const { data, error, isLoading } = trpc.snail.getMine.useQuery({
         page,
