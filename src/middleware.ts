@@ -92,6 +92,8 @@ async function rateLimitMiddleware(req: NextRequest) {
     return response;
 }
 
+const ignoredPaths = [/^\/_next/, /^\/static/];
+
 const middlewares = [
     [/\/s\/\w+/, redirectMiddleware],
     [/\/api/, rateLimitMiddleware],
@@ -100,7 +102,7 @@ const middlewares = [
 export const middleware: NextMiddleware = async (req) => {
     const path = req.nextUrl.pathname;
 
-    if (path.startsWith('/_next')) {
+    if (ignoredPaths.some((regex) => regex.test(path))) {
         return;
     }
 
