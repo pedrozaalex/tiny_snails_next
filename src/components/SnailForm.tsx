@@ -3,14 +3,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { TRPCClientError } from '@trpc/client';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { useAppNavigation } from '../hooks/useNavigation';
-import { createSnailSchema } from '../schemas';
+import { CreateSnailDTO, createSnailSchema } from '../schemas';
 import { trpc } from '../utils/trpc';
 import { ErrorIcon } from './ErrorIcon';
 import { Input } from './Input';
-
-type CreateSnailDTO = z.infer<typeof createSnailSchema>;
 
 type Props = {
     snail?: CreateSnailDTO;
