@@ -20,7 +20,7 @@ export function SnailsAnalytics() {
 
     return (
         <div className="m-auto flex w-full flex-col rounded-lg border-2 border-black bg-base-100">
-            <div className="stats stats-vertical text-primary-content md:stats-horizontal">
+            <div className="stats stats-vertical text-primary-content sm:stats-horizontal">
                 <div className="stat">
                     <div className="stat-title">total clicks</div>
                     <div className="stat-value">
