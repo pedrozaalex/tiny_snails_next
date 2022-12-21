@@ -1,7 +1,7 @@
-const slugRegex = /\/s\/\w+/;
+export const slugPathRegex = /\/s\/\w+/;
 
 export function isSlugPath(pathname: string) {
-    return pathname.match(slugRegex);
+    return slugPathRegex.test(pathname);
 }
 
 export function extractSlug(url: string): string | null {
