@@ -6,6 +6,12 @@ import { procedure, router } from '../trpc';
 
 const FETCH_LIMIT = 10;
 
+function countUnique(arr: (string | null)[]) {
+    const set = new Set(arr);
+    set.delete(null);
+    return set.size;
+}
+
 export const snailRouter = router({
     create: procedure
         .input(createSnailSchema)
@@ -130,13 +136,28 @@ export const snailRouter = router({
     getMine: procedure
         .input(
             z.object({
-                page: z.number().optional().default(0),
+                page: z.number().default(0),
+                sortBy: z
+                    .enum(['createdAt', 'clicks', 'alias', 'url'])
+                    .default('alias'),
+                order: z.enum(['asc', 'desc']).default('asc'),
             })
         )
         .query(async ({ ctx, input }) => {
             const userId = ctx.session?.user?.id ?? ctx.visitorId;
 
             if (!userId) return null;
+
+            const orderBy =
+                input.sortBy === 'clicks'
+                    ? {
+                          clicks: {
+                              _count: input.order,
+                          },
+                      }
+                    : {
+                          [input.sortBy]: input.order,
+                      };
 
             const data = await ctx.db.snail.findMany({
                 where: { userId },
@@ -150,9 +171,7 @@ export const snailRouter = router({
                         },
                     },
                 },
-                orderBy: {
-                    alias: 'asc',
-                },
+                orderBy,
                 take: FETCH_LIMIT + 1,
                 skip: input.page * FETCH_LIMIT,
             });
@@ -168,42 +187,71 @@ export const snailRouter = router({
             };
         }),
 
-    fetchAnalytics: procedure.query(async ({ ctx }) => {
-        const userId = ctx.session?.user?.id ?? ctx.visitorId;
+    fetchAnalyticsData: procedure
+        .input(
+            z
+                .object({
+                    dateStart: z.date().optional(),
+                    dateEnd: z.date().optional(),
+                })
+                .optional()
+        )
+        .query(async ({ input, ctx }) => {
+            const userId = ctx.session?.user?.id ?? ctx.visitorId;
 
-        if (!userId) return null;
+            if (!userId) return null;
 
-        const data = await ctx.db.snail.findMany({
-            where: { userId },
-            select: {
-                clicks: {
-                    select: {
-                        ip: true,
-                        createdAt: true,
+            const data = await ctx.db.snail.findMany({
+                where: {
+                    userId,
+                    createdAt: {
+                        gte: input?.dateStart ?? new Date(0),
+                        lte: input?.dateEnd ?? new Date(),
                     },
                 },
-                _count: {
-                    select: {
-                        clicks: true,
+                select: {
+                    clicks: {
+                        select: {
+                            ip: true,
+                            createdAt: true,
+                        },
                     },
                 },
-            },
-            orderBy: {
-                alias: 'asc',
-            },
-        });
+            });
 
-        return {
-            totalClicks: data.reduce(
-                (acc, snail) => acc + snail._count.clicks,
-                0
-            ),
-            totalSnails: data.length,
-            totalVisitors: new Set(
-                data.flatMap((snail) => snail.clicks.map((click) => click.ip))
-            ).size,
-        };
-    }),
+            const clicksPerDayRecord = data
+                .flatMap((snail) =>
+                    snail.clicks.map((click) => click.createdAt)
+                )
+                .sort((a, b) => a.getTime() - b.getTime())
+                .reduce<Record<string, number | undefined>>((acc, date) => {
+                    const day = new Date(date);
+                    const dayString = day.toISOString().split('T')[0];
+                    acc[dayString] = (acc[dayString] ?? 0) + 1;
+                    return acc;
+                }, {});
+
+            const clicksPerDay = Object.entries(clicksPerDayRecord).map(
+                ([day, clicks]) => ({
+                    day,
+                    clicks: clicks ?? 0,
+                })
+            );
+
+            const ipAddresses = data.flatMap((snail) =>
+                snail.clicks.map((click) => click.ip)
+            );
+
+            return {
+                totalClicks: data.reduce(
+                    (acc, snail) => acc + snail.clicks.length,
+                    0
+                ),
+                totalSnails: data.length,
+                totalVisitors: countUnique(ipAddresses),
+                clicksPerDay,
+            };
+        }),
 
     delete: procedure.input(z.string()).mutation(async ({ input, ctx }) => {
         await ctx.db.click.deleteMany({

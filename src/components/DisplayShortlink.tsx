@@ -38,7 +38,7 @@ export const DisplayShortlink: FunctionComponent<Props> = ({ snailAlias }) => {
             </Link>
 
             <button
-                className="btn-secondary btn ml-auto"
+                className="btn-accent btn ml-auto"
                 type="button"
                 onClick={() => {
                     void copyToClipboard(url).then(notify);
