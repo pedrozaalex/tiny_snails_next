@@ -1,9 +1,12 @@
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { useState } from 'react';
 import { useDialog } from '../hooks/useDialog';
 import { SnailIcon } from './SnailIcon';
 
 export function Navbar() {
+    const [showSidebar, setShowSidebar] = useState(false);
+
     const { status } = useSession();
 
     const [SignOutDialog, openSignOutDialog] = useDialog({
@@ -27,7 +30,8 @@ export function Navbar() {
                 </Link>
             </h1>
 
-            <section className="flex gap-4">
+            {/* The desktop navbar, that stays at the top */}
+            <section className="hidden gap-4 sm:flex">
                 <Link href="/snails" className="btn-ghost btn">
                     your snails
                 </Link>
@@ -58,6 +62,85 @@ export function Navbar() {
                         <small>(to save your snails)</small>
                     </div>
                 )}
+            </section>
+
+            {/* The mobile navbar, that shows up when the screen is small */}
+            <section className="flex sm:hidden">
+                <button
+                    type="button"
+                    className="btn-ghost btn-square btn"
+                    onClick={() => setShowSidebar(true)}
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="#000000"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <line x1="4" y1="8" x2="20" y2="8" />
+                        <line x1="4" y1="16" x2="20" y2="16" />
+                    </svg>
+                </button>
+
+                <div
+                    className={`fixed inset-0 z-10 h-full overflow-hidden transition-all ${
+                        showSidebar ? 'w-full' : 'w-0'
+                    }`}
+                    onClick={() => setShowSidebar(false)}
+                >
+                    <div className="flex h-full w-64 flex-col bg-base-100 text-primary-content shadow-2xl">
+                        <div className="flex-none">
+                            <div className="flex h-20 items-center justify-center">
+                                <Link
+                                    href="/"
+                                    className="btn-ghost btn gap-2 text-3xl font-extrabold normal-case"
+                                >
+                                    tiny snails
+                                    <SnailIcon />
+                                </Link>
+                            </div>
+
+                            <div className="flex flex-col gap-4 px-4 py-2">
+                                <Link href="/snails" className="btn-ghost btn">
+                                    your snails
+                                </Link>
+
+                                {status === 'authenticated' && (
+                                    <>
+                                        <button
+                                            type="button"
+                                            className="btn-secondary btn flex-col px-6"
+                                            onClick={openSignOutDialog}
+                                        >
+                                            <p>log out</p>
+                                        </button>
+
+                                        <SignOutDialog />
+                                    </>
+                                )}
+
+                                {status === 'unauthenticated' && (
+                                    <div className="flex flex-col">
+                                        <button
+                                            type="button"
+                                            className="btn-accent btn flex-col px-6"
+                                            onClick={() => void signIn()}
+                                        >
+                                            <p>sign in</p>
+                                        </button>
+                                        <small>(to save your snails)</small>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
         </header>
     );
