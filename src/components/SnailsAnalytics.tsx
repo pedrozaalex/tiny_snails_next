@@ -65,6 +65,7 @@ export function SnailsAnalytics() {
                             type="monotone"
                             dataKey="clicks"
                             stroke={'hsl(var(--pf))'}
+                            strokeWidth={2}
                         />
                         <YAxis fontSize={13} />
                     </LineChart>
