@@ -7,7 +7,7 @@ import { SnailIcon } from './SnailIcon';
 export function Navbar() {
     const [showSidebar, setShowSidebar] = useState(false);
 
-    const { status } = useSession();
+    const { status: authSessionStatus } = useSession();
 
     const [SignOutDialog, openSignOutDialog] = useDialog({
         title: 'log out',
@@ -32,7 +32,7 @@ export function Navbar() {
                         your snails
                     </Link>
 
-                    {status === 'authenticated' && (
+                    {authSessionStatus === 'authenticated' && (
                         <>
                             <button
                                 type="button"
@@ -44,7 +44,7 @@ export function Navbar() {
                         </>
                     )}
 
-                    {status === 'unauthenticated' && (
+                    {authSessionStatus === 'unauthenticated' && (
                         <div className="flex flex-col">
                             <button
                                 type="button"
@@ -72,7 +72,6 @@ export function Navbar() {
                             strokeLinecap="round"
                             strokeLinejoin="round"
                         >
-                            {/* <path stroke="none" d="M0 0h24v24H0z" fill="none" /> */}
                             <line x1="4" y1="8" x2="20" y2="8" />
                             <line x1="4" y1="12" x2="20" y2="12" />
                             <line x1="4" y1="16" x2="20" y2="16" />
@@ -80,8 +79,8 @@ export function Navbar() {
                     </button>
 
                     <div
-                        className={`fixed inset-0 z-10 h-full overflow-hidden transition-all ${
-                            showSidebar ? 'w-full' : 'w-0'
+                        className={`fixed inset-0 z-10 h-full overflow-hidden transition-transform ${
+                            showSidebar ? 'translate-x-0 transform' : '-translate-x-full transform'
                         }`}
                         onClick={() => setShowSidebar(false)}
                     >
@@ -99,7 +98,7 @@ export function Navbar() {
                                         your snails
                                     </Link>
 
-                                    {status === 'authenticated' && (
+                                    {authSessionStatus === 'authenticated' && (
                                         <>
                                             <button
                                                 type="button"
@@ -113,7 +112,7 @@ export function Navbar() {
                                         </>
                                     )}
 
-                                    {status === 'unauthenticated' && (
+                                    {authSessionStatus === 'unauthenticated' && (
                                         <div className="flex flex-col">
                                             <button
                                                 type="button"
