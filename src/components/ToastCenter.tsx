@@ -33,17 +33,11 @@ export const ToastCenter: FunctionComponent = () => {
     };
 
     return (
-        <div
-            id="__toast-center"
-            className="fixed top-0 right-0 z-50 flex flex-col gap-2"
-            ref={parentRef}
-        >
+        <div id="__toast-center" className="fixed top-0 right-0 z-50 flex flex-col gap-2" ref={parentRef}>
             {toasts.map((toast) => (
                 <div key={toast.id} className="toast-end toast toast-top">
                     <div
-                        className={`alert ${
-                            types[toast.type]
-                        } cursor-pointer shadow-lg`}
+                        className={`alert ${types[toast.type]} cursor-pointer shadow-lg`}
                         onClick={() => removeNotification(toast.id)}
                     >
                         <div>

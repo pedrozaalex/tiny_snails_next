@@ -7,12 +7,8 @@ import { db } from '../utils/db';
 
 // create context based of incoming request
 // set as optional here so it can also be re-used for `getStaticProps()`
-export const createContext = async (
-    opts?: trpcNext.CreateNextContextOptions
-) => {
-    const session = opts?.req
-        ? await unstable_getServerSession(opts.req, opts.res, authOptions)
-        : null;
+export const createContext = async (opts?: trpcNext.CreateNextContextOptions) => {
+    const session = opts?.req ? await unstable_getServerSession(opts.req, opts.res, authOptions) : null;
 
     const isAuthenticated = !!session?.user;
     const hasVisitorId = opts?.req.cookies.visitorId;

@@ -1,13 +1,5 @@
 type Props = {
-    color?:
-        | 'primary'
-        | 'secondary'
-        | 'accent'
-        | 'neutral'
-        | 'success'
-        | 'warning'
-        | 'error'
-        | 'white';
+    color?: 'primary' | 'secondary' | 'accent' | 'neutral' | 'success' | 'warning' | 'error' | 'white';
 };
 
 const textColors = {
@@ -25,21 +17,12 @@ export function Spinner({ color = 'primary' }: Props) {
     return (
         <div className="flex items-center justify-center">
             <svg
-                className={
-                    '-ml-1 mr-3 h-5 w-5 animate-spin ' + textColors[color]
-                }
+                className={'-ml-1 mr-3 h-5 w-5 animate-spin ' + textColors[color]}
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
             >
-                <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                />
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path
                     className="opacity-75"
                     fill="currentColor"

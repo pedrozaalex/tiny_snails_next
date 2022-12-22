@@ -27,9 +27,7 @@ const useMySnailsState = () => {
 
     const onTableHeaderClick = useCallback(
         (clickedProp: GetMySnailsInput['sortBy']) => {
-            setOrder((o) =>
-                sortBy === clickedProp ? toggleAscDesc(o) : 'asc'
-            );
+            setOrder((o) => (sortBy === clickedProp ? toggleAscDesc(o) : 'asc'));
             setSortBy(clickedProp);
         },
         [sortBy]
@@ -45,8 +43,7 @@ const useMySnailsState = () => {
     };
 };
 
-const toggleAscDesc = (order: GetMySnailsInput['order']) =>
-    order === 'asc' ? 'desc' : 'asc';
+const toggleAscDesc = (order: GetMySnailsInput['order']) => (order === 'asc' ? 'desc' : 'asc');
 
 const Head = () => (
     <NextHead>
@@ -57,14 +54,7 @@ const Head = () => (
 const MySnailsPage: NextPage = () => {
     const { navigateTo } = useAppNavigation();
 
-    const {
-        page,
-        sortBy,
-        order,
-        onPrevPageClick,
-        onNextPageClick,
-        onTableHeaderClick,
-    } = useMySnailsState();
+    const { page, sortBy, order, onPrevPageClick, onNextPageClick, onTableHeaderClick } = useMySnailsState();
 
     const { data, error, isLoading } = trpc.snail.getMine.useQuery({
         page,
@@ -82,14 +72,8 @@ const MySnailsPage: NextPage = () => {
                 <Head />
 
                 <div className="flex h-full flex-col items-center justify-center gap-8 text-center">
-                    <h1 className="text-4xl font-bold">
-                        you have no snails yet :(
-                    </h1>
-                    <button
-                        type="button"
-                        className="btn-accent btn"
-                        onClick={navigateTo.homepage}
-                    >
+                    <h1 className="text-4xl font-bold">you have no snails yet :(</h1>
+                    <button type="button" className="btn-accent btn" onClick={navigateTo.homepage}>
                         create one
                     </button>
                 </div>

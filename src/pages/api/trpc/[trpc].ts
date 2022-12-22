@@ -1,8 +1,5 @@
 import * as trpcNext from '@trpc/server/adapters/next';
-import {
-    createContext,
-    setVisitorIdIfUnauthenticated,
-} from '../../../server/context';
+import { createContext, setVisitorIdIfUnauthenticated } from '../../../server/context';
 import { appRouter } from '../../../server/routers/_app';
 
 export const config = {

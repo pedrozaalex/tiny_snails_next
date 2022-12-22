@@ -14,10 +14,7 @@ type Props = {
     baseUrl?: string | null;
 };
 
-const SnailForm: FunctionComponent<Props> = ({
-    snail,
-    baseUrl = 'tny.xyz/',
-}) => {
+const SnailForm: FunctionComponent<Props> = ({ snail, baseUrl = 'tny.xyz/' }) => {
     const { navigateTo } = useAppNavigation();
     const [errorContainerRef] = useAutoAnimate<HTMLDivElement>();
 
@@ -65,29 +62,18 @@ const SnailForm: FunctionComponent<Props> = ({
                     {...register('alias')}
                 />
 
-                <button
-                    type="submit"
-                    className={`btn-accent btn mt-3 ${
-                        isLoading ? ' loading' : ''
-                    }`}
-                >
+                <button type="submit" className={`btn-accent btn mt-3 ${isLoading ? ' loading' : ''}`}>
                     {snail ? 'update' : 'create it!'}
                 </button>
             </form>
 
             <div className={error ? 'm-4' : ''} ref={errorContainerRef}>
                 {error ? (
-                    <div
-                        className="alert alert-error cursor-pointer shadow-lg"
-                        onClick={reset}
-                    >
+                    <div className="alert alert-error cursor-pointer shadow-lg" onClick={reset}>
                         <div>
                             <ErrorIcon />
                             <span>
-                                error:{' '}
-                                {error instanceof TRPCClientError
-                                    ? error.message
-                                    : 'unknown error occurred'}
+                                error: {error instanceof TRPCClientError ? error.message : 'unknown error occurred'}
                             </span>
                         </div>
                     </div>

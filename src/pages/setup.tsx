@@ -6,10 +6,9 @@ import { trpc } from '../utils/trpc';
 
 const SetupPage: NextPage = () => {
     const { navigateTo } = useAppNavigation();
-    const { error, mutate: sendRequest } =
-        trpc.snail.requestVisitorSnailOwnership.useMutation({
-            onSuccess: navigateTo.homepage,
-        });
+    const { error, mutate: sendRequest } = trpc.snail.requestVisitorSnailOwnership.useMutation({
+        onSuccess: navigateTo.homepage,
+    });
 
     useEffect(sendRequest, [sendRequest]);
 

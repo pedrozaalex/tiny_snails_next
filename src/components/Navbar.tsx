@@ -11,9 +11,7 @@ export function Navbar() {
 
     const [SignOutDialog, openSignOutDialog] = useDialog({
         title: 'log out',
-        content: (
-            <p className="text-center">are you sure you want to log out?</p>
-        ),
+        content: <p className="text-center">are you sure you want to log out?</p>,
         onConfirm: () => void signOut(),
         onConfirmLabel: 'log out',
     });
@@ -22,10 +20,7 @@ export function Navbar() {
         <>
             <header className="navbar mt-8 justify-between border-y-2 border-primary-content bg-base-100 px-4 py-2 text-primary-content">
                 <h1>
-                    <Link
-                        href="/"
-                        className="btn-ghost btn gap-2 text-3xl font-extrabold normal-case"
-                    >
+                    <Link href="/" className="btn-ghost btn gap-2 text-3xl font-extrabold normal-case">
                         tiny snails
                         <SnailIcon />
                     </Link>
@@ -65,11 +60,7 @@ export function Navbar() {
 
                 {/* The mobile navbar, that shows up when the screen is small */}
                 <section className="flex sm:hidden">
-                    <button
-                        type="button"
-                        className="btn-ghost btn-square btn"
-                        onClick={() => setShowSidebar(true)}
-                    >
+                    <button type="button" className="btn-ghost btn-square btn" onClick={() => setShowSidebar(true)}>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
@@ -97,20 +88,14 @@ export function Navbar() {
                         <div className="flex h-full w-64 flex-col bg-base-100 text-primary-content shadow-2xl">
                             <div className="flex-none">
                                 <h1 className="flex h-20 items-center justify-center">
-                                    <Link
-                                        href="/"
-                                        className="btn-ghost btn gap-2 text-3xl font-extrabold normal-case"
-                                    >
+                                    <Link href="/" className="btn-ghost btn gap-2 text-3xl font-extrabold normal-case">
                                         tiny snails
                                         <SnailIcon />
                                     </Link>
                                 </h1>
 
                                 <div className="flex flex-col gap-4 px-4 py-2">
-                                    <Link
-                                        href="/snails"
-                                        className="btn-ghost btn"
-                                    >
+                                    <Link href="/snails" className="btn-ghost btn">
                                         your snails
                                     </Link>
 

@@ -1,14 +1,5 @@
-import {
-    GetServerSideProps,
-    InferGetServerSidePropsType,
-    NextPage,
-} from 'next';
-import {
-    ClientSafeProvider,
-    getCsrfToken,
-    getProviders,
-    signIn,
-} from 'next-auth/react';
+import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
+import { ClientSafeProvider, getCsrfToken, getProviders, signIn } from 'next-auth/react';
 import Head from 'next/head';
 import { ReactNode } from 'react';
 import { GitHubIcon } from '../../components/GithubIcon';
@@ -18,9 +9,7 @@ type Props = {
     csrfToken: Awaited<ReturnType<typeof getCsrfToken>>;
 };
 
-export const getServerSideProps: GetServerSideProps<Props> = async (
-    context
-) => {
+export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
     const csrfToken = await getCsrfToken(context);
     const providers = await getProviders();
 
@@ -29,9 +18,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
     };
 };
 
-const SignInPage: NextPage<
-    InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ providers, csrfToken }) => {
+const SignInPage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = ({ providers, csrfToken }) => {
     if (!providers) {
         return null;
     }
@@ -57,13 +44,8 @@ const SignInPage: NextPage<
     );
 };
 
-const getSignInFormForProvider = (
-    provider: ClientSafeProvider,
-    csrfToken: string | undefined
-): ReactNode => {
-    const providerSignInButtons: Partial<
-        Record<ClientSafeProvider['id'], ReactNode>
-    > = {
+const getSignInFormForProvider = (provider: ClientSafeProvider, csrfToken: string | undefined): ReactNode => {
+    const providerSignInButtons: Partial<Record<ClientSafeProvider['id'], ReactNode>> = {
         email: (
             <>
                 <div className="mb-4 flex items-center">
@@ -72,16 +54,8 @@ const getSignInFormForProvider = (
                     <hr className="inline-block w-1/2 border-black" />
                 </div>
 
-                <form
-                    className="form-control"
-                    method="post"
-                    action="/api/auth/signin/email"
-                >
-                    <input
-                        name="csrfToken"
-                        type="hidden"
-                        defaultValue={csrfToken}
-                    />
+                <form className="form-control" method="post" action="/api/auth/signin/email">
+                    <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
 
                     <input
                         type="email"
@@ -91,10 +65,7 @@ const getSignInFormForProvider = (
                         className="input-bordered input w-full max-w-xs"
                     />
 
-                    <button
-                        className="btn-secondary btn-block btn mt-4"
-                        type="submit"
-                    >
+                    <button className="btn-secondary btn-block btn mt-4" type="submit">
                         Sign in with Email
                     </button>
                 </form>

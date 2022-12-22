@@ -18,18 +18,12 @@ function containsSlur(alias: string) {
 }
 
 export const createSnailSchema = z.object({
-    url: z
-        .string()
-        .url()
-        .refine(containsBaseUrl, "you can't create a looping snail!"),
+    url: z.string().url().refine(containsBaseUrl, "you can't create a looping snail!"),
     alias: z
         .string()
         .min(3)
         .max(20)
-        .regex(
-            validAliasRegex,
-            'alias can contain only letters, numbers, hyphens (-) and underscores (_)'
-        )
+        .regex(validAliasRegex, 'alias can contain only letters, numbers, hyphens (-) and underscores (_)')
         .refine(containsSlur, "you can't give a snail such a bad name!")
         .optional(),
 });

@@ -13,64 +13,53 @@ function countUnique(arr: (string | null)[]) {
 }
 
 export const snailRouter = router({
-    create: procedure
-        .input(createSnailSchema)
-        .mutation(async ({ input, ctx }) => {
-            if (
-                !input.alias ||
-                typeof input.alias !== 'string' ||
-                input.alias.length === 0
-            ) {
-                input.alias = Math.random().toString(36).substring(2, 8);
-            }
+    create: procedure.input(createSnailSchema).mutation(async ({ input, ctx }) => {
+        if (!input.alias || typeof input.alias !== 'string' || input.alias.length === 0) {
+            input.alias = Math.random().toString(36).substring(2, 8);
+        }
 
-            const userId = ctx.session?.user?.id ?? ctx.visitorId;
+        const userId = ctx.session?.user?.id ?? ctx.visitorId;
 
-            if (!userId) {
-                // We throw because either the user is not authenticated and we
-                // failed to generate a visitorId.
+        if (!userId) {
+            // We throw because either the user is not authenticated and we
+            // failed to generate a visitorId.
+            throw new TRPCError({
+                code: 'INTERNAL_SERVER_ERROR',
+                message: 'An unexpected error occurred, please try again later.',
+            });
+        }
+
+        try {
+            const snail = await ctx.db.snail.create({
+                data: {
+                    alias: input.alias,
+                    url: input.url,
+                    userId,
+                },
+                select: {
+                    alias: true,
+                    createdAt: true,
+                    url: true,
+                },
+            });
+
+            return snail;
+        } catch (error) {
+            if (error instanceof PrismaClientKnownRequestError && error.code === 'P2002') {
                 throw new TRPCError({
-                    code: 'INTERNAL_SERVER_ERROR',
-                    message:
-                        'An unexpected error occurred, please try again later.',
-                });
-            }
-
-            try {
-                const snail = await ctx.db.snail.create({
-                    data: {
-                        alias: input.alias,
-                        url: input.url,
-                        userId,
-                    },
-                    select: {
-                        alias: true,
-                        createdAt: true,
-                        url: true,
-                    },
-                });
-
-                return snail;
-            } catch (error) {
-                if (
-                    error instanceof PrismaClientKnownRequestError &&
-                    error.code === 'P2002'
-                ) {
-                    throw new TRPCError({
-                        code: 'BAD_REQUEST',
-                        message: 'alias already in use!',
-                        cause: error,
-                    });
-                }
-
-                throw new TRPCError({
-                    code: 'INTERNAL_SERVER_ERROR',
-                    message:
-                        'An unexpected error occurred, please try again later.',
+                    code: 'BAD_REQUEST',
+                    message: 'alias already in use!',
                     cause: error,
                 });
             }
-        }),
+
+            throw new TRPCError({
+                code: 'INTERNAL_SERVER_ERROR',
+                message: 'An unexpected error occurred, please try again later.',
+                cause: error,
+            });
+        }
+    }),
 
     getByAlias: procedure.input(z.string()).query(async ({ input, ctx }) => {
         const data = await ctx.db.snail.findFirst({
@@ -137,9 +126,7 @@ export const snailRouter = router({
         .input(
             z.object({
                 page: z.number().default(0),
-                sortBy: z
-                    .enum(['createdAt', 'clicks', 'alias', 'url'])
-                    .default('alias'),
+                sortBy: z.enum(['createdAt', 'clicks', 'alias', 'url']).default('alias'),
                 order: z.enum(['asc', 'desc']).default('asc'),
             })
         )
@@ -220,9 +207,7 @@ export const snailRouter = router({
             });
 
             const clicksPerDayRecord = data
-                .flatMap((snail) =>
-                    snail.clicks.map((click) => click.createdAt)
-                )
+                .flatMap((snail) => snail.clicks.map((click) => click.createdAt))
                 .sort((a, b) => a.getTime() - b.getTime())
                 .reduce<Record<string, number | undefined>>((acc, date) => {
                     const day = new Date(date);
@@ -231,22 +216,15 @@ export const snailRouter = router({
                     return acc;
                 }, {});
 
-            const clicksPerDay = Object.entries(clicksPerDayRecord).map(
-                ([day, clicks]) => ({
-                    day,
-                    clicks: clicks ?? 0,
-                })
-            );
+            const clicksPerDay = Object.entries(clicksPerDayRecord).map(([day, clicks]) => ({
+                day,
+                clicks: clicks ?? 0,
+            }));
 
-            const ipAddresses = data.flatMap((snail) =>
-                snail.clicks.map((click) => click.ip)
-            );
+            const ipAddresses = data.flatMap((snail) => snail.clicks.map((click) => click.ip));
 
             return {
-                totalClicks: data.reduce(
-                    (acc, snail) => acc + snail.clicks.length,
-                    0
-                ),
+                totalClicks: data.reduce((acc, snail) => acc + snail.clicks.length, 0),
                 totalSnails: data.length,
                 totalVisitors: countUnique(ipAddresses),
                 clicksPerDay,

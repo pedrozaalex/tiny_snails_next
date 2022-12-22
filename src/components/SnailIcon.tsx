@@ -7,13 +7,5 @@ type Props = {
 };
 
 export const SnailIcon: FunctionComponent<Props> = ({ size = 36 }) => {
-    return (
-        <Image
-            src={Snail}
-            alt="Snail icon"
-            width={size}
-            height={size}
-            className="inline-block aspect-square"
-        />
-    );
+    return <Image src={Snail} alt="Snail icon" width={size} height={size} className="inline-block aspect-square" />;
 };

@@ -10,13 +10,9 @@ export function AppHero() {
                         <SnailIcon size={48} />
                     </h2>
 
-                    <p className="pt-4 text-lg">
-                        now you can share your big ugly links
-                    </p>
+                    <p className="pt-4 text-lg">now you can share your big ugly links</p>
 
-                    <small>
-                        (yes, the name is a word play with the slugs in urls)
-                    </small>
+                    <small>(yes, the name is a word play with the slugs in urls)</small>
                 </div>
             </div>
         </div>

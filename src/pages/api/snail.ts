@@ -5,10 +5,7 @@ import { db } from '../../utils/db';
 
 const filterableProperties: (keyof Snail)[] = ['alias', 'url'];
 
-const handler: NextApiHandler = async (
-    req: NextApiRequest,
-    res: NextApiResponse
-) => {
+const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method !== 'GET') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
@@ -16,9 +13,7 @@ const handler: NextApiHandler = async (
     const params = req.query;
 
     const query = Object.fromEntries(
-        Object.entries(params).filter(([key]) =>
-            filterableProperties.includes(key as keyof Snail)
-        )
+        Object.entries(params).filter(([key]) => filterableProperties.includes(key as keyof Snail))
     );
 
     const data = await db.snail.findMany({
@@ -30,10 +25,7 @@ const handler: NextApiHandler = async (
     }
 
     // Cache for 5 minutes, swr for another 5
-    res.setHeader(
-        'Cache-Control',
-        's-maxage=3600, stale-while-revalidate=3600'
-    );
+    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=3600');
 
     return res.json(data);
 };

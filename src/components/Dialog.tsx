@@ -1,11 +1,5 @@
 import FocusTrap from 'focus-trap-react';
-import {
-    FunctionComponent,
-    ReactNode,
-    useCallback,
-    useEffect,
-    useRef,
-} from 'react';
+import { FunctionComponent, ReactNode, useCallback, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { ThemeColors } from '../types/colors';
 import { CloseIcon } from './CloseIcon';
@@ -62,8 +56,7 @@ export const Dialog: FunctionComponent<Props> = ({
         };
     }, [keyDownHandler]);
 
-    const layoutRoot =
-        typeof window !== 'undefined' && document.getElementById('layout-root');
+    const layoutRoot = typeof window !== 'undefined' && document.getElementById('layout-root');
 
     if (!isOpen || !layoutRoot) return null;
 
@@ -80,12 +73,7 @@ export const Dialog: FunctionComponent<Props> = ({
                     aria-modal="true"
                     aria-labelledby="dialog-title"
                 >
-                    <div
-                        className="mb-4 h-8 text-2xl font-bold"
-                        id="dialog-title"
-                        tabIndex={-1}
-                        ref={titleRef}
-                    >
+                    <div className="mb-4 h-8 text-2xl font-bold" id="dialog-title" tabIndex={-1} ref={titleRef}>
                         {title}
                     </div>
 
@@ -96,9 +84,7 @@ export const Dialog: FunctionComponent<Props> = ({
                             {actions.map((action) => (
                                 <button
                                     key={action.label}
-                                    className={
-                                        buttonStyles[action.color ?? 'primary']
-                                    }
+                                    className={buttonStyles[action.color ?? 'primary']}
                                     onClick={action.onClick}
                                     type="button"
                                 >
@@ -108,11 +94,7 @@ export const Dialog: FunctionComponent<Props> = ({
                         </div>
                     )}
 
-                    <button
-                        className="btn-ghost btn absolute top-0 right-0 m-2"
-                        onClick={onClose}
-                        type="button"
-                    >
+                    <button className="btn-ghost btn absolute top-0 right-0 m-2" onClick={onClose} type="button">
                         <CloseIcon />
                     </button>
                 </div>

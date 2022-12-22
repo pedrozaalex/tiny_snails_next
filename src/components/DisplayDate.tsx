@@ -7,10 +7,7 @@ type Props = {
 
 export const DisplayDate: FunctionComponent<Props> = ({ date }) => {
     return (
-        <time
-            className="tooltip underline decoration-dotted"
-            data-tip={date.toLocaleString()}
-        >
+        <time className="tooltip underline decoration-dotted" data-tip={date.toLocaleString()}>
             {formatDate(date)}
         </time>
     );

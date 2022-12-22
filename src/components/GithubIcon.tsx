@@ -5,13 +5,7 @@ export const GitHubIcon = ({
     ...props
 }: Omit<SVGProps<SVGSVGElement>, 'width' | 'height'> & { size?: number }) => {
     return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width={size ?? 24}
-            height={size ?? 24}
-            viewBox="0 0 24 24"
-            {...props}
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" width={size ?? 24} height={size ?? 24} viewBox="0 0 24 24" {...props}>
             <path
                 fill="currentColor"
                 d="M12

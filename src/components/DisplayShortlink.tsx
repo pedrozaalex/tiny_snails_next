@@ -11,11 +11,7 @@ type Props = {
 };
 
 export const DisplayShortlink: FunctionComponent<Props> = ({ snailAlias }) => {
-    const {
-        data: snail,
-        error,
-        isLoading,
-    } = trpc.snail.getByAlias.useQuery(snailAlias);
+    const { data: snail, error, isLoading } = trpc.snail.getByAlias.useQuery(snailAlias);
 
     if (isLoading) {
         return <Spinner />;
@@ -50,5 +46,4 @@ export const DisplayShortlink: FunctionComponent<Props> = ({ snailAlias }) => {
     );
 };
 
-const notify = () =>
-    toast({ message: 'copied to clipboard!', type: 'success' });
+const notify = () => toast({ message: 'copied to clipboard!', type: 'success' });

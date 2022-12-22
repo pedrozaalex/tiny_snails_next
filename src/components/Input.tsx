@@ -22,9 +22,7 @@ export const Input = forwardRef<HTMLInputElement, Props>(function Input(
                 <span className="label-text">{label}</span>
             </label>
             <label className={leftLabel ? 'input-group' : ''}>
-                {leftLabel ? (
-                    <span className={`bg-${color} min-w-fit`}>{leftLabel}</span>
-                ) : null}
+                {leftLabel ? <span className={`bg-${color} min-w-fit`}>{leftLabel}</span> : null}
 
                 <input
                     type="text"

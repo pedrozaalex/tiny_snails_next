@@ -48,17 +48,12 @@ export function Table<ObjectType extends Record<string, unknown>>({
                                 const key = getPropertyKey(property);
                                 const label = getPropertyLabel(property);
 
-                                const isSortedByThisProperty =
-                                    key === selectedSortBy;
+                                const isSortedByThisProperty = key === selectedSortBy;
 
                                 return (
                                     <th
                                         key={key}
-                                        className={`!static ${
-                                            onHeaderClick
-                                                ? 'cursor-pointer'
-                                                : 'cursor-default'
-                                        }`}
+                                        className={`!static ${onHeaderClick ? 'cursor-pointer' : 'cursor-default'}`}
                                         onClick={onHeaderClick?.bind(null, key)}
                                     >
                                         {label}
@@ -70,9 +65,7 @@ export function Table<ObjectType extends Record<string, unknown>>({
                                                 height="12"
                                                 viewBox="0 0 24 24"
                                                 className={`ml-2 inline ${
-                                                    order === 'desc'
-                                                        ? 'rotate-180 transform'
-                                                        : ''
+                                                    order === 'desc' ? 'rotate-180 transform' : ''
                                                 }`}
                                             >
                                                 <path d="M24 22h-24l12-20z" />
@@ -97,10 +90,7 @@ export function Table<ObjectType extends Record<string, unknown>>({
                         )}
 
                         {objectsWithIds.map((obj) => (
-                            <TableRow
-                                key={obj._objectId}
-                                onClick={onRowClick?.bind(null, obj)}
-                            >
+                            <TableRow key={obj._objectId} onClick={onRowClick?.bind(null, obj)}>
                                 {properties.map((property) => (
                                     <td
                                         key={getPropertyKey(property)}
@@ -118,28 +108,16 @@ export function Table<ObjectType extends Record<string, unknown>>({
     );
 }
 
-function getPropertyKey<ObjectType extends Record<string, unknown>>(
-    property: Property<ObjectType>
-): string {
-    if (
-        typeof property === 'string' ||
-        typeof property === 'number' ||
-        typeof property === 'symbol'
-    ) {
+function getPropertyKey<ObjectType extends Record<string, unknown>>(property: Property<ObjectType>): string {
+    if (typeof property === 'string' || typeof property === 'number' || typeof property === 'symbol') {
         return String(property);
     }
 
     return String(property.key);
 }
 
-function getPropertyLabel<ObjectType extends Record<string, unknown>>(
-    property: Property<ObjectType>
-): string {
-    if (
-        typeof property === 'string' ||
-        typeof property === 'number' ||
-        typeof property === 'symbol'
-    ) {
+function getPropertyLabel<ObjectType extends Record<string, unknown>>(property: Property<ObjectType>): string {
+    if (typeof property === 'string' || typeof property === 'number' || typeof property === 'symbol') {
         return String(property);
     }
 

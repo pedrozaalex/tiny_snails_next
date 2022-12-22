@@ -25,10 +25,7 @@ function fallbackCopyTextToClipboard(text: string) {
     }
 }
 
-export function copyToClipboard(
-    text: string,
-    onCopy?: () => void
-): Promise<void> {
+export function copyToClipboard(text: string, onCopy?: () => void): Promise<void> {
     return new Promise<void>((resolve, reject) => {
         // This rule must be disabled because the clipboard API is not yet supported in all browsers
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
