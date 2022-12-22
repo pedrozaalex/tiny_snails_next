@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 const validAliasRegex = /^[a-z0-9-_]+$/i;
 
-const baseUrlRegex = /tny-snls.xyz\/s\/\w+/i;
+const baseUrlRegex = /tny-snls.xyz/i;
 
 function containsBaseUrl(url: string) {
     const match = baseUrlRegex.test(url) || baseUrlRegex.test(decodeURI(url));
