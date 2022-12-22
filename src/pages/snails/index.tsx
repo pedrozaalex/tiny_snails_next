@@ -26,12 +26,11 @@ const useMySnailsState = () => {
     }, []);
 
     const onTableHeaderClick = useCallback(
-        (propName: GetMySnailsInput['sortBy']) => {
-            if (sortBy === propName) {
-                setOrder(toggleAscDesc);
-            }
-
-            setSortBy(propName);
+        (clickedProp: GetMySnailsInput['sortBy']) => {
+            setOrder((o) =>
+                sortBy === clickedProp ? toggleAscDesc(o) : 'asc'
+            );
+            setSortBy(clickedProp);
         },
         [sortBy]
     );
