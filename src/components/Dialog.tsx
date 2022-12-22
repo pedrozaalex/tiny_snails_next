@@ -62,7 +62,10 @@ export const Dialog: FunctionComponent<Props> = ({
         };
     }, [keyDownHandler]);
 
-    if (!isOpen) return null;
+    const layoutRoot =
+        typeof window !== 'undefined' && document.getElementById('layout-root');
+
+    if (!isOpen || !layoutRoot) return null;
 
     return createPortal(
         <div
@@ -115,7 +118,7 @@ export const Dialog: FunctionComponent<Props> = ({
                 </div>
             </FocusTrap>
         </div>,
-        document.body
+        layoutRoot
     );
 };
 

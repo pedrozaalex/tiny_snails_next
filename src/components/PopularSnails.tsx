@@ -47,8 +47,7 @@ export const PopularSnails = () => {
                 <Image
                     src={TrophyIcon}
                     alt="trophy icon"
-                    width={24}
-                    height={24}
+                    className="h-6 w-auto"
                 />
             </h2>
 

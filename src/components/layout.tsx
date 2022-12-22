@@ -8,13 +8,14 @@ type Props = {
 };
 
 const poppins = Poppins({
-    weight: ['400', '800'],
+    weight: ['400', '700'],
     variable: '--font-poppins',
 });
 
 const Layout: FunctionComponent<Props> = ({ children }) => {
     return (
         <div
+            id="layout-root"
             className={`flex flex-col bg-primary ${poppins.variable} font-sans`}
         >
             <Navbar />
