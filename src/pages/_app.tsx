@@ -12,8 +12,8 @@ const App = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
         <SessionProvider session={pageProps.session}>
             <Layout>
                 <Component {...pageProps} />
+                <ToastCenter />
             </Layout>
-            <ToastCenter />
             <Analytics />
         </SessionProvider>
     );

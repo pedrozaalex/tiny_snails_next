@@ -18,6 +18,7 @@
     "include": [
         "next-env.d.ts",
         "next.config.js",
+        "tailwind.config.cjs",
         "**/*.ts",
         "**/*.tsx",
         "**/*.cjs",

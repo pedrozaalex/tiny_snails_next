@@ -96,7 +96,7 @@ export function Navbar() {
                     >
                         <div className="flex h-full w-64 flex-col bg-base-100 text-primary-content shadow-2xl">
                             <div className="flex-none">
-                                <div className="flex h-20 items-center justify-center">
+                                <h1 className="flex h-20 items-center justify-center">
                                     <Link
                                         href="/"
                                         className="btn-ghost btn gap-2 text-3xl font-extrabold normal-case"
@@ -104,7 +104,7 @@ export function Navbar() {
                                         tiny snails
                                         <SnailIcon />
                                     </Link>
-                                </div>
+                                </h1>
 
                                 <div className="flex flex-col gap-4 px-4 py-2">
                                     <Link
