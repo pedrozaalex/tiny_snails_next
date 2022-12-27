@@ -1,13 +1,15 @@
 import { Analytics } from '@vercel/analytics/react';
 import { Session } from 'next-auth';
 import { SessionProvider } from 'next-auth/react';
-import type { AppProps } from 'next/app';
+import type { AppProps as NextProps } from 'next/app';
 import '../../styles/globals.css';
 import { Layout } from '../components/Layout';
 import { ToastCenter } from '../components/ToastCenter';
 import { trpc } from '../utils/trpc';
 
-const App = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
+type AppProps = NextProps<{ session: Session }>;
+
+const App = ({ Component, pageProps }: AppProps) => {
     return (
         <SessionProvider session={pageProps.session}>
             <Layout>
