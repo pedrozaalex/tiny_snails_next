@@ -3,7 +3,7 @@ import { Session } from 'next-auth';
 import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
 import '../../styles/globals.css';
-import Layout from '../components/layout';
+import { Layout } from '../components/Layout';
 import { ToastCenter } from '../components/ToastCenter';
 import { trpc } from '../utils/trpc';
 
