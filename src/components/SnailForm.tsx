@@ -1,7 +1,7 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TRPCClientError } from '@trpc/client';
-import { FunctionComponent } from 'react';
+import { FormEventHandler, FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppNavigation } from '../hooks/useNavigation';
 import { CreateSnailDTO, createSnailSchema } from '../schemas';
@@ -21,7 +21,7 @@ const SnailForm: FunctionComponent<Props> = ({ snail, baseUrl = 'tny.xyz/' }) =>
     const {
         handleSubmit,
         register,
-        formState: { errors },
+        formState: { errors: formErrors },
     } = useForm<CreateSnailDTO>({
         resolver: zodResolver(createSnailSchema),
         defaultValues: snail,
@@ -30,33 +30,32 @@ const SnailForm: FunctionComponent<Props> = ({ snail, baseUrl = 'tny.xyz/' }) =>
     const {
         mutate: createSnail,
         isLoading,
-        error,
+        error: mutationError,
         reset,
     } = trpc.snail.create.useMutation({
         onSuccess: ({ alias }) => navigateTo.showSnail(alias),
     });
 
+    const onSubmit: FormEventHandler<HTMLFormElement> = (...args) => {
+        return void handleSubmit((data) => {
+            createSnail(data);
+        })(...args);
+    };
+
     return (
         <div className="card card-compact border-2 border-neutral-content bg-base-200">
-            <form
-                className="card-body"
-                onSubmit={(...args) => {
-                    return void handleSubmit((data) => {
-                        createSnail(data);
-                    })(...args);
-                }}
-            >
+            <form className="card-body" onSubmit={onSubmit}>
                 <Input
                     label="your big url"
                     placeholder="paste your long url here"
-                    error={errors.url?.message}
+                    error={formErrors.url?.message}
                     {...register('url')}
                 />
 
                 <Input
                     label="customize your link"
                     placeholder="alias"
-                    error={errors.alias?.message}
+                    error={formErrors.alias?.message}
                     leftLabel={baseUrl}
                     color="accent"
                     {...register('alias')}
@@ -67,13 +66,16 @@ const SnailForm: FunctionComponent<Props> = ({ snail, baseUrl = 'tny.xyz/' }) =>
                 </button>
             </form>
 
-            <div className={error ? 'm-4' : ''} ref={errorContainerRef}>
-                {error ? (
+            <div className={mutationError ? 'm-4' : ''} ref={errorContainerRef}>
+                {mutationError ? (
                     <div className="alert alert-error cursor-pointer shadow-lg" onClick={reset}>
                         <div>
                             <ErrorIcon />
                             <span>
-                                error: {error instanceof TRPCClientError ? error.message : 'unknown error occurred'}
+                                error:{' '}
+                                {mutationError instanceof TRPCClientError
+                                    ? mutationError.message
+                                    : 'unknown error occurred'}
                             </span>
                         </div>
                     </div>
