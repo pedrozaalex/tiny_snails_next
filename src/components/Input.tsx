@@ -14,10 +14,10 @@ export const Input = forwardRef<HTMLInputElement, Props>(function Input(
     { label, placeholder, leftLabel, color = 'primary', error, ...props },
     ref
 ) {
-    const [parentRef] = useAutoAnimate<HTMLDivElement>();
+    const [containerRef] = useAutoAnimate<HTMLDivElement>();
 
     return (
-        <div ref={parentRef} className="form-control">
+        <div ref={containerRef} className="form-control">
             <label className="label">
                 <span className="label-text">{label}</span>
             </label>
