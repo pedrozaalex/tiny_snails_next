@@ -11,7 +11,7 @@ type Action = {
 };
 
 type Props = {
-    isOpen: boolean;
+    isOpen?: boolean;
     onClose: () => void;
     title?: string;
     body: ReactNode;
@@ -19,7 +19,7 @@ type Props = {
 };
 
 export const Dialog: FunctionComponent<Props> = ({
-    isOpen,
+    isOpen = true,
     title,
     body,
     actions,

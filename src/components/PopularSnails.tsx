@@ -2,9 +2,9 @@ import { Snail } from '@prisma/client';
 import Image from 'next/image';
 import { useState } from 'react';
 import TrophyIcon from '../../public/trophy.png';
-import { useDialog } from '../hooks/useDialog';
 import { useAppNavigation } from '../hooks/useNavigation';
 import { trpc } from '../utils/trpc';
+import { Dialog } from './Dialog';
 import { SnailInfo } from './SnailInfo';
 import { Spinner } from './Spinner';
 import { Table } from './Table';
@@ -21,13 +21,6 @@ export const PopularSnails = () => {
     });
 
     const [selectedSnailAlias, setSelectedSnailAlias] = useState<Snail['alias'] | null>(null);
-
-    const [SnailDetailDialog, openSnailDetailDialog] = useDialog({
-        title: 'snail detail',
-        content: <SnailInfo snailAlias={selectedSnailAlias ?? ''} hide={['createdAt']} />,
-        onConfirm: () => navigateTo.showSnail(selectedSnailAlias ?? ''),
-        onConfirmLabel: 'more info',
-    });
 
     if (error) {
         return null;
@@ -49,13 +42,22 @@ export const PopularSnails = () => {
                     <Table
                         objects={popularSnailsList}
                         properties={['alias', 'clicks']}
-                        onRowClick={({ alias }) => {
-                            setSelectedSnailAlias(alias);
-                            openSnailDetailDialog();
-                        }}
+                        onRowClick={(clicked) => setSelectedSnailAlias(clicked.alias)}
                     />
 
-                    <SnailDetailDialog />
+                    {selectedSnailAlias ? (
+                        <Dialog
+                            onClose={() => setSelectedSnailAlias(null)}
+                            title="snail detail"
+                            body={<SnailInfo snailAlias={selectedSnailAlias} hide={['createdAt']} />}
+                            actions={[
+                                {
+                                    label: 'more info',
+                                    onClick: () => navigateTo.showSnail(selectedSnailAlias),
+                                },
+                            ]}
+                        />
+                    ) : null}
                 </>
             )}
         </div>

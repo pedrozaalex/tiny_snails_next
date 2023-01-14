@@ -6,7 +6,11 @@ import { SnailInfo } from '../../components/SnailInfo';
 
 const SnailPage: NextPage = () => {
     const router = useRouter();
-    const snailAlias = router.query.alias as string;
+    const snailAlias = router.query.alias;
+
+    if (typeof snailAlias !== 'string') {
+        return <></>;
+    }
 
     return (
         <>

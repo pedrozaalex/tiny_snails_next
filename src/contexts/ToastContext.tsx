@@ -1,0 +1,94 @@
+import { useAutoAnimate } from '@formkit/auto-animate/react';
+import { createContext, ReactNode, useCallback, useContext, useState } from 'react';
+import { CheckMarkIcon } from '../components/CheckMarkIcon';
+import { ErrorIcon } from '../components/ErrorIcon';
+
+type Toast = {
+    id: string;
+    message: string;
+    duration: number;
+    type: 'success' | 'error' | 'warning' | 'info';
+};
+type ToastFn = ({ message, duration, type }: Partial<Omit<Toast, 'id'>> & Pick<Toast, 'message'>) => void;
+type ToastProviderProps = { children: ReactNode };
+
+const ToastContext = createContext<{ toast: ToastFn } | undefined>(undefined);
+
+function ToastProvider({ children }: ToastProviderProps) {
+    const [parentRef] = useAutoAnimate<HTMLDivElement>();
+
+    const [toasts, setToasts] = useState([] as Toast[]);
+
+    const addToast = useCallback((newToast: Toast) => setToasts((toasts) => [...toasts, newToast]), []);
+    const removeToast = useCallback(
+        (idToRemove: string) => setToasts((toasts) => toasts.filter((toast) => toast.id !== idToRemove)),
+        []
+    );
+
+    const toast = useCallback(
+        ({ message, duration = 300000, type = 'success' }: Partial<Omit<Toast, 'íd'>> & Pick<Toast, 'message'>) => {
+            const id = Math.random().toString(36).substring(7);
+
+            addToast({ message, duration, type, id });
+
+            setTimeout(() => {
+                removeToast(id);
+            }, duration);
+        },
+        [addToast, removeToast]
+    );
+
+    return (
+        <ToastContext.Provider value={{ toast }}>
+            {children}
+
+            <div className="fixed top-0 right-0 z-50 flex flex-col gap-2 p-4" ref={parentRef}>
+                {toasts.map((toast) => {
+                    const type = alertConfig[toast.type].type;
+                    const icon = alertConfig[toast.type].icon;
+
+                    return (
+                        <div key={toast.id} className="toast-end toast toast-top static p-0">
+                            <div
+                                className={`alert ${type} cursor-pointer shadow-lg`}
+                                onClick={removeToast.bind(null, toast.id)}
+                            >
+                                {icon}
+                                {toast.message}
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+        </ToastContext.Provider>
+    );
+}
+
+const alertConfig = {
+    success: {
+        icon: <CheckMarkIcon />,
+        type: 'alert-success',
+    },
+    error: {
+        icon: <ErrorIcon />,
+        type: 'alert-error',
+    },
+    warning: {
+        icon: null,
+        type: 'alert-warning',
+    },
+    info: {
+        icon: null,
+        type: 'alert-info',
+    },
+};
+
+function useToast() {
+    const context = useContext(ToastContext);
+
+    if (context === undefined) throw new Error('useToast was used outside of a ToastProvider');
+
+    return context;
+}
+
+export { ToastProvider, useToast };

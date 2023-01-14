@@ -1,20 +1,14 @@
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useState } from 'react';
-import { useDialog } from '../hooks/useDialog';
+import { Dialog } from './Dialog';
 import { SnailIcon } from './SnailIcon';
 
 export function Navbar() {
     const [showSidebar, setShowSidebar] = useState(false);
+    const [showSignOutDialog, setShowSignOutDialog] = useState(false);
 
     const { status: authSessionStatus } = useSession();
-
-    const [SignOutDialog, openSignOutDialog] = useDialog({
-        title: 'log out',
-        content: <p className="text-center">are you sure you want to log out?</p>,
-        onConfirm: () => void signOut(),
-        onConfirmLabel: 'log out',
-    });
 
     return (
         <>
@@ -37,7 +31,7 @@ export function Navbar() {
                             <button
                                 type="button"
                                 className="btn-secondary btn flex-col px-6"
-                                onClick={openSignOutDialog}
+                                onClick={() => setShowSignOutDialog(true)}
                             >
                                 <p>log out</p>
                             </button>
@@ -103,12 +97,28 @@ export function Navbar() {
                                             <button
                                                 type="button"
                                                 className="btn-secondary btn flex-col px-6"
-                                                onClick={openSignOutDialog}
+                                                onClick={() => setShowSignOutDialog(true)}
                                             >
                                                 <p>log out</p>
                                             </button>
 
-                                            <SignOutDialog />
+                                            <Dialog
+                                                title="log out"
+                                                body={<p className="text-center">are you sure you want to log out?</p>}
+                                                isOpen={showSignOutDialog}
+                                                onClose={() => setShowSignOutDialog(false)}
+                                                actions={[
+                                                    {
+                                                        label: 'cancel',
+                                                        onClick: () => setShowSignOutDialog(false),
+                                                    },
+                                                    {
+                                                        label: 'log out',
+                                                        onClick: () => void signOut(),
+                                                        color: 'warning',
+                                                    },
+                                                ]}
+                                            />
                                         </>
                                     )}
 
@@ -130,8 +140,6 @@ export function Navbar() {
                     </div>
                 </section>
             </header>
-
-            <SignOutDialog />
         </>
     );
 }

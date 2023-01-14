@@ -5,7 +5,7 @@ import { SessionProvider } from 'next-auth/react';
 import type { AppProps as NextProps } from 'next/app';
 import '../../styles/globals.css';
 import { Layout } from '../components/Layout';
-import { ToastCenter } from '../components/ToastCenter';
+import { ToastProvider } from '../contexts/ToastContext';
 import { trpc } from '../utils/trpc';
 
 type AppProps = NextProps<{ session: Session }>;
@@ -25,11 +25,12 @@ const App = ({ Component, pageProps }: AppProps) => {
             `}</style>
 
             <SessionProvider session={pageProps.session}>
-                <Layout>
-                    <Component {...pageProps} />
-                    <ToastCenter />
-                </Layout>
-                <Analytics />
+                <ToastProvider>
+                    <Layout>
+                        <Component {...pageProps} />
+                    </Layout>
+                    <Analytics />
+                </ToastProvider>
             </SessionProvider>
         </>
     );

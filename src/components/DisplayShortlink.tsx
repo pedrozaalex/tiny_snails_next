@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import { FunctionComponent } from 'react';
-import { copyToClipboard } from '../utils/copy';
+import { useToast } from '../contexts/ToastContext';
+import { copyToClipboard } from '../utils/clipboard';
 import { trpc } from '../utils/trpc';
 import { REDIRECT_BASE_URL } from '../utils/urls';
 import { Spinner } from './Spinner';
-import { toast } from './ToastCenter';
 
 type Props = {
     snailAlias: string;
@@ -12,6 +12,10 @@ type Props = {
 
 export const DisplayShortlink: FunctionComponent<Props> = ({ snailAlias }) => {
     const { data: snail, error, isLoading } = trpc.snail.getByAlias.useQuery(snailAlias);
+
+    const { toast } = useToast();
+    const notifySuccess = () => toast({ message: 'copied to clipboard!', type: 'success' });
+    const notifyError = () => toast({ message: 'failed to copy to clipboard', type: 'error' });
 
     if (isLoading) {
         return <Spinner />;
@@ -37,7 +41,7 @@ export const DisplayShortlink: FunctionComponent<Props> = ({ snailAlias }) => {
                 className="btn-accent btn ml-auto"
                 type="button"
                 onClick={() => {
-                    void copyToClipboard(url).then(notify);
+                    void copyToClipboard(url).then(notifySuccess).catch(notifyError);
                 }}
             >
                 copy
@@ -45,5 +49,3 @@ export const DisplayShortlink: FunctionComponent<Props> = ({ snailAlias }) => {
         </div>
     );
 };
-
-const notify = () => toast({ message: 'copied to clipboard!', type: 'success' });

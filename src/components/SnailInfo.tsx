@@ -57,7 +57,7 @@ export const SnailInfo: FunctionComponent<Props> = ({ snailAlias, hide, show }) 
     const { data: snail, isLoading, error } = trpc.snail.getByAlias.useQuery(snailAlias);
 
     if (isLoading) {
-        return <Spinner color="primary" />;
+        return <Spinner />;
     }
 
     if (error) {
