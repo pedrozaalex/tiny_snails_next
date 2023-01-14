@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { FunctionComponent } from 'react';
-import Snail from '../../public/snail.png';
+import Snail from '../../../public/snail.png';
 
 type Props = {
     size?: number;
