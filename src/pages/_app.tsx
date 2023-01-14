@@ -1,3 +1,4 @@
+import { Poppins } from '@next/font/google';
 import { Analytics } from '@vercel/analytics/react';
 import { Session } from 'next-auth';
 import { SessionProvider } from 'next-auth/react';
@@ -9,15 +10,28 @@ import { trpc } from '../utils/trpc';
 
 type AppProps = NextProps<{ session: Session }>;
 
+const poppins = Poppins({
+    weight: ['400', '700'],
+    display: 'swap',
+});
+
 const App = ({ Component, pageProps }: AppProps) => {
     return (
-        <SessionProvider session={pageProps.session}>
-            <Layout>
-                <Component {...pageProps} />
-                <ToastCenter />
-            </Layout>
-            <Analytics />
-        </SessionProvider>
+        <>
+            <style jsx global>{`
+                html {
+                    font-family: ${poppins.style.fontFamily};
+                }
+            `}</style>
+
+            <SessionProvider session={pageProps.session}>
+                <Layout>
+                    <Component {...pageProps} />
+                    <ToastCenter />
+                </Layout>
+                <Analytics />
+            </SessionProvider>
+        </>
     );
 };
 
