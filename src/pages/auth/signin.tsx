@@ -2,7 +2,7 @@ import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
 import { ClientSafeProvider, getCsrfToken, getProviders, signIn } from 'next-auth/react';
 import Head from 'next/head';
 import { ReactNode } from 'react';
-import { GitHubIcon } from '../../components/GithubIcon';
+import { GitHubIcon } from '../../components/icons/GithubIcon';
 
 type Props = {
     providers: Awaited<ReturnType<typeof getProviders>>;

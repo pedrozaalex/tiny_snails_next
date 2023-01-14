@@ -2,7 +2,7 @@ import FocusTrap from 'focus-trap-react';
 import { FunctionComponent, ReactNode, useCallback, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { ThemeColors } from '../types/colors';
-import { CloseIcon } from './CloseIcon';
+import { CloseIcon } from './icons/CloseIcon';
 
 type Action = {
     label: string;

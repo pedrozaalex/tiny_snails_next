@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useAppNavigation } from '../hooks/useNavigation';
 import { CreateSnailDTO, createSnailSchema } from '../schemas';
 import { trpc } from '../utils/trpc';
-import { ErrorIcon } from './ErrorIcon';
+import { ErrorIcon } from './icons/ErrorIcon';
 import { Input } from './Input';
 
 type Props = {

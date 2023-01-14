@@ -1,7 +1,7 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { createContext, ReactNode, useCallback, useContext, useState } from 'react';
-import { CheckMarkIcon } from '../components/CheckMarkIcon';
-import { ErrorIcon } from '../components/ErrorIcon';
+import { CheckMarkIcon } from '../components/icons/CheckMarkIcon';
+import { ErrorIcon } from '../components/icons/ErrorIcon';
 
 type Toast = {
     id: string;

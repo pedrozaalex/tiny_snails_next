@@ -1,4 +1,4 @@
-import { SnailIcon } from './SnailIcon';
+import { SnailIcon } from './icons/SnailIcon';
 
 export function AppHero() {
     return (

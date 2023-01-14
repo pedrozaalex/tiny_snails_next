@@ -2,7 +2,7 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { Dialog } from './Dialog';
-import { SnailIcon } from './SnailIcon';
+import { SnailIcon } from './icons/SnailIcon';
 
 export function Navbar() {
     const [showSidebar, setShowSidebar] = useState(false);
