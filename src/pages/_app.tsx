@@ -13,6 +13,7 @@ type AppProps = NextProps<{ session: Session }>;
 const poppins = Poppins({
     weight: ['400', '700'],
     display: 'swap',
+    subsets: ['latin'],
 });
 
 const App = ({ Component, pageProps }: AppProps) => {
