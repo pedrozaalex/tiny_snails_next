@@ -4,7 +4,7 @@ import { Session } from 'next-auth';
 import { SessionProvider } from 'next-auth/react';
 import type { AppProps as NextProps } from 'next/app';
 import '../../styles/globals.css';
-import { Layout } from '../components/Layout';
+import { AppLayout } from '../components/AppLayout';
 import { ToastProvider } from '../contexts/ToastContext';
 import { trpc } from '../utils/trpc';
 
@@ -26,9 +26,9 @@ const App = ({ Component, pageProps }: AppProps) => {
 
             <SessionProvider session={pageProps.session}>
                 <ToastProvider>
-                    <Layout>
+                    <AppLayout>
                         <Component {...pageProps} />
-                    </Layout>
+                    </AppLayout>
                     <Analytics />
                 </ToastProvider>
             </SessionProvider>

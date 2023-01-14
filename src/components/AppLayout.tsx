@@ -6,7 +6,7 @@ type Props = {
     children: ReactNode;
 };
 
-export const Layout: FunctionComponent<Props> = ({ children }) => {
+export const AppLayout: FunctionComponent<Props> = ({ children }) => {
     return (
         <div id="layout-root" className={`flex flex-col bg-primary`}>
             <Navbar />
