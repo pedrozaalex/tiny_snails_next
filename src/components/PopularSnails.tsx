@@ -27,7 +27,7 @@ export const PopularSnails = () => {
     }
 
     return (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center" data-cy="popular-snails-root">
             <h2 className="flex gap-2 text-xl font-bold">
                 top 10 snails
                 <Image src={TrophyIcon} alt="trophy icon" className="h-6 w-auto" />
@@ -43,6 +43,7 @@ export const PopularSnails = () => {
                         objects={popularSnailsList}
                         properties={['alias', 'clicks']}
                         onRowClick={(clicked) => setSelectedSnailAlias(clicked.alias)}
+                        data-cy="popular-snails-table"
                     />
 
                     {selectedSnailAlias ? (

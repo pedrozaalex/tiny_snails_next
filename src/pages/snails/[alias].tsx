@@ -19,7 +19,9 @@ const SnailPage: NextPage = () => {
             </Head>
 
             <div className="flex flex-col items-center gap-12 text-center">
-                <h1 className="text-4xl font-bold">snail {snailAlias}</h1>
+                <h1 className="text-4xl font-bold" daya-cy="snail-page-title">
+                    snail {snailAlias}
+                </h1>
 
                 <DisplayShortlink snailAlias={snailAlias} />
 

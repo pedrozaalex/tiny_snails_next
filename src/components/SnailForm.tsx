@@ -49,6 +49,7 @@ const SnailForm: FunctionComponent<Props> = ({ snail, baseUrl = 'tny.xyz/' }) =>
                     label="your big url"
                     placeholder="paste your long url here"
                     error={formErrors.url?.message}
+                    data-cy="snail-form-url"
                     {...register('url')}
                 />
 
@@ -58,17 +59,26 @@ const SnailForm: FunctionComponent<Props> = ({ snail, baseUrl = 'tny.xyz/' }) =>
                     error={formErrors.alias?.message}
                     leftLabel={baseUrl}
                     color="accent"
+                    data-cy="snail-form-alias"
                     {...register('alias')}
                 />
 
-                <button type="submit" className={`btn-accent btn mt-3 ${isLoading ? ' loading' : ''}`}>
+                <button
+                    type="submit"
+                    className={`btn-accent btn mt-3 ${isLoading ? ' loading' : ''}`}
+                    data-cy="snail-form-submit"
+                >
                     {snail ? 'update' : 'create it!'}
                 </button>
             </form>
 
             <div className={mutationError ? 'm-4' : ''} ref={errorContainerRef}>
                 {mutationError ? (
-                    <div className="alert alert-error cursor-pointer shadow-lg" onClick={reset}>
+                    <div
+                        className="alert alert-error cursor-pointer shadow-lg"
+                        onClick={reset}
+                        data-cy="snail-form-error"
+                    >
                         <div>
                             <ErrorIcon />
                             <span>

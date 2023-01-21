@@ -71,7 +71,7 @@ export const SnailInfo: FunctionComponent<Props> = ({ snailAlias, hide, show }) 
     const shownProperties = getShownProps({ show, hide, snail });
 
     return (
-        <div className="flex w-full flex-col gap-4">
+        <div className="flex w-full flex-col gap-4" data-cy="snail-info-card">
             {Object.entries(snail)
                 .filter(([key]) => shownProperties.includes(key as keyof Snail))
                 .map((info) => {

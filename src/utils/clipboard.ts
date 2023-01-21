@@ -1,3 +1,5 @@
+import { useToast } from '../contexts/ToastContext';
+
 function fallbackCopyTextToClipboard(text: string) {
     const textArea = document.createElement('textarea');
     textArea.value = text;
@@ -53,4 +55,10 @@ export function copyToClipboard(text: string, onCopy?: () => void): Promise<void
                 reject();
             });
     });
+}
+
+export function copyThenToast(text: string, toast: ReturnType<typeof useToast>['toast']) {
+    copyToClipboard(text)
+        .then(() => toast({ message: 'copied to clipboard!', type: 'success' }))
+        .catch(() => toast({ message: 'failed to copy to clipboard', type: 'error' }));
 }

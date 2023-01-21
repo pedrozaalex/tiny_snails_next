@@ -14,19 +14,16 @@ type ToastProviderProps = { children: ReactNode };
 
 const ToastContext = createContext<{ toast: ToastFn } | undefined>(undefined);
 
-function ToastProvider({ children }: ToastProviderProps) {
+export function ToastProvider({ children }: ToastProviderProps) {
     const [parentRef] = useAutoAnimate<HTMLDivElement>();
 
     const [toasts, setToasts] = useState([] as Toast[]);
 
     const addToast = useCallback((newToast: Toast) => setToasts((toasts) => [...toasts, newToast]), []);
-    const removeToast = useCallback(
-        (idToRemove: string) => setToasts((toasts) => toasts.filter((toast) => toast.id !== idToRemove)),
-        []
-    );
+    const removeToast = useCallback((id: string) => setToasts((toasts) => toasts.filter((t) => t.id !== id)), []);
 
-    const toast = useCallback(
-        ({ message, duration = 300000, type = 'success' }: Partial<Omit<Toast, 'íd'>> & Pick<Toast, 'message'>) => {
+    const toast = useCallback<ToastFn>(
+        ({ message, duration = 300000, type = 'success' }) => {
             const id = Math.random().toString(36).substring(7);
 
             addToast({ message, duration, type, id });
@@ -83,12 +80,10 @@ const alertConfig = {
     },
 };
 
-function useToast() {
-    const context = useContext(ToastContext);
+export function useToast() {
+    const toastContext = useContext(ToastContext);
 
-    if (context === undefined) throw new Error('useToast was used outside of a ToastProvider');
+    if (toastContext === undefined) throw new Error('useToast was used outside of a ToastProvider');
 
-    return context;
+    return toastContext;
 }
-
-export { ToastProvider, useToast };
